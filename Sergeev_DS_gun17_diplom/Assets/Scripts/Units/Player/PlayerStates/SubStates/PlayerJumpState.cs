@@ -2,17 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerJumpState : MonoBehaviour
+namespace Metroidvania.Player
 {
-    // Start is called before the first frame update
-    void Start()
+    public class PlayerJumpState : PlayerAbilityState
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private int jumpsLeft;
+        public PlayerJumpState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+        {
+            jumpsLeft = playerData.jumpCount;
+        }
+        public override void Enter()
+        {
+            base.Enter();
+            player.SetVelocityY(playerData.jumpVelocity);
+            isAbilityDone = true;
+            jumpsLeft--;
+            player.InAirState.SetIsJumping();
+        }
+        public bool CanJump()
+        {
+            if (jumpsLeft > 0) return true;
+            else return false;
+        }
+        public void ResetJumps() => jumpsLeft = playerData.jumpCount;
+        public void DecreaseJumps() => jumpsLeft--;
     }
 }

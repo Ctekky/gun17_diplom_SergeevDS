@@ -8,6 +8,8 @@ namespace Metroidvania.Player
     {
         protected int inputX;
         protected int inputY;
+        private bool jumpInput;
+        private bool isGrounded;
         public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
@@ -15,11 +17,13 @@ namespace Metroidvania.Player
         public override void DoChecks()
         {
             base.DoChecks();
+            isGrounded = player.CheckIfGrounded();
         }
 
         public override void Enter()
         {
             base.Enter();
+            player.JumpState.ResetJumps();
         }
 
         public override void Exit()
@@ -32,6 +36,18 @@ namespace Metroidvania.Player
             base.LogicUpdate();
             inputX = player.InputHandler.NormalizedInputX;
             inputY = player.InputHandler.NormalizedInputY;
+            jumpInput = player.InputHandler.JumpInput;
+
+            if(jumpInput && player.JumpState.CanJump())
+            {
+                player.InputHandler.UseJumpInput();
+                stateMachine.ChangeState(player.JumpState);
+            }
+            else if(!isGrounded)
+            {
+                player.InAirState.StartLastMomentJumpTimer();
+                stateMachine.ChangeState(player.InAirState);
+            }
         }
 
         public override void PhysicsUpdate()
