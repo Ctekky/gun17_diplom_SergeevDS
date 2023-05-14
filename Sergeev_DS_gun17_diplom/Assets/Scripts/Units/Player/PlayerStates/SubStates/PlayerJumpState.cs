@@ -14,6 +14,7 @@ namespace Metroidvania.Player
         public override void Enter()
         {
             base.Enter();
+            player.InputHandler.UseJumpInput();
             player.SetVelocityY(playerData.jumpVelocity);
             isAbilityDone = true;
             jumpsLeft--;

@@ -14,10 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementVelocity: 10
   jumpVelocity: 25
-  jumpCount: 1
+  jumpCount: 2
   lastMomentJumpTime: 0.2
   jumpHeighMultiplier: 0.5
+  wallSlideVelocity: 2
+  wallClimbVelocity: 3
   groundCheckRadius: 0.3
+  wallCheckDistance: 0.7
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  wallJumpVelocity: 30
+  wallJumpTime: 0.4
+  wallJumpAngle: {x: 1, y: 2}
+  ropeClimbVelocity: 3
+  ropeSwingVelocity: 3
+  ropeSwingMultiplier: 0.5
+  ropeTouchDelayforCollision: 0.5

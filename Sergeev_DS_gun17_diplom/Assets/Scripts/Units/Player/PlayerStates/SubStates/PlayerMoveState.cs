@@ -29,7 +29,7 @@ namespace Metroidvania.Player
         {
             base.LogicUpdate();
 
-            if (inputX == 0)
+            if (inputX == 0 && !isExitingState)
             {
                 stateMachine.ChangeState(player.IdleState);
             }

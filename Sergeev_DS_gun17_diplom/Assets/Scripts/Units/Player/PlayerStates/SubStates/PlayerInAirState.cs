@@ -9,10 +9,20 @@ namespace Metroidvania.Player
     {
         private int inputX;
         private bool isGrounded;
+        private bool isTouchingWall;
+        private bool isTouchingWallBack;
+        private bool oldIsTouchingWall;
+        private bool oldIsTouchingWallBack;
         private bool jumpInput;
         private bool jumpInputStop;
+        private bool interactInput;
         private bool lastMomentJump;
+        private bool lastMomentWallJump;
         private bool isJumping;
+        private bool isTouchingRope;
+
+        private float startLastMomentWallJumpTime;
+        
         public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
@@ -20,7 +30,19 @@ namespace Metroidvania.Player
         public override void DoChecks()
         {
             base.DoChecks();
+            oldIsTouchingWall = isTouchingWall;
+            oldIsTouchingWallBack = isTouchingWallBack;
+            
+
             isGrounded = player.CheckIfGrounded();
+            isTouchingWall = player.CheckIfTouchWall();
+            isTouchingWallBack = player.CheckIfTouchWallBack();
+            isTouchingRope = player.IsTouchingRope;
+
+            if (!lastMomentWallJump && !isTouchingWall && !isTouchingWallBack && (oldIsTouchingWall || oldIsTouchingWallBack))
+            {
+                StartLastMomentWallJumpTimer();
+            }
         }
 
         public override void Enter()
@@ -31,15 +53,23 @@ namespace Metroidvania.Player
         public override void Exit()
         {
             base.Exit();
+            oldIsTouchingWall = false;
+            oldIsTouchingWallBack = false;
+            isTouchingWall = false;
+            isTouchingWallBack = false;
+
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
             CheckLastMomentJump();
+            CheckLastMomentWallJump();
+
             inputX = player.InputHandler.NormalizedInputX;
             jumpInput = player.InputHandler.JumpInput;
             jumpInputStop = player.InputHandler.JumpInputStop;
+            interactInput = player.InputHandler.InteractInput;
 
             CheckJumpMultiplier();
 
@@ -47,9 +77,28 @@ namespace Metroidvania.Player
             {
                 stateMachine.ChangeState(player.LandState);
             }
+            else if (jumpInput && (isTouchingWall || isTouchingWallBack || lastMomentWallJump))
+            {
+                StoptLastMomentWallJumpTimer();
+                isTouchingWall = player.CheckIfTouchWall();
+                player.WallJumpState.WallJumpDirection(isTouchingWall);
+                stateMachine.ChangeState(player.WallJumpState);
+            }
             else if(jumpInput && player.JumpState.CanJump())
             {
-                 stateMachine.ChangeState(player.JumpState);
+                stateMachine.ChangeState(player.JumpState);
+            }
+            else if(isTouchingRope && interactInput)
+            {
+                stateMachine.ChangeState(player.RopeGrabState);
+            }
+            else if(isTouchingWall && interactInput)
+            {
+                stateMachine.ChangeState(player.WallGrabState);
+            }
+            else if(isTouchingWall && inputX == player.FacingDirection && player.CurrentVelocity.y <= 0f)
+            {
+                stateMachine.ChangeState(player.WallSlideState);
             }
             else
             {
@@ -87,8 +136,22 @@ namespace Metroidvania.Player
                 player.JumpState.DecreaseJumps();
             }
         }
+        private void CheckLastMomentWallJump()
+        {
+            if(lastMomentWallJump && Time.time > startLastMomentWallJumpTime + playerData.lastMomentJumpTime)
+            {
+                lastMomentWallJump = false;
+            }
+        }
         public void StartLastMomentJumpTimer() => lastMomentJump = true;
         public void SetIsJumping() => isJumping = true;
+        public void StartLastMomentWallJumpTimer()
+        {
+            lastMomentWallJump = true;
+            startLastMomentWallJumpTime = Time.time;
+        }
+        public void StoptLastMomentWallJumpTimer() => lastMomentWallJump = false;
+        
     }
 }
 

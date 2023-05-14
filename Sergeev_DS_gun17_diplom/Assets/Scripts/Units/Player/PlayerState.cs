@@ -11,6 +11,7 @@ namespace Metroidvania.Player
         protected PlayerStateMachine stateMachine;
         protected PlayerData playerData;
 
+        protected bool isExitingState;
         protected bool isAnimationEnd;
         protected float startTime;
         private string animBoolName;
@@ -29,17 +30,17 @@ namespace Metroidvania.Player
             player.Animator.SetBool(animBoolName, true);
             startTime = Time.time;
             isAnimationEnd = false;
-
+            isExitingState = false;
         }
         public virtual void Exit()
         {
             player.Animator.SetBool(animBoolName, false);
+            isExitingState = true;
         }
         public virtual void LogicUpdate() { }
         public virtual void PhysicsUpdate()
         {
             DoChecks();
-
         }
         public virtual void DoChecks() { }
         public virtual void AnimationTrigger() { }
