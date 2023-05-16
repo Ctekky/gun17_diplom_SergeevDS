@@ -20,6 +20,7 @@ namespace Metroidvania.Player
         private bool lastMomentWallJump;
         private bool isJumping;
         private bool isTouchingRope;
+        private bool isTouchingLedge;
 
         private float startLastMomentWallJumpTime;
         
@@ -32,12 +33,18 @@ namespace Metroidvania.Player
             base.DoChecks();
             oldIsTouchingWall = isTouchingWall;
             oldIsTouchingWallBack = isTouchingWallBack;
-            
+
 
             isGrounded = player.CheckIfGrounded();
             isTouchingWall = player.CheckIfTouchWall();
             isTouchingWallBack = player.CheckIfTouchWallBack();
             isTouchingRope = player.IsTouchingRope;
+            isTouchingLedge = player.CheckIfTouchingLedge();
+
+            if (isTouchingWall && !isTouchingLedge)
+            {
+                player.LedgeClimbState.SetDetectedPosition(player.transform.position);
+            }
 
             if (!lastMomentWallJump && !isTouchingWall && !isTouchingWallBack && (oldIsTouchingWall || oldIsTouchingWallBack))
             {
@@ -77,6 +84,10 @@ namespace Metroidvania.Player
             {
                 stateMachine.ChangeState(player.LandState);
             }
+            else if(isTouchingWall && !isTouchingLedge && !isGrounded)
+            {
+                stateMachine.ChangeState(player.LedgeClimbState);
+            }
             else if (jumpInput && (isTouchingWall || isTouchingWallBack || lastMomentWallJump))
             {
                 StoptLastMomentWallJumpTimer();
@@ -92,7 +103,7 @@ namespace Metroidvania.Player
             {
                 stateMachine.ChangeState(player.RopeGrabState);
             }
-            else if(isTouchingWall && interactInput)
+            else if(isTouchingWall && interactInput && isTouchingLedge)
             {
                 stateMachine.ChangeState(player.WallGrabState);
             }

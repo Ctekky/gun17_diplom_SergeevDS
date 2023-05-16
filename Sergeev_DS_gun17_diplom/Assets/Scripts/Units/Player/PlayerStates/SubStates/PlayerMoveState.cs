@@ -28,10 +28,18 @@ namespace Metroidvania.Player
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-
-            if (inputX == 0 && !isExitingState)
+            if (isExitingState) return;
+            if (inputX == 0 && inputY != -1)
             {
                 stateMachine.ChangeState(player.IdleState);
+            }
+            else if(inputX == 0 && inputY == -1)
+            {
+                stateMachine.ChangeState(player.CrouchIdleState);
+            }
+            else if(inputY == -1)
+            {
+                stateMachine.ChangeState(player.CrouchMoveState);
             }
         }
 

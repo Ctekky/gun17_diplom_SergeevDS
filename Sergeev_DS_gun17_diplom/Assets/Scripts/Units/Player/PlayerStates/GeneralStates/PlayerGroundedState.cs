@@ -12,6 +12,10 @@ namespace Metroidvania.Player
         private bool interactInput;
         private bool isGrounded;
         private bool isTouchingWall;
+        protected bool isHeadTouchingGround;
+        private bool isTouchingLedge;
+        private bool rollInput;
+
         public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
@@ -21,6 +25,8 @@ namespace Metroidvania.Player
             base.DoChecks();
             isGrounded = player.CheckIfGrounded();
             isTouchingWall = player.CheckIfTouchWall();
+            isHeadTouchingGround = player.CheckForHeadTouch();
+            isTouchingLedge = player.CheckIfTouchingLedge();
         }
 
         public override void Enter()
@@ -40,6 +46,7 @@ namespace Metroidvania.Player
             inputX = player.InputHandler.NormalizedInputX;
             inputY = player.InputHandler.NormalizedInputY;
             jumpInput = player.InputHandler.JumpInput;
+            rollInput = player.InputHandler.RollInput;
             interactInput = player.InputHandler.InteractInput;
 
             if(jumpInput && player.JumpState.CanJump())
@@ -51,9 +58,13 @@ namespace Metroidvania.Player
                 player.InAirState.StartLastMomentJumpTimer();
                 stateMachine.ChangeState(player.InAirState);
             }
-            else if(isTouchingWall && interactInput)
+            else if(isTouchingWall && interactInput && isTouchingLedge)
             {
                 stateMachine.ChangeState(player.WallGrabState);
+            }
+            else if(rollInput)
+            {
+                stateMachine.ChangeState(player.RollState);
             }
         }
 

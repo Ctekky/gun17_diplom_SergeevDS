@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 7012991513133629136}
   - component: {fileID: 1688320805344447480}
   m_Layer: 0
-  m_Name: AdjustableSizeRope
+  m_Name: Arrow_Rope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

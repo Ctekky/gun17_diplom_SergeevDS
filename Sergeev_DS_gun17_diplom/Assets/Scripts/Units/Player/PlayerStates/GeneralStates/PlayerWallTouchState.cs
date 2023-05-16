@@ -12,6 +12,7 @@ namespace Metroidvania.Player
         protected int inputX;
         protected int inputY;
         protected bool jumpInput;
+        protected bool isTouchingLedge;
 
 
         public PlayerWallTouchState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
@@ -33,6 +34,12 @@ namespace Metroidvania.Player
             base.DoChecks();
             isGrounded = player.CheckIfGrounded();
             isTouchingWall = player.CheckIfTouchWall();
+            isTouchingLedge = player.CheckIfTouchingLedge();
+
+            if(isTouchingWall && !isTouchingLedge)
+            {
+                player.LedgeClimbState.SetDetectedPosition(player.transform.position);
+            }
 
         }
 
@@ -65,6 +72,10 @@ namespace Metroidvania.Player
             else if (!isTouchingWall || (inputX != player.FacingDirection && !interactInput))
             {
                 stateMachine.ChangeState(player.InAirState);
+            }
+            else if(isTouchingWall && !isTouchingLedge)
+            {
+                stateMachine.ChangeState(player.LedgeClimbState);
             }
         }
 

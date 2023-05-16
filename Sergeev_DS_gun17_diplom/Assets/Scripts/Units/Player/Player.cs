@@ -20,12 +20,17 @@ namespace Metroidvania.Player
         public PlayerRopeGrabdState RopeGrabState { get; private set; }
         public PlayerRopeClimbState RopeClimbState { get; private set; }
         public PlayerRopeSwingState RopeSwingState { get; private set; }
+        public PlayerCrouchIdleState CrouchIdleState { get; private set; }
+        public PlayerCrouchMoveState CrouchMoveState { get; private set; }
+        public PlayerRollState RollState { get; private set; }
+        public PlayerLedgeClimbState LedgeClimbState { get; private set; }
 
         #endregion
 
         #region Components
         public Animator Animator { get; private set; }
         public PlayerInputHandler InputHandler { get; private set; }
+        public BoxCollider2D PlayerBodyCollider { get; private set; }
         public Rigidbody2D RB { get; private set; }
         [SerializeField]
         private PlayerData playerData;
@@ -36,6 +41,10 @@ namespace Metroidvania.Player
         private Transform groundCheck;
         [SerializeField]
         private Transform wallCheck;
+        [SerializeField]
+        private Transform headCheck;
+        [SerializeField]
+        private Transform ledgeCheck;
         public bool IsTouchingRope { get; private set; }
         public Transform CurrentRope { get; private set; }
         [SerializeField]
@@ -67,6 +76,11 @@ namespace Metroidvania.Player
             RopeClimbState = new PlayerRopeClimbState(this, StateMachine, playerData, "ropeClimb");
             RopeGrabState = new PlayerRopeGrabdState(this, StateMachine, playerData, "ropeGrab");
             RopeSwingState = new PlayerRopeSwingState(this, StateMachine, playerData, "ropeGrab");
+            CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, playerData, "crouchIdle");
+            CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerData, "crouchMove");
+            RollState = new PlayerRollState(this, StateMachine, playerData, "roll");
+            LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledgeClimbState");
+
         }
         private void Start()
         {
@@ -74,11 +88,12 @@ namespace Metroidvania.Player
             InputHandler = GetComponent<PlayerInputHandler>();
             RB = GetComponent<Rigidbody2D>();
             ropeLinksCollisions = new List<RopeLinks>();
+            PlayerBodyCollider = GetComponent<BoxCollider2D>();
             FacingDirection = 1;
             StateMachine.Initialize(IdleState);
         }
         private void Update()
-        {            
+        {
             CurrentVelocity = RB.velocity;
             StateMachine.CurrentState.LogicUpdate();
         }
@@ -109,6 +124,18 @@ namespace Metroidvania.Player
             RB.velocity = workVector;
             CurrentVelocity = workVector;
         }
+        public void SetVelocity(float velocity, Vector2 direction)
+        {
+            workVector = direction * velocity;
+            RB.velocity = workVector;
+            CurrentVelocity = workVector;
+        }
+
+        public void SetVelocityZero()
+        {
+            RB.velocity = Vector2.zero;
+            CurrentVelocity = Vector2.zero;
+        }
         #endregion
 
         #region Check Func
@@ -124,14 +151,36 @@ namespace Metroidvania.Player
         {
             return Physics2D.Raycast(wallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.groundLayer);
         }
+        public bool CheckIfTouchingLedge()
+        {
+            return Physics2D.Raycast(ledgeCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.groundLayer);
+        }
 
         public bool CheckIfTouchWallBack()
         {
             return Physics2D.Raycast(wallCheck.position, Vector2.right * -FacingDirection, playerData.wallCheckDistance, playerData.groundLayer);
         }
+
+        public bool CheckForHeadTouch()
+        {
+            return Physics2D.OverlapCircle(headCheck.position, playerData.groundCheckRadius, playerData.groundLayer);
+        }
+
         #endregion
 
         #region Other Func
+
+        public Vector2 DetermineCornerPositon()
+        {
+            RaycastHit2D hitX = Physics2D.Raycast(wallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.groundLayer);
+            float distanceX = hitX.distance;
+            workVector.Set(distanceX * FacingDirection, 0f);
+            RaycastHit2D hitY = Physics2D.Raycast(ledgeCheck.position + (Vector3)(workVector), Vector2.down, ledgeCheck.position.y - wallCheck.position.y, playerData.groundLayer);
+            float distanceY = hitY.distance;
+            workVector.Set(wallCheck.position.x + (distanceX * FacingDirection), ledgeCheck.position.y - distanceY);
+            return workVector;
+        }
+
         private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
         private void AnimationEndTrigger() => StateMachine.CurrentState.AnimationEndTrigger();
         private void Flip()
@@ -161,12 +210,24 @@ namespace Metroidvania.Player
                 }
             }
         }
+        public void SetColliderHeight(float height)
+        {
+            Vector2 center = PlayerBodyCollider.offset;
+            workVector.Set(PlayerBodyCollider.size.x, height);
+            center.y += (height - PlayerBodyCollider.size.y) / 2;
+            PlayerBodyCollider.size = workVector;
+            PlayerBodyCollider.offset = center;
+        }
         public void PlayerMoveRope()
         {
             if(ropeLinksCollisions.Count != 0)
             {
                 ropeLinksCollisions[0].EnableMoveScript(new Vector2(playerData.ropeSwingVelocity, 0f) * InputHandler.NormalizedInputX);
             }
+        }
+        public void SetPlayerLayer(LayerMask layer)
+        {
+            gameObject.layer = layer;
         }
         #endregion
     }

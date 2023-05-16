@@ -22,12 +22,12 @@ namespace Metroidvania.Player
             if (isExitingState) return;
             HoldPosition();
             //отключаю ползанье по стенам (т.к. эта возможность только для веревки
-            /*
+            
             if (inputY > 0)
             {
                 stateMachine.ChangeState(player.WallClimbState);
             }
-            */
+            
             if (inputY < 0 || !interactInput)
             {
                 stateMachine.ChangeState(player.WallSlideState);

@@ -24,14 +24,20 @@ namespace Metroidvania.Player
         public override void Exit()
         {
             base.Exit();
+
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (inputX != 0 && !isExitingState)
+            if (isExitingState) return;
+            if (inputX != 0)
             {
                 stateMachine.ChangeState(player.MoveState);
+            }
+            else if(inputY == -1)
+            {
+                stateMachine.ChangeState(player.CrouchIdleState);
             }
         }
 

@@ -13,6 +13,7 @@ namespace Metroidvania.Player
         public bool JumpInput { get; private set;  }
         public bool JumpInputStop { get; private set; }
         public bool InteractInput { get; private set; }
+        public bool RollInput { get; private set; }
 
         [SerializeField]
         private float inputHoldTime = 0.2f;
@@ -68,7 +69,19 @@ namespace Metroidvania.Player
                 InteractInput = false;
             }
         }
+        public void OnRollInput(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                RollInput = true;
+            }
+            if(context.canceled)
+            {
+                RollInput = false;
+            }
+        }
         public void UseJumpInput() => JumpInput = false;
+        public void UseRollInput() => RollInput = false;
         private void CheckJumpInputHoldTime()
         {
             if(Time.time >= jumpInputStartTime + inputHoldTime)
