@@ -62,6 +62,33 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PrimaryAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""f924c3fc-1c72-46e0-8318-e7a765ee0441"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""51e7778c-8b2d-4a8c-92e8-f7875616afa0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""83dbfbed-b9fa-44e0-99d9-c58cd49a6c62"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +179,39 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Roll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f1e935ff-7850-4276-8b3f-3728aa87af2a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PrimaryAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57529c01-e2f2-4cf2-9988-30b945c70369"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e86a67c-c66e-457c-aaf1-10d3325f4a78"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -164,6 +224,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_Roll = m_Gameplay.FindAction("Roll", throwIfNotFound: true);
+        m_Gameplay_PrimaryAttack = m_Gameplay.FindAction("PrimaryAttack", throwIfNotFound: true);
+        m_Gameplay_SecondaryAttack = m_Gameplay.FindAction("SecondaryAttack", throwIfNotFound: true);
+        m_Gameplay_ChangeWeapon = m_Gameplay.FindAction("ChangeWeapon", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -227,6 +290,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_Roll;
+    private readonly InputAction m_Gameplay_PrimaryAttack;
+    private readonly InputAction m_Gameplay_SecondaryAttack;
+    private readonly InputAction m_Gameplay_ChangeWeapon;
     public struct GameplayActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -235,6 +301,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputAction @Roll => m_Wrapper.m_Gameplay_Roll;
+        public InputAction @PrimaryAttack => m_Wrapper.m_Gameplay_PrimaryAttack;
+        public InputAction @SecondaryAttack => m_Wrapper.m_Gameplay_SecondaryAttack;
+        public InputAction @ChangeWeapon => m_Wrapper.m_Gameplay_ChangeWeapon;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -256,6 +325,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Roll.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRoll;
                 @Roll.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRoll;
                 @Roll.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRoll;
+                @PrimaryAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPrimaryAttack;
+                @PrimaryAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPrimaryAttack;
+                @PrimaryAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPrimaryAttack;
+                @SecondaryAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSecondaryAttack;
+                @SecondaryAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSecondaryAttack;
+                @SecondaryAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSecondaryAttack;
+                @ChangeWeapon.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeWeapon;
+                @ChangeWeapon.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeWeapon;
+                @ChangeWeapon.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeWeapon;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -272,6 +350,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Roll.started += instance.OnRoll;
                 @Roll.performed += instance.OnRoll;
                 @Roll.canceled += instance.OnRoll;
+                @PrimaryAttack.started += instance.OnPrimaryAttack;
+                @PrimaryAttack.performed += instance.OnPrimaryAttack;
+                @PrimaryAttack.canceled += instance.OnPrimaryAttack;
+                @SecondaryAttack.started += instance.OnSecondaryAttack;
+                @SecondaryAttack.performed += instance.OnSecondaryAttack;
+                @SecondaryAttack.canceled += instance.OnSecondaryAttack;
+                @ChangeWeapon.started += instance.OnChangeWeapon;
+                @ChangeWeapon.performed += instance.OnChangeWeapon;
+                @ChangeWeapon.canceled += instance.OnChangeWeapon;
             }
         }
     }
@@ -282,5 +369,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
+        void OnPrimaryAttack(InputAction.CallbackContext context);
+        void OnSecondaryAttack(InputAction.CallbackContext context);
+        void OnChangeWeapon(InputAction.CallbackContext context);
     }
 }

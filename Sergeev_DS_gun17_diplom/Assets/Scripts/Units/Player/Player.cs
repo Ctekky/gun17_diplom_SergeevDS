@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Metroidvania.Structs;
 
 namespace Metroidvania.Player
 {
@@ -24,6 +25,8 @@ namespace Metroidvania.Player
         public PlayerCrouchMoveState CrouchMoveState { get; private set; }
         public PlayerRollState RollState { get; private set; }
         public PlayerLedgeClimbState LedgeClimbState { get; private set; }
+        public PlayerAttackState PrimaryAttackState { get; private set; }
+        public PlayerAttackState SecondaryAttackState { get; private set; }
 
         #endregion
 
@@ -80,6 +83,8 @@ namespace Metroidvania.Player
             CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerData, "crouchMove");
             RollState = new PlayerRollState(this, StateMachine, playerData, "roll");
             LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledgeClimbState");
+            PrimaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
+            SecondaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
 
         }
         private void Start()
@@ -130,7 +135,6 @@ namespace Metroidvania.Player
             RB.velocity = workVector;
             CurrentVelocity = workVector;
         }
-
         public void SetVelocityZero()
         {
             RB.velocity = Vector2.zero;
@@ -170,6 +174,10 @@ namespace Metroidvania.Player
 
         #region Other Func
 
+        public void GetDamage(AttackDetails attackDetails)
+        {
+            Debug.Log("Player damage " + attackDetails.damage.ToString());
+        }
         public Vector2 DetermineCornerPositon()
         {
             RaycastHit2D hitX = Physics2D.Raycast(wallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.groundLayer);
@@ -225,10 +233,7 @@ namespace Metroidvania.Player
                 ropeLinksCollisions[0].EnableMoveScript(new Vector2(playerData.ropeSwingVelocity, 0f) * InputHandler.NormalizedInputX);
             }
         }
-        public void SetPlayerLayer(LayerMask layer)
-        {
-            gameObject.layer = layer;
-        }
+        public void SetPlayerLayer(LayerMask layer) => gameObject.layer = (int)Mathf.Log(layer.value, 2);
         #endregion
     }
 }

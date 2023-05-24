@@ -20,13 +20,13 @@ namespace Metroidvania.Player
         public override void AnimationEndTrigger()
         {
             base.AnimationEndTrigger();
-            player.SetPlayerLayer(playerData.invinciblePlayerLayer);
+            player.SetPlayerLayer(playerData.standartPlayerLayer);
         }
 
         public override void AnimationTrigger()
         {
             base.AnimationTrigger();
-            player.SetPlayerLayer(playerData.standartPlayerLayer);
+            player.SetPlayerLayer(playerData.invinciblePlayerLayer);
         }
 
         public override void Enter()
@@ -78,7 +78,6 @@ namespace Metroidvania.Player
             }
 
         }
-
         private void CheckForSpace()
         {
             isTouchHead = Physics2D.Raycast((Vector2)player.transform.position + (Vector2.up * 0.015f) + (Vector2.right * player.FacingDirection * 0.015f), Vector2.up, playerData.colliderCrouchHeight, playerData.groundLayer);

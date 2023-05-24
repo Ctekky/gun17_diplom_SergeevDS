@@ -46,7 +46,7 @@ public class CreateRope : MonoBehaviour
         links = transform.GetChild(1);
         linkOneOriginalPosition = firstSegment.transform.position;
         linkOneOriginalRotation = firstSegment.transform.rotation;
-        emptyGameObjectPrefab = (GameObject)Resources.Load("Prefabs/AutoRopeAttachPosition");
+        emptyGameObjectPrefab = (GameObject)Resources.Load("Prefabs/Objects/Rope/AutoRopeAttachPosition");
         distanceJoint2D = transform.GetChild(0).GetComponent<DistanceJoint2D>();
         spawnLocationOffset = firstSegment.GetComponent<SpriteRenderer>().bounds.size.y - 0.01f;
         BuildRope();
@@ -66,11 +66,11 @@ public class CreateRope : MonoBehaviour
             var checkGround = Physics2D.Raycast(spawnLocation, Vector2.down, firstSegment.GetComponent<SpriteRenderer>().bounds.size.y + 1f, groundLayer);
             if (i < ropeSegments - 2 && !checkGround)
             {
-                rope = (GameObject)Resources.Load("Prefabs/AutoAssignRopeLink");
+                rope = (GameObject)Resources.Load("Prefabs/Objects/Rope/AutoAssignRopeLink");
             }
             else
             {
-                rope = (GameObject)Resources.Load("Prefabs/AutoAssignLastRope");
+                rope = (GameObject)Resources.Load("Prefabs/Objects/Rope/AutoAssignLastRope");
                 ropeSegments = i + 2;
                 i = ropeSegments + 1;
                 LastRope = rope;

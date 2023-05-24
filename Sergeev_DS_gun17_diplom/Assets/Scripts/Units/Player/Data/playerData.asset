@@ -28,7 +28,7 @@ MonoBehaviour:
   wallJumpTime: 0.4
   wallJumpAngle: {x: 1, y: 2}
   crouchMovementVelocity: 5
-  colliderCrouchHeight: 0.4
+  colliderCrouchHeight: 0.86
   colliderStandHeight: 1.5
   startOffset: {x: 0.5, y: 0.3}
   stopOffset: {x: 0.4, y: 0.5}
@@ -38,10 +38,10 @@ MonoBehaviour:
   ropeTouchDelayforCollision: 0.5
   standartPlayerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   invinciblePlayerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   rollTime: 0.5
   rollVelocity: 12
   drag: 10

@@ -49,7 +49,15 @@ namespace Metroidvania.Player
             rollInput = player.InputHandler.RollInput;
             interactInput = player.InputHandler.InteractInput;
 
-            if(jumpInput && player.JumpState.CanJump())
+            if (player.InputHandler.AttackInputs[(int)CombatInputs.primary] && !isHeadTouchingGround)
+            {
+                stateMachine.ChangeState(player.PrimaryAttackState);
+            }
+            else if (player.InputHandler.AttackInputs[(int)CombatInputs.secondary] && !isHeadTouchingGround)
+            {
+                stateMachine.ChangeState(player.SecondaryAttackState);
+            }
+            else if(jumpInput && player.JumpState.CanJump())
             {
                 stateMachine.ChangeState(player.JumpState);
             }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Metroidvania.Player
 {
-
     public class PlayerState
     {
         protected Player player;

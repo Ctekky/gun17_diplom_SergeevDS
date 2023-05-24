@@ -5,7 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Rope
-  - lastRope
+  - Last Rope
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Rope
   - PlayerImmune
   - Enemy
-  - 
+  - Damagable
   - 
   - 
   - 
@@ -42,4 +43,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 2953140753
+    locked: 0
+  - name: Enemy
+    uniqueID: 3914046735
+    locked: 0
+  - name: Arrows
+    uniqueID: 452102535
+    locked: 0
+  - name: Ground
+    uniqueID: 1078588055
     locked: 0

@@ -10,5 +10,10 @@ namespace Metroidvania
         Friendly = 1,
         Enemy = 2
     }
+    public enum CombatInputs: byte
+    {
+        primary,
+        secondary
+    }
 
 }
