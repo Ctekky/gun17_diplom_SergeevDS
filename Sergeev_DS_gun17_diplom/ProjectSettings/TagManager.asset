@@ -7,6 +7,8 @@ TagManager:
   - Rope
   - Last Rope
   - Enemy
+  - ParticleContainer
+  - lastRope
   layers:
   - Default
   - TransparentFX
@@ -23,7 +25,7 @@ TagManager:
   - PlayerImmune
   - Enemy
   - Damagable
-  - 
+  - Weapon
   - 
   - 
   - 
@@ -44,15 +46,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Player
-    uniqueID: 2953140753
+  - name: Background
+    uniqueID: 3992747029
+    locked: 0
+  - name: Foreground
+    uniqueID: 1176679063
+    locked: 0
+  - name: Ground
+    uniqueID: 1078588055
     locked: 0
   - name: Enemy
     uniqueID: 3914046735
     locked: 0
+  - name: Player
+    uniqueID: 2953140753
+    locked: 0
   - name: Arrows
     uniqueID: 452102535
-    locked: 0
-  - name: Ground
-    uniqueID: 1078588055
     locked: 0

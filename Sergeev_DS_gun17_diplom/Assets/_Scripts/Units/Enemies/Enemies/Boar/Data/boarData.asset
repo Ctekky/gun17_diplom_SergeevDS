@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22d03a395740c2c4abe18c27c215c465, type: 3}
+  m_Name: boarData
+  m_EditorClassIdentifier: 
+  movementVelocity: 3
+  wallCheckDistance: 0.3
+  ledgeCheckDistance: 0.3
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  minIdleTime: 1
+  maxIdleTime: 4
+  minAggroDistance: 5
+  maxAggroDistance: 6
+  actionTime: 0.3
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  chargeVelocity: 6
+  chargeTime: 2
+  amountOfTurns: 2
+  timeOfTurns: 0.5
+  closeRangeActionDistance: 1
+  longRangeActionDistance: 5
+  meleeAttackRadius: 0.5
+  meleeAttackDamage: 10
+  knockbackAngle: {x: 1, y: 1}
+  knockbackStrength: 10
+  health: 30
+  damageHopSpeed: 3
+  deathParticles: {fileID: 0}
