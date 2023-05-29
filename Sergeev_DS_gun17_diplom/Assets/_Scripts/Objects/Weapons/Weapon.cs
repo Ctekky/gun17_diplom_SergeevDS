@@ -11,7 +11,8 @@ namespace Metroidvania.Combat.Weapon
         [SerializeField] private Animator baseAnimator;
         [SerializeField] protected WeapondData weapondData;
 
-        protected PlayerAttackState state;
+        protected PlayerAttackState attackState;
+        protected PlayerAbilityState abilityState;
 
         protected int attackCounter;
         protected Unit unit;
@@ -38,32 +39,45 @@ namespace Metroidvania.Combat.Weapon
         #region Animation Triggers
         public virtual void AnimationEndTrigger()
         {
-            state.AnimationEndTrigger();
+            attackState.AnimationEndTrigger();
         }
         public virtual void AnimationStartMovementTrigger()
         {
-            state.SetPlayerVelocity(weapondData.movementSpeed[attackCounter]);
+            attackState.SetPlayerVelocity(weapondData.movementSpeed[attackCounter]);
         }
         public virtual void AnimationEndMovementTrigger()
         {
-            state.SetPlayerVelocity(0f);
+            attackState.SetPlayerVelocity(0f);
         }
         public virtual void AnimationTurnOffFlipTrigger()
         {
-            state.CheckFlip(false);
+            attackState.CheckFlip(false);
         }
 
         public virtual void AnimationTurnOnFlipTrigger()
         {
-            state.CheckFlip(true);
+            attackState.CheckFlip(true);
         }
         public virtual void AnimationActionTrigger() { }
         #endregion
 
         public void InitializeWeapon(PlayerAttackState state, Unit unit)
         {
-            this.state = state;
+            attackState = state;
             this.unit = unit;
+        }
+        public void InitializeWeapon(PlayerAbilityState state, Unit unit)
+        {
+            abilityState = state;
+            this.unit = unit;
+        }
+        public virtual void EnterWeaponSecondary()
+        {
+            gameObject.SetActive(true);
+        }
+        public virtual void ExitWeaponSecondary()
+        {
+            gameObject.SetActive(false);
         }
     }
 

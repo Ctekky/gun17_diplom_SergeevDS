@@ -9,10 +9,7 @@ namespace Metroidvania.Combat.Weapon
 {
     public class DamageWeapon : Weapon
     {
-        protected Movement Movement
-        {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
-        }
+        protected Movement Movement => movement ? movement : unit.GetUnitComponent<Movement>(ref movement);
         private Movement movement;
         private List<IDamageable> detectedDamageables = new List<IDamageable>();
         private List<IKnockbackable> detectedKnockbackables = new List<IKnockbackable>();

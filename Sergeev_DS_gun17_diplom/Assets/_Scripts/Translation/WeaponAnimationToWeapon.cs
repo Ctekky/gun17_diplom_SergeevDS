@@ -6,8 +6,7 @@ namespace Metroidvania.Combat.Weapon
 {
     public class WeaponAnimationToWeapon : MonoBehaviour
     {
-        [SerializeField]
-        private Weapon weapon;
+        [SerializeField] private Weapon weapon;
 
         private void AnimatonEndTrigger()
         {

@@ -18,10 +18,10 @@ namespace Metroidvania.Player
         public bool RollInput { get; private set; }
         public bool[] AttackInputs { get; private set; }
         public bool ChangeWeaponInput { get; private set; }
+        public bool SecondaryAttackStarted { get; private set; }
 
 
-        [SerializeField]
-        private float inputHoldTime = 0.2f;
+        [SerializeField] private float inputHoldTime = 0.2f;
         private float jumpInputStartTime;
 
         private void Start()
@@ -47,24 +47,26 @@ namespace Metroidvania.Player
         }
         public void OnSecondaryAttackInput(InputAction.CallbackContext context)
         {
-            if (context.started)
+            if( context.started)
             {
+                SecondaryAttackStarted = true;
+            }
+            if (context.performed)
+            {
+                SecondaryAttackStarted = false;
                 AttackInputs[(int)CombatInputs.secondary] = true;
             }
-            if (context.canceled)
+            if(context.canceled)
             {
+                SecondaryAttackStarted = false;
                 AttackInputs[(int)CombatInputs.secondary] = false;
-            }
+            }    
         }
         public void OnChangeWeapon(InputAction.CallbackContext context)
         {
-            if (context.started)
+            if(context.performed )
             {
                 ChangeWeaponInput = true;
-            }
-            if (context.canceled)
-            {
-                ChangeWeaponInput = false;
             }
         }
         public void OnMoveInput(InputAction.CallbackContext context)
@@ -111,6 +113,9 @@ namespace Metroidvania.Player
         }
         public void UseJumpInput() => JumpInput = false;
         public void UseRollInput() => RollInput = false;
+        public void UseChangeWeaponInput() => ChangeWeaponInput = false;
+        public void UseSecondaryAttackInput() => AttackInputs[(int)CombatInputs.secondary] = false;
+        public void UseSecondaryAttackPerfomedInput() => SecondaryAttackStarted = false;
         private void CheckJumpInputHoldTime()
         {
             if(Time.time >= jumpInputStartTime + inputHoldTime)

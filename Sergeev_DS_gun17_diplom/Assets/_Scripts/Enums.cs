@@ -4,16 +4,20 @@ using UnityEngine;
 
 namespace Metroidvania
 {
-    public enum SideType: byte
-    {
-        None = 0,
-        Friendly = 1,
-        Enemy = 2
-    }
     public enum CombatInputs: byte
     {
         primary,
         secondary
     }
+    public enum WeaponType: byte
+    {
+        sword,
+        bow
+    }
 
+    public enum ArrowType: byte
+    {
+        normal,
+        rope
+    }
 }

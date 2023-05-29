@@ -12,8 +12,6 @@ namespace Metroidvania.Player
         private bool setVelocity;
         private int inputX;
         private bool checkFlip;
-
-
         public PlayerAttackState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
@@ -32,7 +30,7 @@ namespace Metroidvania.Player
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            inputX = player.InputHandler.NormalizedInputX;
+            inputX = player.InputHandler.NormalizedInputX; 
             if(checkFlip) Movement?.CheckFlip(inputX);
             if (setVelocity) Movement?.SetVelocityX(velocityToSet * Movement.FacingDirection);
         }

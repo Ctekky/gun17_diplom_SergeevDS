@@ -28,6 +28,7 @@ namespace Metroidvania.Player
         public PlayerLedgeClimbState LedgeClimbState { get; private set; }
         public PlayerAttackState PrimaryAttackState { get; private set; }
         public PlayerAttackState SecondaryAttackState { get; private set; }
+        public PlayerAimState AimState { get; private set; }
 
         #endregion
 
@@ -36,14 +37,12 @@ namespace Metroidvania.Player
         public Animator Animator { get; private set; }
         public PlayerInputHandler InputHandler { get; private set; }
         public BoxCollider2D PlayerBodyCollider { get; private set; }
-        [SerializeField] private float colliderX;
-        [SerializeField] private float colliderY;
         public Rigidbody2D RB { get; private set; }
         [SerializeField]
         private PlayerData playerData;
         #endregion
 
-        #region CheckVars
+        #region OtherVars
 
         public bool IsTouchingRope { get => isTouchingRope; private set {isTouchingRope = value; }}
         public Transform CurrentRope { get; private set; }
@@ -52,15 +51,11 @@ namespace Metroidvania.Player
         private float startCollisionTime;
         private List<RopeLinks> ropeLinksCollisions;
         public PlayerInventory Inventory { get; private set; }
+        public WeaponType CurrentWeaponEquip { get => currentWeaponEquip; private set { currentWeaponEquip = value; }}
+        private WeaponType currentWeaponEquip;
 
         #endregion
-
-        #region OtherVars
-        //public Vector2 CurrentVelocity { get; private set; }
-        //public int FacingDirection { get; private set; }
         private Vector2 workVector;
-        #endregion
-
         #region Unity Func
         private void Awake()
         {
@@ -84,6 +79,7 @@ namespace Metroidvania.Player
             LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledgeClimbState");
             PrimaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
             SecondaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
+            AimState = new PlayerAimState(this, StateMachine, playerData, "aim");
 
         }
         private void Start()
@@ -94,15 +90,16 @@ namespace Metroidvania.Player
             ropeLinksCollisions = new List<RopeLinks>();
             PlayerBodyCollider = GetComponentInChildren<BoxCollider2D>();
             Inventory = GetComponent<PlayerInventory>();
-            PrimaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.primary]);
+            PrimaryAttackState.SetWeapon(Inventory.weapons[0]);
+            AimState.SetWeapon(Inventory.weapons[0]);
             StateMachine.Initialize(IdleState);
+            currentWeaponEquip = WeaponType.sword;
         }
         private void Update()
         {
             Unit.LogicUpdate();
             StateMachine.CurrentState.LogicUpdate();
-            colliderX = PlayerBodyCollider.size.x;
-            colliderY = PlayerBodyCollider.size.y;
+            if (InputHandler.ChangeWeaponInput) ChangeWeapon();
         }
         private void FixedUpdate()
         {
@@ -110,6 +107,25 @@ namespace Metroidvania.Player
         }
         #endregion
         
+        private void ChangeWeapon()
+        {
+                var bowLayer = Animator.GetLayerIndex("Bow Layer");
+                if (Animator.GetLayerWeight(bowLayer) == 1)
+                {
+                    Animator.SetLayerWeight(bowLayer, 0f);
+                    PrimaryAttackState.SetWeapon(Inventory.weapons[0]);
+                AimState.SetWeapon(Inventory.weapons[0]);
+                currentWeaponEquip = WeaponType.sword;
+                }
+                else
+                {
+                    Animator.SetLayerWeight(bowLayer, 1f);
+                    PrimaryAttackState.SetWeapon(Inventory.weapons[1]);
+                AimState.SetWeapon(Inventory.weapons[1]);
+                currentWeaponEquip = WeaponType.bow;
+                }
+            InputHandler.UseChangeWeaponInput();
+        }
 
         #region Other Func
         private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();

@@ -56,7 +56,7 @@
                     "id": "51e7778c-8b2d-4a8c-92e8-f7875616afa0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "SlowTap",
                     "initialStateCheck": false
                 },
                 {
@@ -65,7 +65,7 @@
                     "id": "83dbfbed-b9fa-44e0-99d9-c58cd49a6c62",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 }
             ],
@@ -173,7 +173,7 @@
                     "name": "",
                     "id": "57529c01-e2f2-4cf2-9988-30b945c70369",
                     "path": "<Mouse>/rightButton",
-                    "interactions": "",
+                    "interactions": "SlowTap",
                     "processors": "",
                     "groups": "",
                     "action": "SecondaryAttack",
@@ -184,7 +184,7 @@
                     "name": "",
                     "id": "5e86a67c-c66e-457c-aaf1-10d3325f4a78",
                     "path": "<Keyboard>/q",
-                    "interactions": "",
+                    "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "",
                     "action": "ChangeWeapon",
