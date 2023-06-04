@@ -6,8 +6,8 @@ namespace Metroidvania.Player
     public class PlayerRollState : PlayerAbilityState
     {
         public bool CanRoll { get; private set; }
-        private Vector2 rollDirection;
-        private bool isTouchHead;
+        private Vector2 _rollDirection;
+        private bool _isTouchHead;
         public PlayerRollState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
@@ -19,56 +19,56 @@ namespace Metroidvania.Player
         public override void AnimationEndTrigger()
         {
             base.AnimationEndTrigger();
-            player.SetPlayerLayer(playerData.standartPlayerLayer);
+            Player.SetPlayerLayer(PlayerData.standartPlayerLayer);
         }
 
         public override void AnimationTrigger()
         {
             base.AnimationTrigger();
-            player.SetPlayerLayer(playerData.invinciblePlayerLayer);
+            Player.SetPlayerLayer(PlayerData.invinciblePlayerLayer);
         }
 
         public override void Enter()
         {
             base.Enter();
             CanRoll = false;
-            player.InputHandler.UseRollInput();
-            rollDirection = Vector2.right * Movement.FacingDirection;
-            startTime = Time.time;
-            player.SetColliderHeight(playerData.colliderCrouchHeight);
+            Player.InputHandler.UseRollInput();
+            _rollDirection = Vector2.right * Movement.FacingDirection;
+            StartTime = Time.time;
+            Player.SetColliderHeight(PlayerData.colliderCrouchHeight);
         }
 
         public override void Exit()
         {
             base.Exit();
             CanRoll = true;
-            player.SetColliderHeight(playerData.colliderStandHeight);
+            Player.SetColliderHeight(PlayerData.colliderStandHeight);
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
-            if (isAnimationEnd)
+            if (IsExitingState) return;
+            if (IsAnimationEnd)
             {
-                if (isTouchHead)
+                if (_isTouchHead)
                 {
-                    isAbilityDone = true;
-                    stateMachine.ChangeState(player.CrouchIdleState);
+                    IsAbilityDone = true;
+                    StateMachine.ChangeState(Player.CrouchIdleState);
                 }
                 else
                 {
-                    isAbilityDone = true;
-                    stateMachine.ChangeState(player.IdleState);
+                    IsAbilityDone = true;
+                    StateMachine.ChangeState(Player.IdleState);
                 }
             }
             else
             {
-                player.RB.drag = playerData.drag;
-                Movement.SetVelocity(playerData.rollVelocity, rollDirection);
-                if (Time.time >= startTime + playerData.rollTime)
+                Player.Rb.drag = PlayerData.drag;
+                Movement.SetVelocity(PlayerData.rollVelocity, _rollDirection);
+                if (Time.time >= StartTime + PlayerData.rollTime)
                 {
-                    player.RB.drag = 0f;
+                    Player.Rb.drag = 0f;
 
                 }
                 CheckForSpace();
@@ -77,9 +77,9 @@ namespace Metroidvania.Player
         }
         private void CheckForSpace()
         {
-            isTouchHead = Physics2D.Raycast((Vector2)player.transform.position + (Vector2.up * 0.015f) + (Vector2.right
+            _isTouchHead = Physics2D.Raycast((Vector2)Player.transform.position + (Vector2.up * 0.015f) + (Vector2.right
                 * Movement.FacingDirection
-                * 0.015f), Vector2.up, playerData.colliderCrouchHeight, CollisionChecks.GroundLayer);
+                * 0.015f), Vector2.up, PlayerData.colliderCrouchHeight, CollisionChecks.GroundLayer);
         }
     }
 }

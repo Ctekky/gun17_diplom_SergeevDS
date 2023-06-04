@@ -6,39 +6,34 @@ namespace Metroidvania.Enemy
 {
     public class EnemyAttackState : EnemyState
     {
-        protected Movement Movement
+        protected Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
+        private Movement _movement;
+        protected UnitStats UnitStats => _unitStats ? _unitStats : Unit.GetUnitComponent<UnitStats>(ref _unitStats);
+        private UnitStats _unitStats;
+        protected readonly Transform AttackPosition;
+        protected bool IsPlayerInMinAggroRange;
+
+        protected EnemyAttackState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName, Transform attackPosition) : base(enemy, stateMachine, enemyData, animBoolName)
         {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
-        }
-        private CollisionChecks CollisionChecks
-        {
-            get => collisionChecks ?? unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
-        }
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        protected Transform attackPosition;
-        protected bool isPlayerInMinAggroRange;
-        public EnemyAttackState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName, Transform attackPosition) : base(enemy, stateMachine, enemyData, animBoolName)
-        {
-            this.attackPosition = attackPosition;
+            this.AttackPosition = attackPosition;
         }
         public override void Enter()
         {
             base.Enter();
-            enemy.animToStateMachine.attackState = this;
-            isAnimationEnd = false;
+            Enemy.AnimToStateMachine.AttackState = this;
+            IsAnimationEnd = false;
             Movement?.SetVelocityZero();
         }
 
         public override void AnimationEndTrigger()
         {
             base.AnimationEndTrigger();
-            isAnimationEnd = true;
+            IsAnimationEnd = true;
         }
         public override void DoChecks()
         {
             base.DoChecks();
-            isPlayerInMinAggroRange = enemy.CheckPlayerInMinRange();
+            IsPlayerInMinAggroRange = Enemy.CheckPlayerInMinRange();
         }
         public override void LogicUpdate()
         {

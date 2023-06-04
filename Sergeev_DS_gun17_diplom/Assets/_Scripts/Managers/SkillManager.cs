@@ -8,7 +8,7 @@ namespace Metroidvania.Managers
 {
     public class SkillManager : MonoBehaviour
     {
-        [Inject] private PlayerManager playerManager;
+        [Inject] private PlayerManager _playerManager;
     }
 
 }

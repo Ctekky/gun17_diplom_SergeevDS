@@ -6,20 +6,20 @@ namespace Metroidvania.Combat.Weapon
 {
     public class WeaponHitBoxToWeapon : MonoBehaviour
     {
-        private DamageWeapon weapon;
+        private DamageWeapon _weapon;
 
         private void Awake()
         {
-            weapon = GetComponentInParent<DamageWeapon>();
+            _weapon = GetComponentInParent<DamageWeapon>();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            weapon.AddToDetected(collision);
+            _weapon.AddToDetected(collision);
         }
         private void OnTriggerExit2D(Collider2D collision)
         {
-            weapon.RemoveFromDetected(collision);
+            _weapon.RemoveFromDetected(collision);
         }
     }
 }

@@ -7,88 +7,81 @@ namespace Metroidvania.Player
 {
     public class PlayerGroundedState : PlayerState
     {
-        protected int inputX;
-        protected int inputY;
-        protected bool isHeadTouchingGround;
+        protected int InputX;
+        protected int InputY;
+        protected bool IsHeadTouchingGround;
         protected Movement Movement {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
+            get => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
         }
         private CollisionChecks CollisionChecks {
-            get => collisionChecks ?? unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
+            get => _collisionChecks ? _collisionChecks : Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
         }
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        private bool jumpInput;
-        private bool interactInput;
-        private bool isGrounded;
-        private bool isTouchingWall;
-        private bool isTouchingLedge;
-        private bool rollInput;
-        public PlayerGroundedState(
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
+        private bool _jumpInput;
+        private bool _interactInput;
+        private bool _isGrounded;
+        private bool _isTouchingWall;
+        private bool _isTouchingLedge;
+        private bool _rollInput;
+
+        protected PlayerGroundedState(
             Player player,
             PlayerStateMachine stateMachine,
             PlayerData playerData,
             string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
-
         public override void DoChecks()
         {
             base.DoChecks();
             if(CollisionChecks != null)
             {
-                isGrounded = CollisionChecks.Grounded;
-                isTouchingWall = CollisionChecks.WallFront;
-                isHeadTouchingGround = CollisionChecks.Ceiling;
-                isTouchingLedge = CollisionChecks.LedgeHorizontal;
+                _isGrounded = CollisionChecks.Grounded;
+                _isTouchingWall = CollisionChecks.WallFront;
+                IsHeadTouchingGround = CollisionChecks.Ceiling;
+                _isTouchingLedge = CollisionChecks.LedgeHorizontal;
             }
             
         }
-
         public override void Enter()
         {
             base.Enter();
-            player.JumpState.ResetJumps();
+            Player.JumpState.ResetJumps();
         }
-
-        public override void Exit()
-        {
-            base.Exit();
-        }
-
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            inputX = player.InputHandler.NormalizedInputX;
-            inputY = player.InputHandler.NormalizedInputY;
-            jumpInput = player.InputHandler.JumpInput;
-            rollInput = player.InputHandler.RollInput;
-            interactInput = player.InputHandler.InteractInput;
+            InputX = Player.InputHandler.NormalizedInputX;
+            InputY = Player.InputHandler.NormalizedInputY;
+            _jumpInput = Player.InputHandler.JumpInput;
+            _rollInput = Player.InputHandler.RollInput;
+            _interactInput = Player.InputHandler.InteractInput;
 
-            if (player.InputHandler.AttackInputs[(int)CombatInputs.primary] && !isHeadTouchingGround)
+            if (Player.InputHandler.AttackInputs[(int)CombatInputs.Primary] && !IsHeadTouchingGround)
             {
-                stateMachine.ChangeState(player.PrimaryAttackState);
+                StateMachine.ChangeState(Player.PrimaryAttackState);
             }
-            else if (player.InputHandler.SecondaryAttackStarted && !isHeadTouchingGround && player.CurrentWeaponEquip == WeaponType.bow)
+            else if (Player.InputHandler.SecondaryAttackStarted && !IsHeadTouchingGround && Player.CurrentWeaponEquip == WeaponType.Bow)
             {
-                stateMachine.ChangeState(player.AimState);
+                StateMachine.ChangeState(Player.AimState);
             }
-            else if(jumpInput && player.JumpState.CanJump() && !isHeadTouchingGround)
+            else if(_jumpInput && Player.JumpState.CanJump() && !IsHeadTouchingGround)
             {
-                stateMachine.ChangeState(player.JumpState);
+                StateMachine.ChangeState(Player.JumpState);
             }
-            else if(!isGrounded)
+            else if(!_isGrounded)
             {
-                player.InAirState.StartLastMomentJumpTimer();
-                stateMachine.ChangeState(player.InAirState);
+                Player.InAirState.StartLastMomentJumpTimer();
+                StateMachine.ChangeState(Player.InAirState);
             }
-            else if(isTouchingWall && interactInput && isTouchingLedge)
+            else if(_isTouchingWall && _interactInput && _isTouchingLedge)
             {
-                stateMachine.ChangeState(player.WallGrabState);
+                StateMachine.ChangeState(Player.WallGrabState);
             }
-            else if(rollInput)
+            else if(_rollInput)
             {
-                stateMachine.ChangeState(player.RollState);
+                StateMachine.ChangeState(Player.RollState);
             }
         }
 

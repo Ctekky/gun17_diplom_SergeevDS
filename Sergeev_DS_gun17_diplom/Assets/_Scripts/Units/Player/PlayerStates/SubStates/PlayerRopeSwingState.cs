@@ -6,40 +6,35 @@ namespace Metroidvania.Player
 {
     public class PlayerRopeSwingState : PlayerRopeTouchState
     {
-        private Vector2 holdPosition;
+        private Vector2 _holdPosition;
         public PlayerRopeSwingState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
         public override void Enter()
         {
             base.Enter();
-            holdPosition = player.transform.position;
-            HoldPosition();
+            _holdPosition = Player.transform.position;
         }
+
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
-            HoldPosition();
-            if (inputX != 0 && interactInput)
+            if (IsExitingState) return;
+            if (InputX != 0 && InteractInput)
             {
-                player.PlayerMoveRope();
+                Player.PlayerMoveRope();
             }
-            if (inputX == 0 && interactInput)
+
+            if (InputX == 0 && InteractInput)
             {
-                stateMachine.ChangeState(player.RopeGrabState);
+                StateMachine.ChangeState(Player.RopeGrabState);
             }
         }
-        public override void PhysicsUpdate()
-        {
-            base.PhysicsUpdate();
-        }
+
         private void HoldPosition()
         {
-            player.transform.position = player.CurrentRope.position;
-            player.transform.rotation = player.CurrentRope.rotation;
-            Movement?.SetVelocityX(0f);
-            Movement?.SetVelocityY(0f);
+            Player.transform.position = Player.CurrentRope.position;
+            Player.transform.rotation = Player.CurrentRope.rotation;
         }
 
     }

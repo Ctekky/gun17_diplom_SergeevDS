@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Metroidvania.BaseUnit;
 using UnityEngine;
 
 namespace Metroidvania.Enemy
@@ -37,7 +38,7 @@ namespace Metroidvania.Enemy
         public float closeRangeActionDistance = 1f;
         public float longRangeActionDistance = 3f;
         public float meleeAttackRadius = 0.5f;
-        public float meleeAttackDamage = 10f;
+        public Stats meleeAttackDamage;
         public Vector2 knockbackAngle = Vector2.one;
         public float knockbackStrength = 10f;
 

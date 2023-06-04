@@ -7,15 +7,15 @@ namespace Metroidvania.Enemy
 {
     public class EnemyDeadState : EnemyState
     {
-        protected Movement Movement => movement ? movement : unit.GetUnitComponent<Movement>(ref movement);
+        private Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
 
-        private CollisionChecks CollisionChecks => collisionChecks ? CollisionChecks : unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
-        protected Death Death => death ? death : unit.GetUnitComponent<Death>(ref death);
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        private Death death;
+        private CollisionChecks CollisionChecks => _collisionChecks ? CollisionChecks : Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
+        protected Death Death => _death ? _death : Unit.GetUnitComponent<Death>(ref _death);
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
+        private Death _death;
 
-        public EnemyDeadState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
+        protected EnemyDeadState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
         {
         }
         public override void Enter()
@@ -27,11 +27,7 @@ namespace Metroidvania.Enemy
         public override void Exit()
         {
             base.Exit();
-            enemy.gameObject.SetActive(false);
-        }
-        public override void AnimationEndTrigger()
-        {
-            base.AnimationEndTrigger();
+            //Enemy.gameObject.SetActive(false);
         }
     }
 }

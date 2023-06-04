@@ -6,18 +6,18 @@ namespace Metroidvania.Enemy
 {
     public class BoarMeleeAttackState : EnemyMeleeAttackState
     {
-        BoarEnemy boarEnemy;
+        readonly BoarEnemy _boarEnemy;
         public BoarMeleeAttackState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName, Transform attackPosition, BoarEnemy boarEnemy) : base(enemy, stateMachine, enemyData, animBoolName, attackPosition)
         {
-            this.boarEnemy = boarEnemy;
+            _boarEnemy = boarEnemy;
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if(isAnimationEnd)
+            if(IsAnimationEnd)
             {
-                if (isPlayerInMinAggroRange) stateMachine.ChangeState(boarEnemy.DetectedPlayerState);
-                else stateMachine.ChangeState(boarEnemy.LookForPlayerState);
+                if (IsPlayerInMinAggroRange) StateMachine.ChangeState(_boarEnemy.DetectedPlayerState);
+                else StateMachine.ChangeState(_boarEnemy.LookForPlayerState);
 
             }
         }

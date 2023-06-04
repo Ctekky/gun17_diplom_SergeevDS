@@ -1,34 +1,31 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Metroidvania.BaseUnit
 {
-    public class Stats : UnitComponent
+    [System.Serializable]
+    public class Stats
     {
-        public event Action OnHealthZero;
-        [SerializeField] private float maxHealth;
-        [SerializeField] private float currentHealth;
+        [SerializeField] private int baseValue;
+        public List<int> modifiers;
 
-        protected override void Awake()
+        public int GetValue()
         {
-            base.Awake();
-            currentHealth = maxHealth;
+            return baseValue + modifiers.ToList().Sum();
         }
-        public void DecreaseHealth(float amount)
+        public void SetDefaultValue(int value)
         {
-            currentHealth -= amount;
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                OnHealthZero?.Invoke();
-                Debug.Log("Health is 0!");
-            }
+            baseValue = value;
         }
-        public void IncreaseHealth(float amount)
+        public void AddModifier(int value)
         {
-            currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+            modifiers.Add(value);
+        }
+        public void RemoveModifier(int value)
+        {
+            modifiers.Remove(value);
         }
     }
 }
-
-

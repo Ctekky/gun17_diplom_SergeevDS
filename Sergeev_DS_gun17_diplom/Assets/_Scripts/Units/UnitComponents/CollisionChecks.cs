@@ -15,14 +15,14 @@ namespace Metroidvania.BaseUnit
         [SerializeField] private float groundCheckRadius;
         [SerializeField] private float wallCheckDistance;
         [SerializeField] private LayerMask groundLayer;
-        protected Movement Movement => movement ? movement : unit.GetUnitComponent<Movement>(ref movement);
-        private Movement movement;
+        private Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
+        private Movement _movement;
         public Transform GroundCheck
         {
             get
             {
                 if (groundCheck) return groundCheck;
-                Debug.LogError("No ground check on " + unit.transform.parent.name);
+                Debug.LogError("No ground check on " + Unit.transform.parent.name);
                 return null;
             }
             private set => groundCheck = value;

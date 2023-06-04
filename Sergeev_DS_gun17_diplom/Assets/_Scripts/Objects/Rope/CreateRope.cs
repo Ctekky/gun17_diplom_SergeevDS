@@ -7,23 +7,23 @@ public class CreateRope : MonoBehaviour
     #region Fields
 
     // Переменные для хранения объёктов веревки
-    Transform links;
+    Transform _links;
     public GameObject firstSegment;
-    GameObject rope;
-    GameObject newRope;
-    GameObject emptyGameObjectPrefab;
+    GameObject _rope;
+    GameObject _newRope;
+    GameObject _emptyGameObjectPrefab;
     //Переменные для хранения первичной позиции и поворота
-    Vector3 linkOneOriginalPosition;
-    Quaternion linkOneOriginalRotation;
+    Vector3 _linkOneOriginalPosition;
+    Quaternion _linkOneOriginalRotation;
     //Новая верёвка и отступ при спавне
-    Vector2 spawnLocation;
-    float spawnLocationOffset;
+    Vector2 _spawnLocation;
+    float _spawnLocationOffset;
     //Переменные для присоединения позиций
-    float ropeAttachPosition;
-    float segmentSize;
+    float _ropeAttachPosition;
+    float _segmentSize;
     //Это основные компоненты физики веревки
-    HingeJoint2D hingeJoint2D;
-    DistanceJoint2D distanceJoint2D;
+    HingeJoint2D _hingeJoint2D;
+    DistanceJoint2D _distanceJoint2D;
     //Настройки для верёвки
     [Header("Rope Settings")]
     [Range(2, 50, order = 1)] [Tooltip("Количество сегментов")] [Delayed] 
@@ -43,12 +43,12 @@ public class CreateRope : MonoBehaviour
     #endregion
     void Awake()
     {
-        links = transform.GetChild(1);
-        linkOneOriginalPosition = firstSegment.transform.position;
-        linkOneOriginalRotation = firstSegment.transform.rotation;
-        emptyGameObjectPrefab = (GameObject)Resources.Load("Prefabs/Objects/Rope/AutoRopeAttachPosition");
-        distanceJoint2D = transform.GetChild(0).GetComponent<DistanceJoint2D>();
-        spawnLocationOffset = firstSegment.GetComponent<SpriteRenderer>().bounds.size.y - 0.01f;
+        _links = transform.GetChild(1);
+        _linkOneOriginalPosition = firstSegment.transform.position;
+        _linkOneOriginalRotation = firstSegment.transform.rotation;
+        _emptyGameObjectPrefab = (GameObject)Resources.Load("Prefabs/Objects/Rope/AutoRopeAttachPosition");
+        _distanceJoint2D = transform.GetChild(0).GetComponent<DistanceJoint2D>();
+        _spawnLocationOffset = firstSegment.GetComponent<SpriteRenderer>().bounds.size.y / 2 - 0.01f;
         BuildRope();
         ConnectRope();
     }
@@ -59,55 +59,45 @@ public class CreateRope : MonoBehaviour
     }
     void BuildRope()
     {
-        AssignRopePositions(firstSegment.gameObject);
         for (int i = 0; i < ropeSegments - 1; i++)
         {
-            spawnLocation = (Vector2)links.GetChild(i).transform.position - new Vector2(0, spawnLocationOffset);
-            var checkGround = Physics2D.Raycast(spawnLocation, Vector2.down, firstSegment.GetComponent<SpriteRenderer>().bounds.size.y + 1f, groundLayer);
+            var additionalOffset = Mathf.Abs(_links.GetChild(i).GetComponent<RopeLinks>().transform.position.y -
+                                   _links.GetChild(i).GetComponent<RopeLinks>().ConnectionPoint.position.y) - 0.01f;
+            _spawnLocation = (Vector2)_links.GetChild(i).GetComponent<RopeLinks>().ConnectionPoint.position - new Vector2(0, additionalOffset);
+            var checkGround = Physics2D.Raycast(_spawnLocation, Vector2.down, firstSegment.GetComponent<SpriteRenderer>().bounds.size.y * 2f, groundLayer);
             if (i < ropeSegments - 2 && !checkGround)
             {
-                rope = (GameObject)Resources.Load("Prefabs/Objects/Rope/AutoAssignRopeLink");
+                _rope = (GameObject)Resources.Load("Prefabs/Objects/Rope/AutoAssignRopeLink");
             }
             else
             {
-                rope = (GameObject)Resources.Load("Prefabs/Objects/Rope/AutoAssignLastRope");
+                _rope = (GameObject)Resources.Load("Prefabs/Objects/Rope/AutoAssignLastRope");
                 ropeSegments = i + 2;
                 i = ropeSegments + 1;
-                LastRope = rope;
+                LastRope = _rope;
             }
-            newRope = Instantiate(rope, spawnLocation, Quaternion.identity,links);
-            newRope.transform.localScale = firstSegment.transform.localScale;
-            newRope.GetComponent<SpriteRenderer>().sprite = firstSegment.GetComponent<SpriteRenderer>().sprite;
-            newRope.GetComponent<SpriteRenderer>().color =firstSegment.GetComponent<SpriteRenderer>().color;
-            AssignRopePositions(newRope);
+            _newRope = Instantiate(_rope, _spawnLocation, Quaternion.identity,_links);
+            _newRope.transform.localScale = firstSegment.transform.localScale;
+            _newRope.GetComponent<SpriteRenderer>().sprite = firstSegment.GetComponent<SpriteRenderer>().sprite;
+            _newRope.GetComponent<SpriteRenderer>().color =firstSegment.GetComponent<SpriteRenderer>().color;
+
         }
     }
     void ConnectRope()
     {
         for (int i = 0; i < ropeSegments; i++)
         {
-            rope = links.GetChild(i).gameObject;
-            hingeJoint2D = rope.GetComponent<HingeJoint2D>();
+            _rope = _links.GetChild(i).gameObject;
+            _hingeJoint2D = _rope.GetComponent<HingeJoint2D>();
             if (i < ropeSegments - 1)
             {
-                hingeJoint2D.connectedBody = links.GetChild(i + 1).gameObject.GetComponent<Rigidbody2D>();
+                _hingeJoint2D.connectedBody = _links.GetChild(i + 1).gameObject.GetComponent<Rigidbody2D>();
             }
             else
             {
                 //hingeJoint2D.connectedBody = player.GetComponent<Rigidbody2D>();
-                distanceJoint2D.connectedBody = rope.GetComponent<Rigidbody2D>();
+                _distanceJoint2D.connectedBody = _rope.GetComponent<Rigidbody2D>();
             }
-        }
-    }
-    void AssignRopePositions(GameObject newRope)
-    {      
-        ropeAttachPosition = firstSegment.GetComponent<SpriteRenderer>().bounds.extents.y - ropeAttachPositionOffset / 2;
-        segmentSize =firstSegment.GetComponent<SpriteRenderer>().bounds.size.y - ropeAttachPositionOffset;
-        for (int i = 0; i < numberOfRopeAttachPositions; i++)
-        {
-            Instantiate(emptyGameObjectPrefab, new Vector2(newRope.transform.position.x,
-            newRope.transform.position.y + ropeAttachPosition), Quaternion.identity, newRope.transform);
-            ropeAttachPosition -= segmentSize / (numberOfRopeAttachPositions - 1);
         }
     }
 }

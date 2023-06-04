@@ -33,7 +33,9 @@ MonoBehaviour:
   closeRangeActionDistance: 1
   longRangeActionDistance: 5
   meleeAttackRadius: 0.5
-  meleeAttackDamage: 10
+  meleeAttackDamage:
+    baseValue: 10
+    modifiers: 
   knockbackAngle: {x: 1, y: 1}
   knockbackStrength: 10
   health: 30

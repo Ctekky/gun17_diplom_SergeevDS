@@ -1,53 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MoveRope : MonoBehaviour
 {
-    #region Fields
-    private Rigidbody2D rb2d;
-
-    // Declare the parameters responsible for the rope movement
+    private Rigidbody2D _rb2d;
+    
     public float moveSpeed = 150;
     public float leftAngle = -0.3f;
     public float rightAngle = 0.3f;
-    private bool movingClockwise = true;
-    #endregion
-
-    #region Unity Methods
+    private bool _movingClockwise = true;
+    
     void Start()
     {
-        rb2d = GetComponentInChildren<Rigidbody2D>();
+        _rb2d = GetComponentInChildren<Rigidbody2D>();
     }
     void FixedUpdate()
     {
         Move();
     }
-    #endregion
-
-    #region Custom Methods
+    
     public void ChangeMoveDir()
     {
         if (transform.GetChild(0).rotation.z >= rightAngle)
         {
-            movingClockwise = false;
+            _movingClockwise = false;
         }
         else if (transform.GetChild(0).rotation.z <= leftAngle)
         {
-            movingClockwise = true;
+            _movingClockwise = true;
         }
     }
     public void Move()
     {
         ChangeMoveDir();
-        if (movingClockwise)
+        if (_movingClockwise)
         {
-            rb2d.angularVelocity = moveSpeed * 50 * Time.fixedDeltaTime;
+            _rb2d.angularVelocity = moveSpeed * 50 * Time.fixedDeltaTime;
         }
-        else if (!movingClockwise)
+        else if (!_movingClockwise)
         {
-            rb2d.angularVelocity = -1 * moveSpeed * 50 * Time.fixedDeltaTime;
+            _rb2d.angularVelocity = -1 * moveSpeed * 50 * Time.fixedDeltaTime;
         }
     }
-    #endregion
 }

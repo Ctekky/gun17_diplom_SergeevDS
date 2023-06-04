@@ -1,37 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Metroidvania.Structs;
 using Metroidvania.Interfaces;
-
 namespace Metroidvania.Enemy
 {
     public class EnemyMeleeAttackState : EnemyAttackState
     {
-        public EnemyMeleeAttackState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName, Transform attackPosition) : base(enemy, stateMachine, enemyData, animBoolName, attackPosition)
+        protected EnemyMeleeAttackState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName, Transform attackPosition) : base(enemy, stateMachine, enemyData, animBoolName, attackPosition)
         {
-        }
-        public override void Enter()
-        {
-            base.Enter();
         }
         public override void AnimationTrigger()
         {
             base.AnimationTrigger();
-            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(attackPosition.position, enemyData.meleeAttackRadius, enemyData.playerLayer);
+            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(AttackPosition.position, EnemyData.meleeAttackRadius, EnemyData.playerLayer);
             foreach (Collider2D collider in detectedObjects)
             {
                 IDamageable damageable = collider.GetComponent<IDamageable>();
-                if (damageable != null) damageable.Damage(enemyData.meleeAttackDamage);
+                var finalDamage = UnitStats.DoDamage(EnemyData.meleeAttackDamage.GetValue());
+                if (damageable != null) damageable.Damage(finalDamage);
                 IKnockbackable knockbackable = collider.GetComponent<IKnockbackable>();
-                if (knockbackable != null) knockbackable.Knockback(enemyData.knockbackAngle, enemyData.knockbackStrength, Movement.FacingDirection);
+                if (knockbackable != null) knockbackable.Knockback(EnemyData.knockbackAngle, EnemyData.knockbackStrength, Movement.FacingDirection);
             }
 
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
+            if (IsExitingState) return;
         }
     }
 }

@@ -7,37 +7,37 @@ namespace Metroidvania.Player
 {
     public class PlayerState
     {
-        protected Unit unit;
-        protected Player player;
-        protected PlayerStateMachine stateMachine;
-        protected PlayerData playerData;
+        protected readonly Unit Unit;
+        protected readonly Player Player;
+        protected readonly PlayerStateMachine StateMachine;
+        protected readonly PlayerData PlayerData;
 
-        protected bool isExitingState;
-        protected bool isAnimationEnd;
-        protected float startTime;
-        private string animBoolName;
+        protected bool IsExitingState;
+        protected bool IsAnimationEnd;
+        protected float StartTime;
+        private readonly string _animBoolName;
 
-        public PlayerState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName)
+        protected PlayerState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName)
         {
-            this.player = player;
-            this.stateMachine = stateMachine;
-            this.playerData = playerData;
-            this.animBoolName = animBoolName;
-            unit = player.Unit;
+            Player = player;
+            StateMachine = stateMachine;
+            PlayerData = playerData;
+            _animBoolName = animBoolName;
+            Unit = player.Unit;
         }
 
         public virtual void Enter()
         {
             DoChecks();
-            player.Animator.SetBool(animBoolName, true);
-            startTime = Time.time;
-            isAnimationEnd = false;
-            isExitingState = false;
+            Player.Animator.SetBool(_animBoolName, true);
+            StartTime = Time.time;
+            IsAnimationEnd = false;
+            IsExitingState = false;
         }
         public virtual void Exit()
         {
-            player.Animator.SetBool(animBoolName, false);
-            isExitingState = true;
+            Player.Animator.SetBool(_animBoolName, false);
+            IsExitingState = true;
         }
         public virtual void LogicUpdate() { }
         public virtual void PhysicsUpdate()
@@ -46,6 +46,6 @@ namespace Metroidvania.Player
         }
         public virtual void DoChecks() { }
         public virtual void AnimationTrigger() { }
-        public virtual void AnimationEndTrigger() => isAnimationEnd = true;
+        public virtual void AnimationEndTrigger() => IsAnimationEnd = true;
     }
 }

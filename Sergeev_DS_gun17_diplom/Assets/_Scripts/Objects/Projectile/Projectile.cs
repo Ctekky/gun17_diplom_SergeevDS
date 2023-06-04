@@ -8,81 +8,85 @@ namespace Metroidvania.Combat.Projectile
 {
     public class Projectile : MonoBehaviour
     {
-        private Rigidbody2D rb;
-        private float startPosX;
-        private bool isGravityOn;
-        private bool isHitGround;
-        private float landTime;
-        private IObjectPool<Projectile> pool;
+        private Rigidbody2D _rb;
+        private float _startPosX;
+        private bool _isGravityOn;
+        private bool _isHitGround;
+        private float _landTime;
+        private int _finalDamage;
+        private IObjectPool<Projectile> _pool;
         [SerializeField] private float gravity;
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private ProjectileData projectileData;
 
         private void Awake()
         {
-            rb = GetComponent<Rigidbody2D>();
+            _rb = GetComponent<Rigidbody2D>();
         }
         private void Start()
         {
-            startPosX = transform.position.x;
-            rb.gravityScale = 0f;
-            isGravityOn = false;
+            _startPosX = transform.position.x;
+            _rb.gravityScale = 0f;
+            _isGravityOn = false;
         }
         public void SetPool(IObjectPool<Projectile> pool)
         {
-            this.pool = pool;
+            _pool = pool;
         }
-        public void SetupProjectile()
+        public void SetupProjectile(int damage)
         {
-            rb.velocity = transform.right * projectileData.speed;
+            _rb.velocity = transform.right * projectileData.speed;
+            _finalDamage = projectileData.damage.GetValue() + damage;
         }
 
-        public void SetupProjectile(Vector2 direction)
+        public void SetupProjectile(Vector2 direction, int damage)
         {
-            rb.velocity = direction;
-            rb.gravityScale = gravity;
+            _rb.velocity = direction;
+            _rb.gravityScale = gravity;
+            _finalDamage = projectileData.damage.GetValue() + damage;
+
         }
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if( collision.gameObject.layer == (int)Mathf.Log(groundLayer.value, 2))
             {
-                isHitGround = true;
-                landTime = Time.time;
+                _isHitGround = true;
+                _landTime = Time.time;
             }
-            IDamageable damageable = collision.GetComponentInParent<IDamageable>();
-            if (damageable != null && !isHitGround)
-            {
-                damageable.Damage(projectileData.damage);
-                Destroy(transform.gameObject);
-            }
+            var damageable = collision.GetComponentInParent<IDamageable>();
+            if (damageable == null || _isHitGround) return;
+            damageable.Damage(_finalDamage);
+            Destroy(transform.gameObject);
         }
         private void Update()
         {
-            if(!isHitGround && isGravityOn)
+            if(!_isHitGround && _isGravityOn)
             {
-                float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
+                var velocity = _rb.velocity;
+                var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
-            if(isHitGround && Time.time >= landTime + projectileData.lifeTime)
+            if(_isHitGround && Time.time >= _landTime + projectileData.lifeTime)
             {
                 if (projectileData.isRopeArrow)
                 {
-                    Instantiate(projectileData.arrowRopePrefab, transform.position, transform.rotation);
+                    var transform1 = transform;
+                    Instantiate(projectileData.arrowRopePrefab, transform1.position, transform1.rotation);
                 }
                 Destroy(transform.gameObject);
             }
         }
         private void FixedUpdate()
-        {   if(isHitGround)
+        {   if(_isHitGround)
             {
-                rb.gravityScale = 0f;
-                rb.velocity = Vector2.zero;
+                _rb.gravityScale = 0f;
+                _rb.velocity = Vector2.zero;
 
             }
-            if(Mathf.Abs(startPosX - transform.position.x) >= projectileData.travelDistance && !isGravityOn)
+            if(Mathf.Abs(_startPosX - transform.position.x) >= projectileData.travelDistance && !_isGravityOn)
             {
-                isGravityOn = true;
-                rb.gravityScale = gravity;
+                _isGravityOn = true;
+                _rb.gravityScale = gravity;
             }
         }
     }

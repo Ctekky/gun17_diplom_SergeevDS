@@ -7,37 +7,37 @@ namespace Metroidvania.Enemy
 {
     public class EnemyState
     {
-        protected BaseEnemy enemy;
-        protected EnemyStateMachine stateMachine;
-        protected EnemyData enemyData;
-        protected Unit unit;
+        protected BaseEnemy Enemy;
+        protected EnemyStateMachine StateMachine;
+        protected EnemyData EnemyData;
+        protected Unit Unit;
 
-        protected bool isExitingState;
-        protected bool isAnimationEnd;
-        protected float startTime;
-        private string animBoolName;
+        protected bool IsExitingState;
+        protected bool IsAnimationEnd;
+        protected float StartTime;
+        private string _animBoolName;
 
         public EnemyState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName)
         {
-            this.enemy = enemy;
-            this.stateMachine = stateMachine;
-            this.enemyData = enemyData;
-            this.animBoolName = animBoolName;
-            unit = enemy.Unit;
+            this.Enemy = enemy;
+            this.StateMachine = stateMachine;
+            this.EnemyData = enemyData;
+            this._animBoolName = animBoolName;
+            Unit = enemy.Unit;
         }
 
         public virtual void Enter()
         {
             DoChecks(); 
-            startTime = Time.time;
-            enemy.Animator.SetBool(animBoolName, true);
-            isAnimationEnd = false;
-            isExitingState = false;
+            StartTime = Time.time;
+            Enemy.Animator.SetBool(_animBoolName, true);
+            IsAnimationEnd = false;
+            IsExitingState = false;
         }
         public virtual void Exit()
         {
-            enemy.Animator.SetBool(animBoolName, false);
-            isExitingState = true;
+            Enemy.Animator.SetBool(_animBoolName, false);
+            IsExitingState = true;
         }
         public virtual void LogicUpdate() { }
         public virtual void PhysicsUpdate()
@@ -46,7 +46,7 @@ namespace Metroidvania.Enemy
         }
         public virtual void DoChecks() { }
         public virtual void AnimationTrigger() { }
-        public virtual void AnimationEndTrigger() => isAnimationEnd = true;
+        public virtual void AnimationEndTrigger() => IsAnimationEnd = true;
     }
 }
 

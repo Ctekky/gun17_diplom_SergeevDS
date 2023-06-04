@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Metroidvania.Structs;
 using Metroidvania.BaseUnit;
 
 namespace Metroidvania.Player
@@ -9,7 +7,8 @@ namespace Metroidvania.Player
     public class Player : MonoBehaviour
     {
         #region StateMachineVars
-        public PlayerStateMachine StateMachine { get; private set; }
+        
+        private PlayerStateMachine StateMachine { get; set; }
         public PlayerIdleState IdleState { get; private set; }
         public PlayerMoveState MoveState { get; private set; }
         public PlayerJumpState JumpState { get; private set; }
@@ -36,8 +35,8 @@ namespace Metroidvania.Player
         public Unit Unit { get; private set; }
         public Animator Animator { get; private set; }
         public PlayerInputHandler InputHandler { get; private set; }
-        public BoxCollider2D PlayerBodyCollider { get; private set; }
-        public Rigidbody2D RB { get; private set; }
+        private BoxCollider2D PlayerBodyCollider { get; set; }
+        public Rigidbody2D Rb { get; private set; }
         [SerializeField]
         private PlayerData playerData;
         #endregion
@@ -48,14 +47,14 @@ namespace Metroidvania.Player
         public Transform CurrentRope { get; private set; }
         [SerializeField]
         private bool isTouchingRope;
-        private float startCollisionTime;
-        private List<RopeLinks> ropeLinksCollisions;
+        private float _startCollisionTime;
+        private List<RopeLinks> _ropeLinksCollisions;
         public PlayerInventory Inventory { get; private set; }
-        public WeaponType CurrentWeaponEquip { get => currentWeaponEquip; private set { currentWeaponEquip = value; }}
-        private WeaponType currentWeaponEquip;
+        public WeaponType CurrentWeaponEquip { get => _currentWeaponEquip; private set { _currentWeaponEquip = value; }}
+        private WeaponType _currentWeaponEquip;
 
         #endregion
-        private Vector2 workVector;
+        private Vector2 _workVector;
         #region Unity Func
         private void Awake()
         {
@@ -86,14 +85,14 @@ namespace Metroidvania.Player
         {
             Animator = GetComponent<Animator>();
             InputHandler = GetComponent<PlayerInputHandler>();
-            RB = GetComponent<Rigidbody2D>();
-            ropeLinksCollisions = new List<RopeLinks>();
+            Rb = GetComponent<Rigidbody2D>();
+            _ropeLinksCollisions = new List<RopeLinks>();
             PlayerBodyCollider = GetComponentInChildren<BoxCollider2D>();
             Inventory = GetComponent<PlayerInventory>();
             PrimaryAttackState.SetWeapon(Inventory.weapons[0]);
             AimState.SetWeapon(Inventory.weapons[0]);
             StateMachine.Initialize(IdleState);
-            currentWeaponEquip = WeaponType.sword;
+            _currentWeaponEquip = WeaponType.Sword;
         }
         private void Update()
         {
@@ -115,14 +114,14 @@ namespace Metroidvania.Player
                     Animator.SetLayerWeight(bowLayer, 0f);
                     PrimaryAttackState.SetWeapon(Inventory.weapons[0]);
                 AimState.SetWeapon(Inventory.weapons[0]);
-                currentWeaponEquip = WeaponType.sword;
+                _currentWeaponEquip = WeaponType.Sword;
                 }
                 else
                 {
                     Animator.SetLayerWeight(bowLayer, 1f);
                     PrimaryAttackState.SetWeapon(Inventory.weapons[1]);
                 AimState.SetWeapon(Inventory.weapons[1]);
-                currentWeaponEquip = WeaponType.bow;
+                _currentWeaponEquip = WeaponType.Bow;
                 }
             InputHandler.UseChangeWeaponInput();
         }
@@ -135,7 +134,7 @@ namespace Metroidvania.Player
         {
             if (collision.GetComponent<RopeLinks>() != null)
             {
-                ropeLinksCollisions.Add(collision.GetComponent<RopeLinks>());
+                _ropeLinksCollisions.Add(collision.GetComponent<RopeLinks>());
                 CurrentRope = collision.transform;
                 isTouchingRope = true;
             }
@@ -144,8 +143,8 @@ namespace Metroidvania.Player
         {
             if (collision.GetComponent<RopeLinks>() != null)
             {
-                ropeLinksCollisions.Remove(collision.GetComponent<RopeLinks>());
-                if (ropeLinksCollisions.Count == 0)
+                _ropeLinksCollisions.Remove(collision.GetComponent<RopeLinks>());
+                if (_ropeLinksCollisions.Count == 0)
                 {
                     isTouchingRope = false;
                 }
@@ -154,17 +153,14 @@ namespace Metroidvania.Player
         public void SetColliderHeight(float height)
         {
             Vector2 center = PlayerBodyCollider.offset;
-            workVector.Set(PlayerBodyCollider.size.x, height);
+            _workVector.Set(PlayerBodyCollider.size.x, height);
             center.y += (height - PlayerBodyCollider.size.y) / 2;
-            PlayerBodyCollider.size = workVector;
+            PlayerBodyCollider.size = _workVector;
             PlayerBodyCollider.offset = center;
         }
         public void PlayerMoveRope()
         {
-            if(ropeLinksCollisions.Count != 0)
-            {
-                ropeLinksCollisions[0].EnableMoveScript(new Vector2(playerData.ropeSwingVelocity, 0f) * InputHandler.NormalizedInputX);
-            }
+            transform.SetParent(isTouchingRope ? CurrentRope.transform : null);
         }
         public void SetPlayerLayer(LayerMask layer) => gameObject.layer = (int)Mathf.Log(layer.value, 2);
         #endregion

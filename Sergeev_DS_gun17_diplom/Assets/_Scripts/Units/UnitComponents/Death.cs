@@ -1,32 +1,33 @@
+using System;
 using UnityEngine;
 
 namespace Metroidvania.BaseUnit
 {
     public class Death : UnitComponent
     {
-        protected GameObject[] DeathParticles { get => deathParticles; private set { deathParticles = value; } }
+        protected GameObject[] DeathParticles 
+        { get => deathParticles; private set => deathParticles = value; }
         [SerializeField] private GameObject[] deathParticles;
-        
         protected ParticleManager ParticleManager =>
-            particleManager ? particleManager : unit.GetUnitComponent<ParticleManager>(ref particleManager);
-        private ParticleManager particleManager;
-        protected Stats Stats => stats ? stats : unit.GetUnitComponent<Stats>(ref stats);
-        private Stats stats;
+            _particleManager ? _particleManager : Unit.GetUnitComponent<ParticleManager>(ref _particleManager);
+        private ParticleManager _particleManager;
+        private UnitStats UnitStats => _unitStats ? _unitStats : Unit.GetUnitComponent<UnitStats>(ref _unitStats);
+        private UnitStats _unitStats;
+        
         protected virtual void Die()
         {
             foreach (var particle in DeathParticles)
             {
                 ParticleManager.StartParticle(particle);
             }
-            unit.transform.parent.gameObject.SetActive(false);
         }
         private void OnEnable()
         {
-            Stats.OnHealthZero += Die;
+            UnitStats.OnHealthZero += Die;
         }
         private void OnDisable()
         {
-            Stats.OnHealthZero -= Die;
+            UnitStats.OnHealthZero -= Die;
         }
 
     }

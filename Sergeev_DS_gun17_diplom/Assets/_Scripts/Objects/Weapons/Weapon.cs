@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Metroidvania.Player;
 using Metroidvania.BaseUnit;
@@ -9,13 +7,15 @@ namespace Metroidvania.Combat.Weapon
     public class Weapon : MonoBehaviour
     {
         [SerializeField] private Animator baseAnimator;
-        [SerializeField] protected WeapondData weapondData;
+        [SerializeField] protected WeapondData weaponData;
+        protected UnitStats UnitStats => _unitStats ? _unitStats : Unit.GetUnitComponent<UnitStats>(ref _unitStats);
+        private UnitStats _unitStats;
 
-        protected PlayerAttackState attackState;
-        protected PlayerAbilityState abilityState;
+        private PlayerAttackState _attackState;
+        protected PlayerAbilityState AbilityState;
 
-        protected int attackCounter;
-        protected Unit unit;
+        protected int AttackCounter;
+        protected Unit Unit;
 
         protected virtual void Awake()
         {
@@ -24,54 +24,58 @@ namespace Metroidvania.Combat.Weapon
         public virtual void EnterWeapon()
         {
             gameObject.SetActive(true);
-            if (attackCounter >= weapondData.amountOfAttacks) attackCounter = 0;
+            if (AttackCounter >= weaponData.AmountOfAttacks) AttackCounter = 0;
             baseAnimator.SetBool("attack", true);
-            baseAnimator.SetInteger("attackCounter", attackCounter);
+            baseAnimator.SetInteger("attackCounter", AttackCounter);
         }
-
         public virtual void ExitWeapon()
         {
             baseAnimator.SetBool("attack", false);
-            attackCounter++;
+            AttackCounter++;
             gameObject.SetActive(false);
         }
 
         #region Animation Triggers
         public virtual void AnimationEndTrigger()
         {
-            attackState.AnimationEndTrigger();
+            _attackState.AnimationEndTrigger();
         }
         public virtual void AnimationStartMovementTrigger()
         {
-            attackState.SetPlayerVelocity(weapondData.movementSpeed[attackCounter]);
+            _attackState.SetPlayerVelocity(weaponData.MovementSpeed[AttackCounter]);
         }
         public virtual void AnimationEndMovementTrigger()
         {
-            attackState.SetPlayerVelocity(0f);
+            _attackState.SetPlayerVelocity(0f);
         }
         public virtual void AnimationTurnOffFlipTrigger()
         {
-            attackState.CheckFlip(false);
+            _attackState.CheckFlip(false);
         }
 
         public virtual void AnimationTurnOnFlipTrigger()
         {
-            attackState.CheckFlip(true);
+            _attackState.CheckFlip(true);
         }
         public virtual void AnimationActionTrigger() { }
         #endregion
 
         public void InitializeWeapon(PlayerAttackState state, Unit unit)
         {
-            attackState = state;
-            this.unit = unit;
+            _attackState = state;
+            Unit = unit;
         }
         public void InitializeWeapon(PlayerAbilityState state, Unit unit)
         {
-            abilityState = state;
-            this.unit = unit;
+            AbilityState = state;
+            Unit = unit;
         }
         public virtual void EnterWeaponSecondary()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public virtual void EnterWeaponAim()
         {
             gameObject.SetActive(true);
         }

@@ -12,27 +12,27 @@ namespace Metroidvania.Player
         public override void Enter()
         {
             base.Enter();
-            player.SetColliderHeight(playerData.colliderCrouchHeight);
+            Player.SetColliderHeight(PlayerData.colliderCrouchHeight);
         }
         public override void Exit()
         {
             base.Exit();
-            player.SetColliderHeight(playerData.colliderStandHeight);
+            Player.SetColliderHeight(PlayerData.colliderStandHeight);
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
+            if (IsExitingState) return;
             
-            Movement?.SetVelocityX(playerData.crouchMovementVelocity * Movement.FacingDirection);
-            Movement?.CheckFlip(inputX);
-            if (inputX ==0 )
+            Movement?.SetVelocityX(PlayerData.crouchMovementVelocity * Movement.FacingDirection);
+            Movement?.CheckFlip(InputX);
+            if (InputX ==0 )
             {
-                stateMachine.ChangeState(player.CrouchIdleState);
+                StateMachine.ChangeState(Player.CrouchIdleState);
             }
-            if(inputY != - 1 && !isHeadTouchingGround)
+            if(InputY != - 1 && !IsHeadTouchingGround)
             {
-                stateMachine.ChangeState(player.MoveState);
+                StateMachine.ChangeState(Player.MoveState);
             }
         }
     }

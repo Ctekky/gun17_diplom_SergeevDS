@@ -6,36 +6,36 @@ namespace Metroidvania.Player
 {
     public class PlayerWallGrabState : PlayerWallTouchState
     {
-        private Vector2 holdPosition;
+        private Vector2 _holdPosition;
         public PlayerWallGrabState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
         public override void Enter()
         {
             base.Enter();
-            holdPosition = player.transform.position;
+            _holdPosition = Player.transform.position;
             HoldPosition();
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
+            if (IsExitingState) return;
             HoldPosition();
             //�������� �������� �� ������ (�.�. ��� ����������� ������ ��� �������
             
-            if (inputY > 0)
+            if (InputY > 0)
             {
                 //stateMachine.ChangeState(player.WallClimbState);
             }
             
-            if (inputY < 0 || !interactInput)
+            if (InputY < 0 || !InteractInput)
             {
-                stateMachine.ChangeState(player.WallSlideState);
+                StateMachine.ChangeState(Player.WallSlideState);
             }
         }
         private void HoldPosition()
         {
-            player.transform.position = holdPosition;
+            Player.transform.position = _holdPosition;
             Movement?.SetVelocityZero();
         }
     }

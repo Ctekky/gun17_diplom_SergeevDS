@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Metroidvania.Interfaces;
+using UnityEngine.Serialization;
 
 namespace Metroidvania.Enemy
 {
@@ -13,9 +14,7 @@ namespace Metroidvania.Enemy
         public BoarChargeState ChargeState { get; private set; }
         public BoarLookForPlayerState LookForPlayerState { get; private set; }
         public BoarMeleeAttackState MeleeAttackState { get; private set; }
-
-        [SerializeField]
-        private Transform meleeAttackPostion;
+        [SerializeField] private Transform meleeAttackPosition;
         public override void Awake()
         {
             base.Awake();
@@ -24,24 +23,13 @@ namespace Metroidvania.Enemy
             DetectedPlayerState = new BoarDetectedPlayerState(this, StateMachine, enemyData, "detectedPlayer", this);
             ChargeState = new BoarChargeState(this, StateMachine, enemyData, "charge", this);
             LookForPlayerState = new BoarLookForPlayerState(this, StateMachine, enemyData, "idle", this);
-            MeleeAttackState = new BoarMeleeAttackState(this, StateMachine, enemyData, "meleeAttack", meleeAttackPostion, this);
+            MeleeAttackState = new BoarMeleeAttackState(this, StateMachine, enemyData, "meleeAttack", meleeAttackPosition, this);
         }
-        public override void Start()
+        protected override void Start()
         {
             base.Start();
             StateMachine.Initialize(MoveState);
         }
-
-        public override void OnDrawGizmos()
-        {
-            base.OnDrawGizmos();
-            Gizmos.DrawWireSphere(meleeAttackPostion.position, enemyData.meleeAttackRadius);
-        }
-        private void OnDeathAnimationEnd()
-        {
-            gameObject.SetActive(false);
-        }
-
     }
 }
 

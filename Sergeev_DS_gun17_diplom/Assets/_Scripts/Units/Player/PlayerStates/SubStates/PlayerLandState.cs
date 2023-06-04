@@ -13,14 +13,14 @@ namespace Metroidvania.Player
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
-            if (inputX != 0)
+            if (IsExitingState) return;
+            if (InputX != 0)
             {
-                stateMachine.ChangeState(player.MoveState);
+                StateMachine.ChangeState(Player.MoveState);
             }
-            else if (isAnimationEnd)
+            else if (IsAnimationEnd)
             {
-                stateMachine.ChangeState(player.IdleState);
+                StateMachine.ChangeState(Player.IdleState);
             }
         }
     }

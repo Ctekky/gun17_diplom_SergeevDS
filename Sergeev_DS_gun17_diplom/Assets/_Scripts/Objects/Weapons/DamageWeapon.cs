@@ -9,15 +9,15 @@ namespace Metroidvania.Combat.Weapon
 {
     public class DamageWeapon : Weapon
     {
-        protected Movement Movement => movement ? movement : unit.GetUnitComponent<Movement>(ref movement);
-        private Movement movement;
-        private List<IDamageable> detectedDamageables = new List<IDamageable>();
-        private List<IKnockbackable> detectedKnockbackables = new List<IKnockbackable>();
-        protected DamageWeaponData damageWeaponData;
+        private Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
+        private Movement _movement;
+        private readonly List<IDamageable> _detectedDamageables = new List<IDamageable>();
+        private readonly List<IKnockbackable> _detectedKnockbackables = new List<IKnockbackable>();
+        private DamageWeaponData _damageWeaponData;
         protected override void Awake()
         {
             base.Awake();
-            if (weapondData.GetType() == typeof(DamageWeaponData)) damageWeaponData = (DamageWeaponData)weapondData;
+            if (weaponData.GetType() == typeof(DamageWeaponData)) _damageWeaponData = (DamageWeaponData)weaponData;
             else Debug.LogError("Wrong data for weapon");
         }
         public override void AnimationActionTrigger()
@@ -27,40 +27,41 @@ namespace Metroidvania.Combat.Weapon
         }
         private void CheckMeleeAttack()
         {
-            WeaponAttackDetails attackDetails = damageWeaponData.AttackDetails[attackCounter];
-            foreach (IDamageable item in detectedDamageables.ToList())
+            var attackDetails = _damageWeaponData.AttackDetails[AttackCounter];
+            foreach (var item in _detectedDamageables.ToList())
             {
-                item.Damage(attackDetails.damageAmount);
+                var finalDamage = UnitStats.DoDamage(attackDetails.damageAmount.GetValue());
+                item.Damage(finalDamage);
             }
-            foreach (var item in detectedKnockbackables.ToList())
+            foreach (var item in _detectedKnockbackables.ToList())
             {
                 item.Knockback(attackDetails.knockbackAngle, attackDetails.knockbackStrength, Movement.FacingDirection);
             }
         }
         public void AddToDetected(Collider2D collision)
         {
-            IDamageable damageable = collision.GetComponentInParent<IDamageable>();
+            var damageable = collision.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
-                detectedDamageables.Add(damageable);
+                _detectedDamageables.Add(damageable);
             }
-            IKnockbackable knockbackable = collision.GetComponentInParent<IKnockbackable>();
+            var knockbackable = collision.GetComponentInParent<IKnockbackable>();
             if(knockbackable != null)
             {
-                detectedKnockbackables.Add(knockbackable);
+                _detectedKnockbackables.Add(knockbackable);
             }
         }
         public void RemoveFromDetected(Collider2D collision)
         {
-            IDamageable damageable = collision.GetComponentInParent<IDamageable>();
+            var damageable = collision.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
-                detectedDamageables.Remove(damageable);
+                _detectedDamageables.Remove(damageable);
             }
-            IKnockbackable knockbackable = collision.GetComponentInParent<IKnockbackable>();
+            var knockbackable = collision.GetComponentInParent<IKnockbackable>();
             if (knockbackable != null)
             {
-                detectedKnockbackables.Remove(knockbackable);
+                _detectedKnockbackables.Remove(knockbackable);
             }
         }
     }

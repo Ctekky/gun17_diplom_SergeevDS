@@ -7,16 +7,16 @@ namespace Metroidvania.Player
 {
     public class PlayerAbilityState : PlayerState
     {
-        protected bool isAbilityDone;
+        protected bool IsAbilityDone;
         protected Movement Movement {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
+            get => _movement ?? Unit.GetUnitComponent<Movement>(ref _movement);
         }
         protected CollisionChecks CollisionChecks {
-            get => collisionChecks ?? unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
+            get => _collisionChecks ?? Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
         }
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        private bool isGrounded;
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
+        private bool _isGrounded;
         public PlayerAbilityState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
@@ -24,13 +24,13 @@ namespace Metroidvania.Player
         public override void DoChecks()
         {
             base.DoChecks();
-            if(CollisionChecks) isGrounded = CollisionChecks.Grounded;
+            if(CollisionChecks) _isGrounded = CollisionChecks.Grounded;
         }
 
         public override void Enter()
         {
             base.Enter();
-            isAbilityDone = false;
+            IsAbilityDone = false;
         }
 
         public override void Exit()
@@ -42,15 +42,15 @@ namespace Metroidvania.Player
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if(isAbilityDone)
+            if(IsAbilityDone)
             {
-                if (isGrounded && Movement?.CurrentVelocity.y < 0.01f)
+                if (_isGrounded && Movement?.CurrentVelocity.y < 0.01f)
                 {
-                    stateMachine.ChangeState(player.IdleState);
+                    StateMachine.ChangeState(Player.IdleState);
                 }
                 else
                 {
-                    stateMachine.ChangeState(player.InAirState);
+                    StateMachine.ChangeState(Player.InAirState);
                 }
             }    
         }

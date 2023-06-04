@@ -1,23 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Metroidvania
 {
     public enum CombatInputs: byte
     {
-        primary,
-        secondary
+        Primary,
+        Secondary
     }
     public enum WeaponType: byte
     {
-        sword,
-        bow
+        Sword,
+        Bow
     }
-
     public enum ArrowType: byte
     {
-        normal,
-        rope
+        Normal,
+        Rope
+    }
+
+    public enum EnemyType : byte
+    {
+        Boar,
+        Bat,
+        Spider
     }
 }

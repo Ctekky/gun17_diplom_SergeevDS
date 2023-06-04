@@ -9,22 +9,22 @@ namespace Metroidvania.Enemy
     {
         protected Movement Movement
         {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
+            get => _movement ?? Unit.GetUnitComponent<Movement>(ref _movement);
         }
         protected CollisionChecks CollisionChecks
         {
-            get => collisionChecks ?? unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
+            get => _collisionChecks ?? Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
         }
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        protected bool isPlayerInMinAggroRange;
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
+        protected bool IsPlayerInMinAggroRange;
         public EnemyGroundedState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
         {
         }
         public override void DoChecks()
         {
             base.DoChecks();
-            isPlayerInMinAggroRange = enemy.CheckPlayerInMinRange();
+            IsPlayerInMinAggroRange = Enemy.CheckPlayerInMinRange();
         }
     }
 

@@ -13,11 +13,11 @@ namespace Metroidvania.Combat.Weapon
 
         private void OnEnable()
         {
-            amountOfAttacks = attackDetails.Length;
-            movementSpeed = new float[amountOfAttacks];
-            for (int i = 0; i < amountOfAttacks; i++)
+            AmountOfAttacks = attackDetails.Length;
+            MovementSpeed = new float[AmountOfAttacks];
+            for (int i = 0; i < AmountOfAttacks; i++)
             {
-                movementSpeed[i] = attackDetails[i].movementSpeed;
+                MovementSpeed[i] = attackDetails[i].movementSpeed;
             }
         }
     }

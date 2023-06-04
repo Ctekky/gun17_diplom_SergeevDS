@@ -6,22 +6,22 @@ namespace Metroidvania.Enemy
 {
     public class BoarMoveState : EnemyMoveState
     {
-        private BoarEnemy boarEnemy;
+        private BoarEnemy _boarEnemy;
         public BoarMoveState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName, BoarEnemy boarEnemy) : base(enemy, stateMachine, enemyData, animBoolName)
         {
-            this.boarEnemy = boarEnemy;
+            this._boarEnemy = boarEnemy;
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isPlayerInMinAggroRange)
+            if (IsPlayerInMinAggroRange)
             {
-                stateMachine.ChangeState(boarEnemy.DetectedPlayerState);
+                StateMachine.ChangeState(_boarEnemy.DetectedPlayerState);
             }
-            else if (isDetectingWall || !isDetectingLedge)
+            else if (IsDetectingWall || !IsDetectingLedge)
             {
-                boarEnemy.IdleState.SetFlipAfterIdle(true);
-                stateMachine.ChangeState(boarEnemy.IdleState);
+                _boarEnemy.IdleState.SetFlipAfterIdle(true);
+                StateMachine.ChangeState(_boarEnemy.IdleState);
             }
         }
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
@@ -9,20 +7,22 @@ public class ParallaxBackground : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera playerCamera;
     [SerializeField] private float parallaxEffect;
-    private float xPositon;
-    private float length;
+    private float _xPosition;
+    private float _length;
 
     private void Start()
     {
-        xPositon = transform.position.x;
-        length = GetComponent<SpriteRenderer>().bounds.size.x;
+        _xPosition = transform.position.x;
+        _length = GetComponent<SpriteRenderer>().bounds.size.x;
     }
     private void Update() {
-        float distanceMoved = playerCamera.transform.position.x * (1 - parallaxEffect);
-        float distanceToMove = playerCamera.transform.position.x * parallaxEffect;
-        transform.position = new Vector3(xPositon + distanceToMove, transform.position.y);
-        if(distanceMoved > xPositon + length) xPositon += length;
-        else if(distanceMoved < xPositon - length) xPositon -= length;
+        var cameraPosition = playerCamera.transform.position;
+        var distanceMoved = cameraPosition.x * (1 - parallaxEffect);
+        var distanceToMove = cameraPosition.x * parallaxEffect;
+        var transform1 = transform;
+        transform1.position = new Vector3(_xPosition + distanceToMove, transform1.position.y);
+        if(distanceMoved > _xPosition + _length) _xPosition += _length;
+        else if(distanceMoved < _xPosition - _length) _xPosition -= _length;
     }
 }
 }

@@ -8,18 +8,18 @@ namespace Metroidvania.Enemy
     {
         protected Movement Movement
         {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
+            get => _movement ?? Unit.GetUnitComponent<Movement>(ref _movement);
         }
         private CollisionChecks CollisionChecks
         {
-            get => collisionChecks ?? unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
+            get => _collisionChecks ?? Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
         }
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        protected bool isPlayerInMinAggroRange;
-        protected bool isPlayerImMaxAggroRange;
-        protected bool performLongRangeAction;
-        protected bool performCloseRangeAction;
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
+        protected bool IsPlayerInMinAggroRange;
+        protected bool IsPlayerImMaxAggroRange;
+        protected bool PerformLongRangeAction;
+        protected bool PerformCloseRangeAction;
         public EnemyDetectedPlayerState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
         {
         }
@@ -30,15 +30,15 @@ namespace Metroidvania.Enemy
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
+            if (IsExitingState) return;
         }
         public override void DoChecks()
         {
             base.DoChecks();
-            isPlayerInMinAggroRange = enemy.CheckPlayerInMinRange();
-            isPlayerImMaxAggroRange = enemy.CheckPlayerInMaxRange();
-            performCloseRangeAction = enemy.CheckPlayerInCloseRangeAction();
-            performLongRangeAction = enemy.CheckPlayerInLongRangeAction();
+            IsPlayerInMinAggroRange = Enemy.CheckPlayerInMinRange();
+            IsPlayerImMaxAggroRange = Enemy.CheckPlayerInMaxRange();
+            PerformCloseRangeAction = Enemy.CheckPlayerInCloseRangeAction();
+            PerformLongRangeAction = Enemy.CheckPlayerInLongRangeAction();
         }
     }
 }

@@ -1,39 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Metroidvania.Player
 {
     public class PlayerRopeGrabdState : PlayerRopeTouchState
     {
-        private Vector2 holdPosition;
+        private Vector2 _holdPosition;
         public PlayerRopeGrabdState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
         public override void Enter()
         {
             base.Enter();
-            holdPosition = player.transform.position;
+            _holdPosition = Player.transform.position;
             HoldPosition();
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
+            if (IsExitingState) return;
             HoldPosition();
-            if (inputY != 0)
+            if (InputY != 0)
             {
-                stateMachine.ChangeState(player.RopeClimbState);
+                StateMachine.ChangeState(Player.RopeClimbState);
             }
-            else if (!interactInput)
+            else if (!InteractInput)
             {
-                stateMachine.ChangeState(player.InAirState);
+                StateMachine.ChangeState(Player.InAirState);
             }
         }
 
         private void HoldPosition()
         {
-            player.transform.position = holdPosition;
+            Player.transform.position = _holdPosition;
             Movement?.SetVelocityX(0f);
             Movement?.SetVelocityY(0f);
         }

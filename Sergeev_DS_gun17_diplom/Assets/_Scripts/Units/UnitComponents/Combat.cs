@@ -11,64 +11,64 @@ namespace Metroidvania.BaseUnit
         [SerializeField] private GameObject damageParticle;
         [SerializeField] private Material hitMaterial;
         [SerializeField] private float flashDuration;
-        protected Movement Movement => movement ? movement : unit.GetUnitComponent<Movement>(ref movement);
-        private CollisionChecks CollisionChecks => collisionChecks ? collisionChecks : unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
-        private Stats Stats => stats ? stats : unit.GetUnitComponent<Stats>(ref stats);
-        private ParticleManager ParticleManager => particleManager ? particleManager : unit.GetUnitComponent<ParticleManager>(ref particleManager);
-        private Stats stats;
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        private ParticleManager particleManager;
-        private bool isKnockbackActive;
-        private float knockbackStartTime;
-        private SpriteRenderer sr;
-        private Material originalMaterial;
-        private bool isImmune;
+        private Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
+        private CollisionChecks CollisionChecks => _collisionChecks ? _collisionChecks : Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
+        private UnitStats UnitStats => _unitStats ? _unitStats : Unit.GetUnitComponent<UnitStats>(ref _unitStats);
+        private ParticleManager ParticleManager => _particleManager ? _particleManager : Unit.GetUnitComponent<ParticleManager>(ref _particleManager);
+        private UnitStats _unitStats;
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
+        private ParticleManager _particleManager;
+        private bool _isKnockbackActive;
+        private float _knockbackStartTime;
+        private SpriteRenderer _sr;
+        private Material _originalMaterial;
+        private bool _isImmune;
         protected override void Awake()
         {
             base.Awake();
-            sr = GetComponentInParent<SpriteRenderer>();
+            _sr = GetComponentInParent<SpriteRenderer>();
         }
         protected override void Start()
         {
-            originalMaterial = sr.material;
-            isImmune = false;
+            _originalMaterial = _sr.material;
+            _isImmune = false;
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
             CheckKnockback();
         }
-        public void Damage(float amount)
+        public void Damage(int amount)
         {
-            if(isImmune) return;
-            Debug.Log(unit.transform.parent.name + " damaged!");
-            StartCoroutine("FlashFX");
-            Stats?.DecreaseHealth(amount);
+            if(_isImmune) return;
+            Debug.Log(Unit.transform.parent.name + " damaged!");
+            StartCoroutine(nameof(FlashFX));
+            UnitStats?.DecreaseHealth(amount);
             ParticleManager?.StartParticleWithRandomRotation(damageParticle);
         }
         public void Knockback(Vector2 angle, float strength, int direction)
         {
             Movement?.SetVelocity(strength, angle, direction);
             Movement.CanSetVelocity = false;
-            isKnockbackActive = true;
-            knockbackStartTime = Time.time;
+            _isKnockbackActive = true;
+            _knockbackStartTime = Time.time;
         }
         private void CheckKnockback()
         {
-            if (isKnockbackActive && ((Movement?.CurrentVelocity.y <= 0.01f && CollisionChecks.Grounded) || Time.time >= knockbackStartTime + maxKnockbackTime))
+            if (_isKnockbackActive && ((Movement?.CurrentVelocity.y <= 0.01f && CollisionChecks.Grounded) || Time.time >= _knockbackStartTime + maxKnockbackTime))
             {
-                isKnockbackActive = false;
+                _isKnockbackActive = false;
                 Movement.CanSetVelocity = true;
             }
         }
-        IEnumerator FlashFX()
+        private IEnumerator FlashFX()
         {
-            isImmune = true;
-            sr.material = hitMaterial;
+            _isImmune = true;
+            _sr.material = hitMaterial;
             yield return new WaitForSeconds(flashDuration);
-            sr.material = originalMaterial;
-            isImmune = false;
+            _sr.material = _originalMaterial;
+            _isImmune = false;
         }
     }
 }

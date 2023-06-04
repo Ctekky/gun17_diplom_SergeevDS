@@ -7,7 +7,7 @@ namespace Metroidvania.Combat.Weapon
     [CreateAssetMenu(fileName = "New weapon data", menuName = "Data/Weapon data/Weapon")]
     public class WeapondData : ScriptableObject
     {
-        public int amountOfAttacks { get; protected set; }
-        public float[] movementSpeed { get; protected set; }
+        public int AmountOfAttacks { get; protected set; }
+        public float[] MovementSpeed { get; protected set; }
     }
 }

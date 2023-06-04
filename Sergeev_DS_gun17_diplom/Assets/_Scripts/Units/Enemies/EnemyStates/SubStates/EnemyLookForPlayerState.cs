@@ -8,61 +8,61 @@ namespace Metroidvania.Enemy
     {
         protected Movement Movement
         {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
+            get => _movement ?? Unit.GetUnitComponent<Movement>(ref _movement);
         }
         private CollisionChecks CollisionChecks
         {
-            get => collisionChecks ?? unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
+            get => _collisionChecks ?? Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
         }
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        protected bool turnNow;
-        protected bool isPlayerInMinAggroRange;
-        protected bool isAllTurnsDone;
-        protected bool isAllTimeDone;
-        protected float lastTurnTime;
-        protected int amountOfTurns;
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
+        protected bool TurnNow;
+        protected bool IsPlayerInMinAggroRange;
+        protected bool IsAllTurnsDone;
+        protected bool IsAllTimeDone;
+        protected float LastTurnTime;
+        protected int AmountOfTurns;
         public EnemyLookForPlayerState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
         {
         }
         public override void Enter()
         {
             base.Enter();
-            isAllTimeDone = false;
-            isAllTurnsDone = false;
-            lastTurnTime = startTime;
-            amountOfTurns = 0;
+            IsAllTimeDone = false;
+            IsAllTurnsDone = false;
+            LastTurnTime = StartTime;
+            AmountOfTurns = 0;
             Movement.SetVelocityZero();
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
+            if (IsExitingState) return;
             Movement?.SetVelocityZero();
-            if (turnNow)
+            if (TurnNow)
             {
                 Turn();
-                turnNow = false;
+                TurnNow = false;
             }
-            else if (Time.time >= lastTurnTime + enemyData.timeOfTurns && !isAllTurnsDone) Turn();
+            else if (Time.time >= LastTurnTime + EnemyData.timeOfTurns && !IsAllTurnsDone) Turn();
 
-            if (amountOfTurns >= enemyData.amountOfTurns) isAllTurnsDone = true;
-            if (Time.time >= lastTurnTime + enemyData.timeOfTurns && isAllTurnsDone)
+            if (AmountOfTurns >= EnemyData.amountOfTurns) IsAllTurnsDone = true;
+            if (Time.time >= LastTurnTime + EnemyData.timeOfTurns && IsAllTurnsDone)
             {
-                isAllTimeDone = true;
+                IsAllTimeDone = true;
             }
         }
         public override void DoChecks()
         {
             base.DoChecks();
-            isPlayerInMinAggroRange = enemy.CheckPlayerInMinRange();
+            IsPlayerInMinAggroRange = Enemy.CheckPlayerInMinRange();
         }
-        public void SetFlipNow(bool flip) => turnNow = flip;
+        public void SetFlipNow(bool flip) => TurnNow = flip;
         private void Turn()
         {
             Movement?.Flip();
-            lastTurnTime = Time.time;
-            amountOfTurns++;
+            LastTurnTime = Time.time;
+            AmountOfTurns++;
         }
     }
 }

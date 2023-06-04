@@ -11,9 +11,9 @@ namespace Metroidvania.Player
         {
             foreach (var particle in DeathParticles)
             {
-                ParticleManager.StartParticle(particle, unit.transform.position, unit.transform.rotation);
+                ParticleManager.StartParticle(particle, Unit.transform.position, Unit.transform.rotation);
             }
-            unit.transform.parent.gameObject.SetActive(false);
+            //Unit.transform.parent.gameObject.SetActive(false);
         }
 
     }

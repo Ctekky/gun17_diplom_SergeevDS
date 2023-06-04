@@ -1,3 +1,4 @@
+using Metroidvania.BaseUnit;
 using UnityEngine;
 namespace Metroidvania.Structs
 {
@@ -6,7 +7,7 @@ namespace Metroidvania.Structs
     {
         public string attackName;
         public float movementSpeed;
-        public float damageAmount;
+        public Stats damageAmount;
         public float knockbackStrength;
         public Vector2 knockbackAngle;
     }

@@ -49,11 +49,11 @@ TagManager:
   - name: Background
     uniqueID: 3992747029
     locked: 0
-  - name: Foreground
-    uniqueID: 1176679063
-    locked: 0
   - name: Ground
     uniqueID: 1078588055
+    locked: 0
+  - name: Item
+    uniqueID: 2311103853
     locked: 0
   - name: Enemy
     uniqueID: 3914046735
@@ -63,4 +63,7 @@ TagManager:
     locked: 0
   - name: Arrows
     uniqueID: 452102535
+    locked: 0
+  - name: Foreground
+    uniqueID: 1176679063
     locked: 0

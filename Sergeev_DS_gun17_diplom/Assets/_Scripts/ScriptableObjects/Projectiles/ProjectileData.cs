@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Metroidvania.BaseUnit;
 using UnityEngine;
 
 namespace Metroidvania.Combat.Projectile
@@ -9,7 +10,7 @@ namespace Metroidvania.Combat.Projectile
     {
         [SerializeField] public float speed;
         [SerializeField] public float travelDistance;
-        [SerializeField] public float damage;
+        [SerializeField] public Stats damage;
         [SerializeField] public float lifeTime;
         [SerializeField] public bool isRopeArrow;
         [SerializeField] public GameObject arrowRopePrefab;

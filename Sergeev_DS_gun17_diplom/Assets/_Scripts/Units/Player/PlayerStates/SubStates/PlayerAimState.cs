@@ -7,55 +7,40 @@ namespace Metroidvania.Player
 {
     public class PlayerAimState : PlayerAbilityState
     {
-        private Weapon weapon;
+        private Weapon _weapon;
         public PlayerAimState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
-
-        public override void AnimationEndTrigger()
-        {
-            base.AnimationEndTrigger();
-        }
-
-        public override void DoChecks()
-        {
-            base.DoChecks();
-        }
-
         public override void Enter()
         {
             base.Enter();
             Movement?.SetVelocityZero();
+            _weapon.EnterWeaponAim();
         }
-
         public override void Exit()
         {
             base.Exit();
-            player.InputHandler.UseSecondaryAttackPerfomedInput();
-            player.InputHandler.UseSecondaryAttackInput();
+            Player.InputHandler.UseSecondaryAttackPerfomedInput();
+            Player.InputHandler.UseSecondaryAttackInput();
         }
-
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (player.InputHandler.AttackInputs[(int)CombatInputs.secondary])
+            _weapon.EnterWeaponAim();
+            if (Player.InputHandler.AttackInputs[(int)CombatInputs.Secondary])
             {
-                weapon.EnterWeaponSecondary();
-                stateMachine.ChangeState(player.IdleState);
+                _weapon.EnterWeaponSecondary();
+                StateMachine.ChangeState(Player.IdleState);
             } 
-            else if (!player.InputHandler.SecondaryAttackStarted)
+            else if (!Player.InputHandler.SecondaryAttackStarted)
             {
-                stateMachine.ChangeState(player.IdleState);
+                StateMachine.ChangeState(Player.IdleState);
             }
-        }
-        public override void PhysicsUpdate()
-        {
-            base.PhysicsUpdate();
         }
         public void SetWeapon(Weapon weapon)
         {
-            this.weapon = weapon;
-            weapon.InitializeWeapon(this, unit);
+            _weapon = weapon;
+            weapon.InitializeWeapon(this, Unit);
         }
     }
 

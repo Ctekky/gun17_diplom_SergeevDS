@@ -6,26 +6,26 @@ namespace Metroidvania.Player
 {
     public class PlayerJumpState : PlayerAbilityState
     {
-        private int jumpsLeft;
+        private int _jumpsLeft;
         public PlayerJumpState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
-            jumpsLeft = playerData.jumpCount;
+            _jumpsLeft = playerData.jumpCount;
         }
         public override void Enter()
         {
             base.Enter();
-            player.InputHandler.UseJumpInput();
-            Movement?.SetVelocityY(playerData.jumpVelocity);
-            isAbilityDone = true;
-            jumpsLeft--;
-            player.InAirState.SetIsJumping();
+            Player.InputHandler.UseJumpInput();
+            Movement?.SetVelocityY(PlayerData.jumpVelocity);
+            IsAbilityDone = true;
+            _jumpsLeft--;
+            Player.InAirState.SetIsJumping();
         }
         public bool CanJump()
         {
-            if (jumpsLeft > 0) return true;
+            if (_jumpsLeft > 0) return true;
             else return false;
         }
-        public void ResetJumps() => jumpsLeft = playerData.jumpCount;
-        public void DecreaseJumps() => jumpsLeft--;
+        public void ResetJumps() => _jumpsLeft = PlayerData.jumpCount;
+        public void DecreaseJumps() => _jumpsLeft--;
     }
 }

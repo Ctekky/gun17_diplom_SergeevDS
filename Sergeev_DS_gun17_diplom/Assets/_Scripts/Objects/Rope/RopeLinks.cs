@@ -7,26 +7,32 @@ public class RopeLinks : MonoBehaviour
 {
     #region Variables
 
-    LastRope lastRope;
-    float ropeLinksMass;
-    float ropeGravityScale;
-    Rigidbody2D rb2d;
-    bool movingRope = false;
-    Vector2 originalPosition;
-    int numberOfTransformsPerSegment;
-    int transformIndexToAttachToInEachSegment;
-    Vector2 contactPoint;
-    float distance;
-    float closestDistance;
-    bool optimizations;
-    bool enableRopeCollisions;
-    bool staticRope;
+    LastRope _lastRope;
+    float _ropeLinksMass;
+    float _ropeGravityScale;
+    Rigidbody2D _rb2d;
+    bool _movingRope = false;
+    Vector2 _originalPosition;
+    int _numberOfTransformsPerSegment;
+    int _transformIndexToAttachToInEachSegment;
+    Vector2 _contactPoint;
+    float _distance;
+    float _closestDistance;
+    bool _optimizations;
+    bool _enableRopeCollisions;
+    bool _staticRope;
+    [SerializeField] private Transform connectionPoint;
+    public Transform ConnectionPoint
+    {
+        get => connectionPoint;
+        private set => connectionPoint = value;
+    }
     #endregion
 
     private void Start()
     {        
-        rb2d = GetComponent<Rigidbody2D>();
-        originalPosition = transform.position;
+        _rb2d = GetComponent<Rigidbody2D>();
+        _originalPosition = transform.position;
         GetComponent<HingeJoint2D>().anchor = new Vector2(0, -transform.parent.GetComponentInChildren<SpriteRenderer>().sprite.bounds.extents.y);
         if (transform.GetSiblingIndex() == 0)
         {
@@ -43,7 +49,7 @@ public class RopeLinks : MonoBehaviour
 
     private void Update()
     {
-        if (optimizations) return;
+        if (_optimizations) return;
         CheckForMovingRope();
     }
     private void CheckForMovingRope()
@@ -52,44 +58,44 @@ public class RopeLinks : MonoBehaviour
         {
             if (moveRope.enabled == true)
             {
-                rb2d.mass = 1;
-                rb2d.gravityScale = 0;
-                if (!movingRope)
+                _rb2d.mass = 1;
+                _rb2d.gravityScale = 0;
+                if (!_movingRope)
                 {
-                    movingRope = true;
+                    _movingRope = true;
                     transform.rotation = Quaternion.identity;
-                    transform.position = originalPosition;
+                    transform.position = _originalPosition;
                 }
             }
             else
             {
-                movingRope = false;
-                rb2d.mass = ropeLinksMass;
-                rb2d.gravityScale = ropeGravityScale;
+                _movingRope = false;
+                _rb2d.mass = _ropeLinksMass;
+                _rb2d.gravityScale = _ropeGravityScale;
             }
         }
     }
     public void EnableMoveScript(Vector2 force)
     {
-        rb2d.AddForce(force, ForceMode2D.Impulse);
+        _rb2d.AddForce(force, ForceMode2D.Impulse);
     }
     private void AdjustRopeSettings()
     {
         if (transform.parent.parent.TryGetComponent<CreateRope>(out CreateRope createRope))
         {
-            ropeLinksMass = createRope.ropeLinksMass;
-            ropeGravityScale = createRope.ropeLinksGravityScale;
-            enableRopeCollisions = createRope.enableRopeCollisions;
+            _ropeLinksMass = createRope.ropeLinksMass;
+            _ropeGravityScale = createRope.ropeLinksGravityScale;
+            _enableRopeCollisions = createRope.enableRopeCollisions;
         }
-        if (enableRopeCollisions)
+        if (_enableRopeCollisions)
         {
             gameObject.layer = LayerMask.NameToLayer("Rope");
             Physics2D.IgnoreLayerCollision(gameObject.layer, gameObject.layer);
             GetComponent<CapsuleCollider2D>().isTrigger = false;
         }
-        if(staticRope)
+        if(_staticRope)
         {
-            rb2d.bodyType = RigidbodyType2D.Static;
+            _rb2d.bodyType = RigidbodyType2D.Static;
         }
     }
 }

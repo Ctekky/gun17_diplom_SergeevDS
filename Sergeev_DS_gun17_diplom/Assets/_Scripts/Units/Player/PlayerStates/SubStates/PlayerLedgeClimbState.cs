@@ -9,27 +9,27 @@ namespace Metroidvania.Player
     {
         protected Movement Movement
         {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
+            get => _movement ?? Unit.GetUnitComponent<Movement>(ref _movement);
         }
         private CollisionChecks CollisionChecks
         {
-            get => collisionChecks ?? unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
+            get => _collisionChecks ?? Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
         }
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        private Vector2 detectedPos;
-        private Vector2 cornerPos;
-        private Vector2 startPos;
-        private Vector2 stopPos;
-        private Vector2 workVector;
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
+        private Vector2 _detectedPos;
+        private Vector2 _cornerPos;
+        private Vector2 _startPos;
+        private Vector2 _stopPos;
+        private Vector2 _workVector;
 
-        private bool isHanging;
-        private bool isClimbing;
-        private bool isTouchHead;
+        private bool _isHanging;
+        private bool _isClimbing;
+        private bool _isTouchHead;
 
-        private int inputX;
-        private int inputY;
-        private bool jumpInput;
+        private int _inputX;
+        private int _inputY;
+        private bool _jumpInput;
 
 
         public PlayerLedgeClimbState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
@@ -39,86 +39,86 @@ namespace Metroidvania.Player
         public override void AnimationEndTrigger()
         {
             base.AnimationEndTrigger();
-            player.Animator.SetBool("climbLedge", false);
+            Player.Animator.SetBool("climbLedge", false);
         }
 
         public override void AnimationTrigger()
         {
             base.AnimationTrigger();
-            isHanging = true;
-            isClimbing = false;
+            _isHanging = true;
+            _isClimbing = false;
         }
 
         public override void Enter()
         {
             base.Enter();
             Movement?.SetVelocityZero();
-            player.transform.position = detectedPos;
-            cornerPos = DetermineCornerPositon();
-            startPos.Set(cornerPos.x - (Movement.FacingDirection * playerData.startOffset.x), cornerPos.y - playerData.startOffset.y);
-            stopPos.Set(cornerPos.x + (Movement.FacingDirection * playerData.stopOffset.x), cornerPos.y + playerData.stopOffset.y);
+            Player.transform.position = _detectedPos;
+            _cornerPos = DetermineCornerPositon();
+            _startPos.Set(_cornerPos.x - (Movement.FacingDirection * PlayerData.startOffset.x), _cornerPos.y - PlayerData.startOffset.y);
+            _stopPos.Set(_cornerPos.x + (Movement.FacingDirection * PlayerData.stopOffset.x), _cornerPos.y + PlayerData.stopOffset.y);
 
-            player.transform.position = startPos;
+            Player.transform.position = _startPos;
         }
 
         public override void Exit()
         {
             base.Exit();
-            isHanging = false;
-            if (isClimbing)
+            _isHanging = false;
+            if (_isClimbing)
             {
-                player.transform.position = stopPos;
-                isClimbing = false;
+                Player.transform.position = _stopPos;
+                _isClimbing = false;
             }
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isAnimationEnd)
+            if (IsAnimationEnd)
             {
-                if (isTouchHead)
+                if (_isTouchHead)
                 {
-                    stateMachine.ChangeState(player.CrouchIdleState);
+                    StateMachine.ChangeState(Player.CrouchIdleState);
                 }
                 else
                 {
-                    stateMachine.ChangeState(player.IdleState);
+                    StateMachine.ChangeState(Player.IdleState);
                 }
             }
             else
             {
-                inputX = player.InputHandler.NormalizedInputX;
-                inputY = player.InputHandler.NormalizedInputY;
-                jumpInput = player.InputHandler.JumpInput;
+                _inputX = Player.InputHandler.NormalizedInputX;
+                _inputY = Player.InputHandler.NormalizedInputY;
+                _jumpInput = Player.InputHandler.JumpInput;
 
                 Movement?.SetVelocityZero();
-                player.transform.position = startPos;
+                Player.transform.position = _startPos;
 
-                if (inputX == Movement?.FacingDirection && isHanging && !isClimbing)
+                if (_inputX == Movement?.FacingDirection && _isHanging && !_isClimbing)
                 {
                     CheckForSpace();
-                    isClimbing = true;
-                    player.Animator.SetBool("climbLedge", true);
+                    _isClimbing = true;
+                    Player.Animator.SetBool("climbLedge", true);
                 }
-                else if (inputY == -1 && isHanging && !isClimbing)
+                else if (_inputY == -1 && _isHanging && !_isClimbing)
                 {
-                    stateMachine.ChangeState(player.InAirState);
+                    StateMachine.ChangeState(Player.InAirState);
                 }
-                else if (jumpInput && !isClimbing)
+                else if (_jumpInput && !_isClimbing)
                 {
-                    player.WallJumpState.WallJumpDirection(true);
-                    stateMachine.ChangeState(player.WallJumpState);
+                    Player.WallJumpState.WallJumpDirection(true);
+                    StateMachine.ChangeState(Player.WallJumpState);
                 }
             }
         }
 
-        public void SetDetectedPosition(Vector2 pos) => detectedPos = pos;
+        public void SetDetectedPosition(Vector2 pos) => _detectedPos = pos;
         private void CheckForSpace()
         {
-            isTouchHead = Physics2D.Raycast(cornerPos + (Vector2.up * 0.015f) + (Vector2.right * Movement.FacingDirection * 0.015f),
+            _isTouchHead = Physics2D.Raycast(_cornerPos + (Vector2.up * 0.015f) + (Vector2.right * Movement.FacingDirection * 0.015f),
                                             Vector2.up,
-                                            playerData.colliderStandHeight,
+                                            PlayerData.colliderStandHeight,
                                             CollisionChecks.GroundLayer);
         }
         private Vector2 DetermineCornerPositon()
@@ -128,14 +128,14 @@ namespace Metroidvania.Player
                                                   CollisionChecks.WallCheckDistance,
                                                   CollisionChecks.GroundLayer);
             float distanceX = hitX.distance;
-            workVector.Set(distanceX * Movement.FacingDirection, 0f);
-            RaycastHit2D hitY = Physics2D.Raycast(CollisionChecks.LedgeCheckHorizontal.position + (Vector3)(workVector),
+            _workVector.Set(distanceX * Movement.FacingDirection, 0f);
+            RaycastHit2D hitY = Physics2D.Raycast(CollisionChecks.LedgeCheckHorizontal.position + (Vector3)(_workVector),
                                                   Vector2.down,
                                                   CollisionChecks.LedgeCheckHorizontal.position.y - CollisionChecks.WallCheck.position.y,
                                                   CollisionChecks.GroundLayer);
             float distanceY = hitY.distance;
-            workVector.Set(CollisionChecks.WallCheck.position.x + (distanceX * Movement.FacingDirection), CollisionChecks.LedgeCheckHorizontal.position.y - distanceY);
-            return workVector;
+            _workVector.Set(CollisionChecks.WallCheck.position.x + (distanceX * Movement.FacingDirection), CollisionChecks.LedgeCheckHorizontal.position.y - distanceY);
+            return _workVector;
         }
     }
 }

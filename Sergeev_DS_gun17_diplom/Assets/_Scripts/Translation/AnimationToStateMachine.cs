@@ -6,15 +6,15 @@ namespace Metroidvania.Enemy
 {
     public class AnimationToStateMachine : MonoBehaviour
     {
-        public EnemyAttackState attackState;
+        public EnemyAttackState AttackState;
         private void AnimationTrigger()
         {
-            attackState.AnimationTrigger();
+            AttackState.AnimationTrigger();
         }
 
         private void AnimationEndTrigger()
         {
-            attackState.AnimationEndTrigger();
+            AttackState.AnimationEndTrigger();
         }
     }
 }

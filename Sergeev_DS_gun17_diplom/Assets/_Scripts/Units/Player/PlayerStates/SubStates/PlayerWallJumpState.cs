@@ -6,7 +6,7 @@ namespace Metroidvania.Player
 {
     public class PlayerWallJumpState : PlayerAbilityState
     {
-        private int wallJumpDirection;
+        private int _wallJumpDirection;
         public PlayerWallJumpState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
@@ -14,21 +14,21 @@ namespace Metroidvania.Player
         public override void Enter()
         {
             base.Enter();
-            player.InputHandler.UseJumpInput();
-            player.JumpState.ResetJumps();
-            Movement?.SetVelocity(playerData.wallJumpVelocity, playerData.wallJumpAngle, wallJumpDirection);
-            Movement?.CheckFlip(wallJumpDirection);
-            player.JumpState.DecreaseJumps();
+            Player.InputHandler.UseJumpInput();
+            Player.JumpState.ResetJumps();
+            Movement?.SetVelocity(PlayerData.wallJumpVelocity, PlayerData.wallJumpAngle, _wallJumpDirection);
+            Movement?.CheckFlip(_wallJumpDirection);
+            Player.JumpState.DecreaseJumps();
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            player.Animator.SetFloat("velocityY", Movement.CurrentVelocity.y);
+            Player.Animator.SetFloat("velocityY", Movement.CurrentVelocity.y);
 
-            if (Time.time >= startTime + playerData.wallJumpTime)
+            if (Time.time >= StartTime + PlayerData.wallJumpTime)
             {
-                isAbilityDone = true;
+                IsAbilityDone = true;
             }
         }
 
@@ -36,11 +36,11 @@ namespace Metroidvania.Player
         {
             if (isTouchingWall)
             {
-                wallJumpDirection = -Movement.FacingDirection;
+                _wallJumpDirection = -Movement.FacingDirection;
             }
             else
             {
-                wallJumpDirection = Movement.FacingDirection;
+                _wallJumpDirection = Movement.FacingDirection;
             }
         }
     }

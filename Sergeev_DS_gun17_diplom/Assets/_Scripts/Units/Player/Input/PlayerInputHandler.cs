@@ -22,7 +22,7 @@ namespace Metroidvania.Player
 
 
         [SerializeField] private float inputHoldTime = 0.2f;
-        private float jumpInputStartTime;
+        private float _jumpInputStartTime;
 
         private void Start()
         {
@@ -38,11 +38,11 @@ namespace Metroidvania.Player
         {
             if (context.started)
             {
-                AttackInputs[(int)CombatInputs.primary] = true;
+                AttackInputs[(int)CombatInputs.Primary] = true;
             }
             if (context.canceled)
             {
-                AttackInputs[(int)CombatInputs.primary] = false;
+                AttackInputs[(int)CombatInputs.Primary] = false;
             }
         }
         public void OnSecondaryAttackInput(InputAction.CallbackContext context)
@@ -54,12 +54,12 @@ namespace Metroidvania.Player
             if (context.performed)
             {
                 SecondaryAttackStarted = false;
-                AttackInputs[(int)CombatInputs.secondary] = true;
+                AttackInputs[(int)CombatInputs.Secondary] = true;
             }
             if(context.canceled)
             {
                 SecondaryAttackStarted = false;
-                AttackInputs[(int)CombatInputs.secondary] = false;
+                AttackInputs[(int)CombatInputs.Secondary] = false;
             }    
         }
         public void OnChangeWeapon(InputAction.CallbackContext context)
@@ -82,7 +82,7 @@ namespace Metroidvania.Player
             {
                 JumpInputStop = false;
                 JumpInput = true;
-                jumpInputStartTime = Time.time;
+                _jumpInputStartTime = Time.time;
             }
             if(context.canceled)
             {
@@ -114,11 +114,11 @@ namespace Metroidvania.Player
         public void UseJumpInput() => JumpInput = false;
         public void UseRollInput() => RollInput = false;
         public void UseChangeWeaponInput() => ChangeWeaponInput = false;
-        public void UseSecondaryAttackInput() => AttackInputs[(int)CombatInputs.secondary] = false;
+        public void UseSecondaryAttackInput() => AttackInputs[(int)CombatInputs.Secondary] = false;
         public void UseSecondaryAttackPerfomedInput() => SecondaryAttackStarted = false;
         private void CheckJumpInputHoldTime()
         {
-            if(Time.time >= jumpInputStartTime + inputHoldTime)
+            if(Time.time >= _jumpInputStartTime + inputHoldTime)
             {
                 JumpInput = false;
             }

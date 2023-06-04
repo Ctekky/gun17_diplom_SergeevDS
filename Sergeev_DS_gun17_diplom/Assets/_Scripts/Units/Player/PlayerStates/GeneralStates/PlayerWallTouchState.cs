@@ -6,23 +6,23 @@ namespace Metroidvania.Player
 {
     public class PlayerWallTouchState : PlayerState
     {
-        protected bool isGrounded;
-        protected bool isTouchingWall;
-        protected bool interactInput;
-        protected int inputX;
-        protected int inputY;
-        protected bool jumpInput;
-        protected bool isTouchingLedge;
+        protected bool IsGrounded;
+        protected bool IsTouchingWall;
+        protected bool InteractInput;
+        protected int InputX;
+        protected int InputY;
+        protected bool JumpInput;
+        protected bool IsTouchingLedge;
         protected Movement Movement
         {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
+            get => _movement ?? Unit.GetUnitComponent<Movement>(ref _movement);
         }
         private CollisionChecks CollisionChecks
         {
-            get => collisionChecks ?? unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
+            get => _collisionChecks ?? Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
         }
-        private Movement movement;
-        private CollisionChecks collisionChecks;
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
 
 
         public PlayerWallTouchState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
@@ -44,15 +44,15 @@ namespace Metroidvania.Player
             base.DoChecks();
             if (CollisionChecks != null)
             {
-                isGrounded = CollisionChecks.Grounded;
-                isTouchingWall = CollisionChecks.WallFront;
-                isTouchingLedge = CollisionChecks.LedgeHorizontal;
+                IsGrounded = CollisionChecks.Grounded;
+                IsTouchingWall = CollisionChecks.WallFront;
+                IsTouchingLedge = CollisionChecks.LedgeHorizontal;
 
             }
 
-            if (isTouchingWall && !isTouchingLedge)
+            if (IsTouchingWall && !IsTouchingLedge)
             {
-                player.LedgeClimbState.SetDetectedPosition(player.transform.position);
+                Player.LedgeClimbState.SetDetectedPosition(Player.transform.position);
             }
 
         }
@@ -70,26 +70,26 @@ namespace Metroidvania.Player
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            inputX = player.InputHandler.NormalizedInputX;
-            inputY = player.InputHandler.NormalizedInputY;
-            interactInput = player.InputHandler.InteractInput;
-            jumpInput = player.InputHandler.JumpInput;
-            if (jumpInput)
+            InputX = Player.InputHandler.NormalizedInputX;
+            InputY = Player.InputHandler.NormalizedInputY;
+            InteractInput = Player.InputHandler.InteractInput;
+            JumpInput = Player.InputHandler.JumpInput;
+            if (JumpInput)
             {
-                player.WallJumpState.WallJumpDirection(isTouchingWall);
-                stateMachine.ChangeState(player.WallJumpState);
+                Player.WallJumpState.WallJumpDirection(IsTouchingWall);
+                StateMachine.ChangeState(Player.WallJumpState);
             }
-            else if (isGrounded && !interactInput)
+            else if (IsGrounded && !InteractInput)
             {
-                stateMachine.ChangeState(player.IdleState);
+                StateMachine.ChangeState(Player.IdleState);
             }
-            else if (!isTouchingWall || (inputX != Movement?.FacingDirection && !interactInput))
+            else if (!IsTouchingWall || (InputX != Movement?.FacingDirection && !InteractInput))
             {
-                stateMachine.ChangeState(player.InAirState);
+                StateMachine.ChangeState(Player.InAirState);
             }
-            else if (isTouchingWall && !isTouchingLedge)
+            else if (IsTouchingWall && !IsTouchingLedge)
             {
-                stateMachine.ChangeState(player.LedgeClimbState);
+                StateMachine.ChangeState(Player.LedgeClimbState);
             }
         }
 

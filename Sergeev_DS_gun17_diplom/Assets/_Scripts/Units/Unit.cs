@@ -1,31 +1,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
-
 namespace Metroidvania.BaseUnit
 {
     public class Unit : MonoBehaviour
     {
-        private readonly List<UnitComponent> unitComponents = new List<UnitComponent>();
-
-        private void Awake()
-        {
-        }
+        private readonly List<UnitComponent> _unitComponents = new List<UnitComponent>();
         public void LogicUpdate()
         {
-            foreach (UnitComponent component in unitComponents)
+            foreach (UnitComponent component in _unitComponents)
             {
                 component.LogicUpdate();
             }
         }
         public void AddComponent(UnitComponent unitComponent)
         {
-            if (!unitComponents.Contains(unitComponent)) unitComponents.Add(unitComponent);
+            if (!_unitComponents.Contains(unitComponent)) _unitComponents.Add(unitComponent);
         }
         public T GetUnitComponent<T>() where T : UnitComponent
         {
-            var component = unitComponents.OfType<T>().FirstOrDefault();
+            var component = _unitComponents.OfType<T>().FirstOrDefault();
             if (component) return component;
             component = GetComponentInChildren<T>();
             if (component) return component;

@@ -6,8 +6,8 @@ namespace Metroidvania.Enemy
 {
     public class EnemyMoveState : EnemyGroundedState
     {
-        protected bool isDetectingWall;
-        protected bool isDetectingLedge;
+        protected bool IsDetectingWall;
+        protected bool IsDetectingLedge;
 
         public EnemyMoveState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
         {
@@ -15,7 +15,7 @@ namespace Metroidvania.Enemy
         public override void Enter()
         {
             base.Enter();
-            Movement?.SetVelocityX(enemyData.movementVelocity * Movement.FacingDirection);
+            Movement?.SetVelocityX(EnemyData.movementVelocity * Movement.FacingDirection);
 
         }
         public override void DoChecks()
@@ -23,17 +23,17 @@ namespace Metroidvania.Enemy
             base.DoChecks();
             if (CollisionChecks)
             {
-                isDetectingLedge = CollisionChecks.LedgeVertical;
-                isDetectingWall = CollisionChecks.WallFront;
+                IsDetectingLedge = CollisionChecks.LedgeVertical;
+                IsDetectingWall = CollisionChecks.WallFront;
 
             }
-            isPlayerInMinAggroRange = enemy.CheckPlayerInMinRange();
+            IsPlayerInMinAggroRange = Enemy.CheckPlayerInMinRange();
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
-            Movement?.SetVelocityX(enemyData.movementVelocity * Movement.FacingDirection);
+            if (IsExitingState) return;
+            Movement?.SetVelocityX(EnemyData.movementVelocity * Movement.FacingDirection);
         }
     }
 }

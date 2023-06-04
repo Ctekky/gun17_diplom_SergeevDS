@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Metroidvania.BaseUnit;
 
@@ -7,33 +5,32 @@ namespace Metroidvania.Player
 {
     public class PlayerInAirState : PlayerState
     {
-
-        protected Movement Movement
+        private Movement Movement
         {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
+            get => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
         }
         private CollisionChecks CollisionChecks
         {
-            get => collisionChecks ?? unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
+            get => _collisionChecks ? _collisionChecks : Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
         }
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        private int inputX;
-        private bool isGrounded;
-        private bool isTouchingWall;
-        private bool isTouchingWallBack;
-        private bool oldIsTouchingWall;
-        private bool oldIsTouchingWallBack;
-        private bool jumpInput;
-        private bool jumpInputStop;
-        private bool interactInput;
-        private bool lastMomentJump;
-        private bool lastMomentWallJump;
-        private bool isJumping;
-        private bool isTouchingRope;
-        private bool isTouchingLedge;
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
+        private int _inputX;
+        private bool _isGrounded;
+        private bool _isTouchingWall;
+        private bool _isTouchingWallBack;
+        private bool _oldIsTouchingWall;
+        private bool _oldIsTouchingWallBack;
+        private bool _jumpInput;
+        private bool _jumpInputStop;
+        private bool _interactInput;
+        private bool _lastMomentJump;
+        private bool _lastMomentWallJump;
+        private bool _isJumping;
+        private bool _isTouchingRope;
+        private bool _isTouchingLedge;
 
-        private float startLastMomentWallJumpTime;
+        private float _startLastMomentWallJumpTime;
 
         public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
@@ -42,146 +39,134 @@ namespace Metroidvania.Player
         public override void DoChecks()
         {
             base.DoChecks();
-            oldIsTouchingWall = isTouchingWall;
-            oldIsTouchingWallBack = isTouchingWallBack;
+            _oldIsTouchingWall = _isTouchingWall;
+            _oldIsTouchingWallBack = _isTouchingWallBack;
 
             if (CollisionChecks)
             {
-                isGrounded = CollisionChecks.Grounded;
-                isTouchingWall = CollisionChecks.WallFront;
-                isTouchingWallBack = CollisionChecks.WallBack;
-                isTouchingRope = player.IsTouchingRope;
-                isTouchingLedge = CollisionChecks.LedgeHorizontal;
+                _isGrounded = CollisionChecks.Grounded;
+                _isTouchingWall = CollisionChecks.WallFront;
+                _isTouchingWallBack = CollisionChecks.WallBack;
+                _isTouchingRope = Player.IsTouchingRope;
+                _isTouchingLedge = CollisionChecks.LedgeHorizontal;
 
             }
-            if (isTouchingWall && !isTouchingLedge)
+            if (_isTouchingWall && !_isTouchingLedge)
             {
-                player.LedgeClimbState.SetDetectedPosition(player.transform.position);
+                Player.LedgeClimbState.SetDetectedPosition(Player.transform.position);
             }
 
-            if (!lastMomentWallJump && !isTouchingWall && !isTouchingWallBack && (oldIsTouchingWall || oldIsTouchingWallBack))
+            if (!_lastMomentWallJump && !_isTouchingWall && !_isTouchingWallBack && (_oldIsTouchingWall || _oldIsTouchingWallBack))
             {
                 StartLastMomentWallJumpTimer();
             }
         }
-
-        public override void Enter()
-        {
-            base.Enter();
-        }
-
         public override void Exit()
         {
             base.Exit();
-            oldIsTouchingWall = false;
-            oldIsTouchingWallBack = false;
-            isTouchingWall = false;
-            isTouchingWallBack = false;
+            _oldIsTouchingWall = false;
+            _oldIsTouchingWallBack = false;
+            _isTouchingWall = false;
+            _isTouchingWallBack = false;
 
         }
-
         public override void LogicUpdate()
         {
             base.LogicUpdate();
             CheckLastMomentJump();
             CheckLastMomentWallJump();
 
-            inputX = player.InputHandler.NormalizedInputX;
-            jumpInput = player.InputHandler.JumpInput;
-            jumpInputStop = player.InputHandler.JumpInputStop;
-            interactInput = player.InputHandler.InteractInput;
+            _inputX = Player.InputHandler.NormalizedInputX;
+            _jumpInput = Player.InputHandler.JumpInput;
+            _jumpInputStop = Player.InputHandler.JumpInputStop;
+            _interactInput = Player.InputHandler.InteractInput;
 
             CheckJumpMultiplier();
-            if (player.InputHandler.AttackInputs[(int)CombatInputs.primary])
+            if (Player.InputHandler.AttackInputs[(int)CombatInputs.Primary])
             {
-                stateMachine.ChangeState(player.PrimaryAttackState);
+                StateMachine.ChangeState(Player.PrimaryAttackState);
             }
-            else if (player.InputHandler.AttackInputs[(int)CombatInputs.secondary])
+            else if (Player.InputHandler.AttackInputs[(int)CombatInputs.Secondary])
             {
-                stateMachine.ChangeState(player.SecondaryAttackState);
+                StateMachine.ChangeState(Player.SecondaryAttackState);
             }
-            else if (isGrounded && Movement?.CurrentVelocity.y < 0.01f)
+            else if (_isGrounded && Movement?.CurrentVelocity.y < 0.01f)
             {
-                stateMachine.ChangeState(player.LandState);
+                StateMachine.ChangeState(Player.LandState);
             }
-            else if (isTouchingWall && !isTouchingLedge && !isGrounded)
+            else if (_isTouchingWall && !_isTouchingLedge && !_isGrounded)
             {
-                stateMachine.ChangeState(player.LedgeClimbState);
+                StateMachine.ChangeState(Player.LedgeClimbState);
             }
-            else if (jumpInput && (isTouchingWall || isTouchingWallBack || lastMomentWallJump))
+            else if (_jumpInput && (_isTouchingWall || _isTouchingWallBack || _lastMomentWallJump))
             {
-                StoptLastMomentWallJumpTimer();
-                isTouchingWall = CollisionChecks.WallFront;
-                player.WallJumpState.WallJumpDirection(isTouchingWall);
-                stateMachine.ChangeState(player.WallJumpState);
+                StopLastMomentWallJumpTimer();
+                _isTouchingWall = CollisionChecks.WallFront;
+                Player.WallJumpState.WallJumpDirection(_isTouchingWall);
+                StateMachine.ChangeState(Player.WallJumpState);
             }
-            else if (jumpInput && player.JumpState.CanJump())
+            else if (_jumpInput && Player.JumpState.CanJump())
             {
-                stateMachine.ChangeState(player.JumpState);
+                StateMachine.ChangeState(Player.JumpState);
             }
-            else if (isTouchingRope && interactInput)
+            else if (_isTouchingRope && _interactInput)
             {
-                stateMachine.ChangeState(player.RopeGrabState);
+                StateMachine.ChangeState(Player.RopeGrabState);
             }
-            else if (isTouchingWall && interactInput && isTouchingLedge)
+            else if (_isTouchingWall && _interactInput && _isTouchingLedge)
             {
-                stateMachine.ChangeState(player.WallGrabState);
+                StateMachine.ChangeState(Player.WallGrabState);
             }
-            else if (isTouchingWall && inputX == Movement?.FacingDirection && Movement?.CurrentVelocity.y <= 0f)
+            else if (_isTouchingWall && _inputX == Movement?.FacingDirection && Movement?.CurrentVelocity.y <= 0f)
             {
-                stateMachine.ChangeState(player.WallSlideState);
+                StateMachine.ChangeState(Player.WallSlideState);
             }
             else
             {
-                Movement?.CheckFlip(inputX);
-                Movement?.SetVelocityX(playerData.movementVelocity * inputX);
-                player.Animator.SetFloat("velocityY", Movement.CurrentVelocity.y);
+                Movement?.CheckFlip(_inputX);
+                Movement?.SetVelocityX(PlayerData.movementVelocity * _inputX);
+                Player.Animator.SetFloat("velocityY", Movement.CurrentVelocity.y);
             }
         }
 
         private void CheckJumpMultiplier()
         {
-            if (isJumping)
+            if (_isJumping)
             {
-                if (jumpInputStop)
+                if (_jumpInputStop)
                 {
-                    Movement?.SetVelocityY(Movement.CurrentVelocity.y * playerData.jumpHeighMultiplier);
-                    isJumping = false;
+                    Movement?.SetVelocityY(Movement.CurrentVelocity.y * PlayerData.jumpHeighMultiplier);
+                    _isJumping = false;
                 }
                 else if (Movement?.CurrentVelocity.y <= 0f)
                 {
-                    isJumping = false;
+                    _isJumping = false;
                 }
             }
         }
-
-        public override void PhysicsUpdate()
-        {
-            base.PhysicsUpdate();
-        }
         private void CheckLastMomentJump()
         {
-            if (lastMomentJump && Time.time > startTime + playerData.lastMomentJumpTime)
+            if (_lastMomentJump && Time.time > StartTime + PlayerData.lastMomentJumpTime)
             {
-                lastMomentJump = false;
-                player.JumpState.DecreaseJumps();
+                _lastMomentJump = false;
+                Player.JumpState.DecreaseJumps();
             }
         }
         private void CheckLastMomentWallJump()
         {
-            if (lastMomentWallJump && Time.time > startLastMomentWallJumpTime + playerData.lastMomentJumpTime)
+            if (_lastMomentWallJump && Time.time > _startLastMomentWallJumpTime + PlayerData.lastMomentJumpTime)
             {
-                lastMomentWallJump = false;
+                _lastMomentWallJump = false;
             }
         }
-        public void StartLastMomentJumpTimer() => lastMomentJump = true;
-        public void SetIsJumping() => isJumping = true;
-        public void StartLastMomentWallJumpTimer()
+        public void StartLastMomentJumpTimer() => _lastMomentJump = true;
+        public void SetIsJumping() => _isJumping = true;
+        private void StartLastMomentWallJumpTimer()
         {
-            lastMomentWallJump = true;
-            startLastMomentWallJumpTime = Time.time;
+            _lastMomentWallJump = true;
+            _startLastMomentWallJumpTime = Time.time;
         }
-        public void StoptLastMomentWallJumpTimer() => lastMomentWallJump = false;
+        private void StopLastMomentWallJumpTimer() => _lastMomentWallJump = false;
 
     }
 }

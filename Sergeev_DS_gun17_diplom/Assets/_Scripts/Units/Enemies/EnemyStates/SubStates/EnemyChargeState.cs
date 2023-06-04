@@ -9,19 +9,19 @@ namespace Metroidvania.Enemy
     {
         protected Movement Movement
         {
-            get => movement ?? unit.GetUnitComponent<Movement>(ref movement);
+            get => _movement ?? Unit.GetUnitComponent<Movement>(ref _movement);
         }
         private CollisionChecks CollisionChecks
         {
-            get => collisionChecks ?? unit.GetUnitComponent<CollisionChecks>(ref collisionChecks);
+            get => _collisionChecks ?? Unit.GetUnitComponent<CollisionChecks>(ref _collisionChecks);
         }
-        private Movement movement;
-        private CollisionChecks collisionChecks;
-        protected bool isPlayerInMinAggroRange;
-        protected bool isDetectingWall;
-        protected bool isDetectingLedge;
-        protected bool isChargeTimeOver;
-        protected bool performCloseRangeAction;
+        private Movement _movement;
+        private CollisionChecks _collisionChecks;
+        protected bool IsPlayerInMinAggroRange;
+        protected bool IsDetectingWall;
+        protected bool IsDetectingLedge;
+        protected bool IsChargeTimeOver;
+        protected bool PerformCloseRangeAction;
 
         public EnemyChargeState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
         {
@@ -29,17 +29,17 @@ namespace Metroidvania.Enemy
         public override void Enter()
         {
             base.Enter();
-            Movement?.SetVelocityX(enemyData.chargeVelocity * Movement.FacingDirection);
-            isChargeTimeOver = false;
+            Movement?.SetVelocityX(EnemyData.chargeVelocity * Movement.FacingDirection);
+            IsChargeTimeOver = false;
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (isExitingState) return;
-            Movement?.SetVelocityX(enemyData.chargeVelocity * Movement.FacingDirection);
-            if (Time.time >= startTime + enemyData.chargeTime)
+            if (IsExitingState) return;
+            Movement?.SetVelocityX(EnemyData.chargeVelocity * Movement.FacingDirection);
+            if (Time.time >= StartTime + EnemyData.chargeTime)
             {
-                isChargeTimeOver = true;
+                IsChargeTimeOver = true;
             }
         }
         public override void DoChecks()
@@ -47,11 +47,11 @@ namespace Metroidvania.Enemy
             base.DoChecks();
             if (CollisionChecks)
             {
-                isDetectingLedge = CollisionChecks.LedgeVertical;
-                isDetectingWall = CollisionChecks.WallFront;
+                IsDetectingLedge = CollisionChecks.LedgeVertical;
+                IsDetectingWall = CollisionChecks.WallFront;
             }
-            isPlayerInMinAggroRange = enemy.CheckPlayerInMinRange();
-            performCloseRangeAction = enemy.CheckPlayerInCloseRangeAction();
+            IsPlayerInMinAggroRange = Enemy.CheckPlayerInMinRange();
+            PerformCloseRangeAction = Enemy.CheckPlayerInCloseRangeAction();
         }
     }
 }
