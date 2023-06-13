@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9512eebddee54d84081142eea1076bea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 0}
+  lootTableData: {fileID: 11400000, guid: 02f14ecf4f5b65d4ea7ab8d381772788, type: 2}

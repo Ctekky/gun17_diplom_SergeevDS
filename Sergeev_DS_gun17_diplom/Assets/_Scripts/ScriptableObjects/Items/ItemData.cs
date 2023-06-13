@@ -7,5 +7,6 @@ namespace Metroidvania.Common.Items
     {
         public string itemName;
         public Sprite icon;
+        public ItemType itemType;
     }
 }

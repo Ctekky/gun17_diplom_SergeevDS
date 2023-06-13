@@ -455,7 +455,7 @@ MonoBehaviour:
   vitality:
     baseValue: 5
     modifiers: 
-  maxHealth:
+  health:
     baseValue: 100
     modifiers: 
   armor:
@@ -471,6 +471,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   currentHealth: 0
+  maxHealth: 0
 --- !u!1 &4162063549535493538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,6 +1021,8 @@ MonoBehaviour:
   weapons:
   - {fileID: 2691158767698738268}
   - {fileID: 5614867931953778607}
+  _inventory: []
+  _buff: []
 --- !u!1 &5709313231389865799
 GameObject:
   m_ObjectHideFlags: 0

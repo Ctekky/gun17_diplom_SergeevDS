@@ -1,6 +1,4 @@
 using Metroidvania.Interfaces;
-using Metroidvania.Structs;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;

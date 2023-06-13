@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Metroidvania.Enemy;
 using Metroidvania.Structs;
 using Unity.Mathematics;
@@ -13,7 +12,7 @@ namespace Metroidvania.Managers
         private List<Transform> _spawners;
         [SerializeField] private List<SpawnersStruct> _spawnersStructs;
         [SerializeField] private GameObject spawnerPrefab;
-        public event Action<Vector2> OnEnemyDied;
+        public event Action<Vector2, LootType> OnEnemyDied;
         private List<EnemySpawner> _spawnerScripts;
 
         private void Awake()
@@ -24,15 +23,17 @@ namespace Metroidvania.Managers
             {
                 var spawner = Instantiate(spawnerPrefab, spawnerData.SpawnCoordinates, quaternion.identity);
                 var spawnerScript = spawner.GetComponent<EnemySpawner>();
-                spawnerScript.SetEnemyPrefab(spawnerData.EnemyPrefab); 
+                spawnerScript.SetEnemyPrefab(spawnerData.EnemyPrefab);
+                spawnerScript.EnemyLevel = spawnerData.EnemyLevel;
                 spawnerScript.OnEnemyDied += EnemyDied;
                 _spawners.Add(spawner.transform);
                 _spawnerScripts.Add(spawnerScript);
             }
         }
-        private void EnemyDied(Vector2 coordinates)
+
+        private void EnemyDied(Vector2 coordinates, LootType lootType)
         {
-            OnEnemyDied?.Invoke(coordinates);
+            OnEnemyDied?.Invoke(coordinates, lootType);
         }
 
         private void OnDisable()

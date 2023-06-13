@@ -7,6 +7,7 @@ namespace  Metroidvania.Structs
     {
         public Vector2 SpawnCoordinates;
         public GameObject EnemyPrefab;
+        public int EnemyLevel;
     }
     
 }

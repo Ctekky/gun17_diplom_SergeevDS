@@ -1,22 +1,27 @@
+using System;
 using UnityEngine;
 using Metroidvania.Interfaces;
-using Metroidvania.Managers;
-using Zenject;
 
 namespace Metroidvania.Common.Items
 {
     public class BaseItem : MonoBehaviour, IPickupable
     {
-        [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private ItemData itemData;
-        
-        private void Start()
-        {
-            
-        }
+        public event Action<BaseItem> OnPickuped;
 
+        private void OnValidate()
+        {
+            GetComponent<SpriteRenderer>().sprite = itemData.icon;
+            gameObject.name = "Item data " + itemData.name;
+        }
+        public ItemData GetItemData()
+        {
+            return itemData;
+        }
         public void Pickup()
         {
+            OnPickuped?.Invoke(this);
+            Destroy(gameObject);
         }
     }
 }

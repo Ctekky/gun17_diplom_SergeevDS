@@ -8,43 +8,70 @@ namespace Metroidvania.BaseUnit
     {
         public event Action OnHealthZero;
         public event Action OnDecreaseHealth;
-        [Header("Major stats")] 
-        public Stats strength;
+        [Header("Major stats")] public Stats strength;
         public Stats agility;
         public Stats vitality;
 
-        [Header("Defensive stats")] 
-        public Stats maxHealth;
+        [Header("Defensive stats")] public Stats health;
         public Stats armor;
         public Stats evasion;
 
-        [Header("Offencive stats")] 
-        public Stats critChance;
+        [Header("Offencive stats")] public Stats critChance;
         public Stats critPower;
-        
+
         [SerializeField] private int currentHealth;
-        
+        [SerializeField] private int maxHealth;
+        [SerializeField] private int unitLevel = 1;
+        [SerializeField, Range(0f, 1f)] private float percentageModifier = 0.4f;
+        public int UnitLevel
+        {
+            get => unitLevel;
+            set => unitLevel = value;
+        }
         public int DoDamage(int baseDamage)
         {
             var finalDamage = strength.GetValue() + baseDamage;
             return CanCrit() ? CalculateCrt(finalDamage) : finalDamage;
         }
+
         public int ArrowDamage()
         {
             return agility.GetValue();
         }
+
         protected override void Awake()
         {
             base.Awake();
             currentHealth = GetMaxHealthValue();
         }
+
         protected override void Start()
         {
             base.Start();
             critPower.SetDefaultValue(150);
+            ApplyLevelModifiers();
+            GetMaxHealthValue();
+            RestoreHealth();
+            
         }
 
-        public void DecreaseHealth(int amount)
+        private void ApplyLevelModifiers()
+        {
+            Modify(strength);
+            Modify(agility);
+            Modify(vitality);
+        }
+
+        private void Modify(Stats stat)
+        {
+            for (var i = 1; i < unitLevel; i++)
+            {
+                var modifier = stat.GetValue() * percentageModifier;
+                stat.AddModifier(Mathf.RoundToInt(modifier));
+            }
+        }
+
+    public void DecreaseHealth(int amount)
         {
             if(CanAvoidAttack()) return;
             currentHealth -= ArmorReduction(amount);
@@ -57,10 +84,22 @@ namespace Metroidvania.BaseUnit
         private bool CanAvoidAttack() =>Random.Range(0, 100) < evasion.GetValue() + agility.GetValue();
         private bool CanCrit() => Random.Range(0, 100) < critChance.GetValue() + agility.GetValue();
         private int CalculateCrt(int damage) =>Mathf.RoundToInt(damage * ((critPower.GetValue() + strength.GetValue()) * 0.1f));
-        private int ArmorReduction(int damage) => Mathf.Clamp(damage - armor.GetValue(), 0, maxHealth.GetValue());
-        public int GetMaxHealthValue() => maxHealth.GetValue() + vitality.GetValue() * 5;
+        private int ArmorReduction(int damage) => Mathf.Clamp(damage - armor.GetValue(), 0, health.GetValue());
+
+        public int GetMaxHealthValue()
+        {
+            maxHealth = health.GetValue() + vitality.GetValue() * 5;
+            return maxHealth;
+        }
         public int GetCurrentHealth() => currentHealth;
-        public void IncreaseHealth(int amount) => currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth.GetValue());
+        public void RestoreHealth()
+        {
+            currentHealth = maxHealth;
+        }
+        public void IncreaseHealth(int amount)
+        {
+            currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);   
+        }
     }
 }
 

@@ -564,16 +564,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strength:
-    baseValue: 0
+    baseValue: 2
     modifiers: 
   agility:
-    baseValue: 0
+    baseValue: 2
     modifiers: 
   vitality:
-    baseValue: 0
+    baseValue: 5
     modifiers: 
-  maxHealth:
-    baseValue: 100
+  health:
+    baseValue: 50
     modifiers: 
   armor:
     baseValue: 0
@@ -588,6 +588,9 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   currentHealth: 0
+  maxHealth: 0
+  unitLevel: 1
+  percentageModifier: 0.4
 --- !u!1 &6740031037808318876
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,6 +965,7 @@ MonoBehaviour:
   ledgeCheck: {fileID: 6740031036777629662}
   playerCheck: {fileID: 6740031036887469141}
   enemyData: {fileID: 11400000, guid: 0ee3b9ea669e11d46898275afa9086c2, type: 2}
+  lootType: 0
   meleeAttackPosition: {fileID: 6740031037808318877}
 --- !u!1 &6740031038498248023
 GameObject:

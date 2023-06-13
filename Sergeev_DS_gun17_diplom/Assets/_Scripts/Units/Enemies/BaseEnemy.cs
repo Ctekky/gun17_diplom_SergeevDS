@@ -18,14 +18,12 @@ namespace Metroidvania.Enemy
         private Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
         private Movement _movement;
         private Vector2 _workVector;
-        [SerializeField]
-        private Transform wallCheck;
-        [SerializeField]
-        private Transform ledgeCheck;
-        [SerializeField]
-        private Transform playerCheck;
-        [SerializeField]
-        protected EnemyData enemyData;
+        [SerializeField] private Transform wallCheck;
+        [SerializeField] private Transform ledgeCheck;
+        [SerializeField] private Transform playerCheck;
+        [SerializeField] protected EnemyData enemyData;
+        [SerializeField] private LootType lootType;
+        
         private int _lastDamageDirection;
         
         public virtual void Awake()
@@ -43,6 +41,8 @@ namespace Metroidvania.Enemy
             Unit.LogicUpdate();
             StateMachine.CurrentState.LogicUpdate();
         }
+
+        public LootType GetLootType() => lootType;
         public virtual void FixedUpdate()
         {
             StateMachine.CurrentState.PhysicsUpdate();

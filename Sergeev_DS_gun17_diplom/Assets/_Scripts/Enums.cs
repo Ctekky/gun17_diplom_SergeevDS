@@ -16,10 +16,33 @@ namespace Metroidvania
         Rope
     }
 
-    public enum EnemyType : byte
+    public enum LootType : byte
     {
         Boar,
         Bat,
-        Spider
+        Spider,
+        Crate
+    }
+
+    public enum ItemType : byte
+    {
+        Material,
+        Buff,
+        Ammo,
+        Potion
+    }
+
+    public enum BuffType : byte
+    {
+        Strength,
+        Agility,
+        Vitality,
+        Armor
+    }
+
+    public enum PotionType : byte
+    {
+        Health,
+        Buff
     }
 }

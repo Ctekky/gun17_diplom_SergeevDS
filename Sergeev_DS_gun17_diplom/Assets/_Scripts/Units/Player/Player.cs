@@ -1,13 +1,18 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Metroidvania.BaseUnit;
+using Metroidvania.Common.Items;
+using Metroidvania.Interfaces;
+using Metroidvania.UI;
+using Zenject;
 
 namespace Metroidvania.Player
 {
     public class Player : MonoBehaviour
     {
         #region StateMachineVars
-        
+
         private PlayerStateMachine StateMachine { get; set; }
         public PlayerIdleState IdleState { get; private set; }
         public PlayerMoveState MoveState { get; private set; }
@@ -37,25 +42,28 @@ namespace Metroidvania.Player
         public PlayerInputHandler InputHandler { get; private set; }
         private BoxCollider2D PlayerBodyCollider { get; set; }
         public Rigidbody2D Rb { get; private set; }
-        [SerializeField]
-        private PlayerData playerData;
-        #endregion
-
-        #region OtherVars
-
-        public bool IsTouchingRope { get => isTouchingRope; private set {isTouchingRope = value; }}
+        [SerializeField] private PlayerData playerData;
+        public bool IsTouchingRope
+        {
+            get => isTouchingRope;
+            private set => isTouchingRope = value;
+        }
         public Transform CurrentRope { get; private set; }
-        [SerializeField]
-        private bool isTouchingRope;
+        [SerializeField] private bool isTouchingRope;
         private float _startCollisionTime;
         private List<RopeLinks> _ropeLinksCollisions;
-        public PlayerInventory Inventory { get; private set; }
-        public WeaponType CurrentWeaponEquip { get => _currentWeaponEquip; private set { _currentWeaponEquip = value; }}
+        private PlayerInventory Inventory { get; set; }
+        public WeaponType CurrentWeaponEquip
+        {
+            get => _currentWeaponEquip;
+            private set => _currentWeaponEquip = value;
+        }
         private WeaponType _currentWeaponEquip;
-
-        #endregion
         private Vector2 _workVector;
+        
+        #endregion
         #region Unity Func
+
         private void Awake()
         {
             Unit = GetComponentInChildren<Unit>();
@@ -79,54 +87,106 @@ namespace Metroidvania.Player
             PrimaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
             SecondaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
             AimState = new PlayerAimState(this, StateMachine, playerData, "aim");
-
         }
+
         private void Start()
         {
+            Inventory = GetComponent<PlayerInventory>();
+            Inventory.OnAppliedBuff += ApplyBuff;
             Animator = GetComponent<Animator>();
             InputHandler = GetComponent<PlayerInputHandler>();
             Rb = GetComponent<Rigidbody2D>();
             _ropeLinksCollisions = new List<RopeLinks>();
             PlayerBodyCollider = GetComponentInChildren<BoxCollider2D>();
-            Inventory = GetComponent<PlayerInventory>();
             PrimaryAttackState.SetWeapon(Inventory.weapons[0]);
             AimState.SetWeapon(Inventory.weapons[0]);
             StateMachine.Initialize(IdleState);
             _currentWeaponEquip = WeaponType.Sword;
         }
+        private void ApplyBuff(BuffType buffType, int modifier)
+        {
+             var unitStats = Unit.GetUnitComponent<UnitStats>();
+             switch (buffType)
+             {
+                 case BuffType.Strength:
+                     unitStats.strength.AddModifier(modifier);
+                     break;
+                 case BuffType.Agility:
+                     unitStats.agility.AddModifier(modifier);
+                     break;
+                 case BuffType.Vitality:
+                     unitStats.vitality.AddModifier(modifier);
+                     unitStats.GetMaxHealthValue();
+                     unitStats.RestoreHealth();
+                     break;
+                 case BuffType.Armor:
+                     unitStats.armor.AddModifier(modifier);
+                     break;
+                 default:
+                     break;
+             }
+        }
+        private void RemoveBuff(BuffType buffType, int modifier)
+        {
+            var unitStats = Unit.GetUnitComponent<UnitStats>();
+            switch (buffType)
+            {
+                case BuffType.Strength:
+                    unitStats.strength.RemoveModifier(modifier);
+                    break;
+                case BuffType.Agility:
+                    unitStats.agility.RemoveModifier(modifier);
+                    break;
+                case BuffType.Vitality:
+                    unitStats.vitality.RemoveModifier(modifier);
+                    unitStats.GetMaxHealthValue();
+                    unitStats.RestoreHealth();
+                    break;
+                case BuffType.Armor:
+                    unitStats.armor.RemoveModifier(modifier);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void Update()
         {
             Unit.LogicUpdate();
             StateMachine.CurrentState.LogicUpdate();
             if (InputHandler.ChangeWeaponInput) ChangeWeapon();
         }
+
         private void FixedUpdate()
         {
             StateMachine.CurrentState.PhysicsUpdate();
         }
+
         #endregion
-        
+
         private void ChangeWeapon()
         {
-                var bowLayer = Animator.GetLayerIndex("Bow Layer");
-                if (Animator.GetLayerWeight(bowLayer) == 1)
-                {
-                    Animator.SetLayerWeight(bowLayer, 0f);
-                    PrimaryAttackState.SetWeapon(Inventory.weapons[0]);
+            var bowLayer = Animator.GetLayerIndex("Bow Layer");
+            if (Animator.GetLayerWeight(bowLayer) == 1)
+            {
+                Animator.SetLayerWeight(bowLayer, 0f);
+                PrimaryAttackState.SetWeapon(Inventory.weapons[0]);
                 AimState.SetWeapon(Inventory.weapons[0]);
                 _currentWeaponEquip = WeaponType.Sword;
-                }
-                else
-                {
-                    Animator.SetLayerWeight(bowLayer, 1f);
-                    PrimaryAttackState.SetWeapon(Inventory.weapons[1]);
+            }
+            else
+            {
+                Animator.SetLayerWeight(bowLayer, 1f);
+                PrimaryAttackState.SetWeapon(Inventory.weapons[1]);
                 AimState.SetWeapon(Inventory.weapons[1]);
                 _currentWeaponEquip = WeaponType.Bow;
-                }
+            }
+
             InputHandler.UseChangeWeaponInput();
         }
 
         #region Other Func
+
         private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
         private void AnimationEndTrigger() => StateMachine.CurrentState.AnimationEndTrigger();
 
@@ -138,7 +198,12 @@ namespace Metroidvania.Player
                 CurrentRope = collision.transform;
                 isTouchingRope = true;
             }
+            else if (collision.GetComponent<IPickupable>() != null)
+            {
+                collision.GetComponent<IPickupable>().Pickup();
+            }
         }
+
         private void OnTriggerExit2D(Collider2D collision)
         {
             if (collision.GetComponent<RopeLinks>() != null)
@@ -150,6 +215,7 @@ namespace Metroidvania.Player
                 }
             }
         }
+
         public void SetColliderHeight(float height)
         {
             Vector2 center = PlayerBodyCollider.offset;
@@ -158,11 +224,19 @@ namespace Metroidvania.Player
             PlayerBodyCollider.size = _workVector;
             PlayerBodyCollider.offset = center;
         }
+
         public void PlayerMoveRope()
         {
             transform.SetParent(isTouchingRope ? CurrentRope.transform : null);
         }
+
         public void SetPlayerLayer(LayerMask layer) => gameObject.layer = (int)Mathf.Log(layer.value, 2);
+
         #endregion
+
+        private void OnDisable()
+        {
+            Inventory.OnAppliedBuff -= ApplyBuff;
+        }
     }
 }
