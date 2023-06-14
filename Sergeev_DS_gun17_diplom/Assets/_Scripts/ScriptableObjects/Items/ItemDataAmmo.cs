@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,6 +9,7 @@ namespace Metroidvania.Common.Items
     {
         public ArrowType arrowType;
         public Transform arrowPrefab;
+        public List<InventoryItem> craftingMaterials;
         
     }
 }

@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Metroidvania.Common.Items
 {
@@ -10,6 +8,17 @@ namespace Metroidvania.Common.Items
     {
         public PotionType potionType;
         public int potionModifier;
+        public List<InventoryItem> craftingMaterials;
+        public IEnumerable<ItemEffect> itemEffects;
+
+        public void ItemEffect()
+        {
+            foreach (var effect in itemEffects)
+            {
+                effect.ExecuteEffect();
+            }
+        }
+        
     }
     
 }

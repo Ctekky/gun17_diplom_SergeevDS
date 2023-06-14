@@ -5,5 +5,6 @@ namespace Metroidvania.Structs
     {
         public LootType lootType;
         public LootTable[] lootTable;
+        public int numberOfItemToDrop;
     }
 }

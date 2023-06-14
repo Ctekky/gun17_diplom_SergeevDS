@@ -23,11 +23,13 @@ namespace Metroidvania.BaseUnit
         [SerializeField] private int maxHealth;
         [SerializeField] private int unitLevel = 1;
         [SerializeField, Range(0f, 1f)] private float percentageModifier = 0.4f;
+
         public int UnitLevel
         {
             get => unitLevel;
             set => unitLevel = value;
         }
+
         public int DoDamage(int baseDamage)
         {
             var finalDamage = strength.GetValue() + baseDamage;
@@ -52,7 +54,6 @@ namespace Metroidvania.BaseUnit
             ApplyLevelModifiers();
             GetMaxHealthValue();
             RestoreHealth();
-            
         }
 
         private void ApplyLevelModifiers()
@@ -71,9 +72,26 @@ namespace Metroidvania.BaseUnit
             }
         }
 
-    public void DecreaseHealth(int amount)
+        public int GetStat(StatType statType)
         {
-            if(CanAvoidAttack()) return;
+            return statType switch
+            {
+                StatType.Strength => strength.GetValue(),
+                StatType.Agility => agility.GetValue(),
+                StatType.Vitality => vitality.GetValue(),
+                StatType.Armor => armor.GetValue(),
+                StatType.Evasion => evasion.GetValue(),
+                StatType.CritChance => critChance.GetValue(),
+                StatType.CritPower => critPower.GetValue(),
+                StatType.Health => maxHealth,
+                StatType.CurrentHealth => currentHealth,
+                _ => throw new ArgumentOutOfRangeException(nameof(statType), statType, null)
+            };
+        }
+
+        public void DecreaseHealth(int amount)
+        {
+            if (CanAvoidAttack()) return;
             currentHealth -= ArmorReduction(amount);
             OnDecreaseHealth?.Invoke();
             if (currentHealth >= 0) return;
@@ -81,9 +99,13 @@ namespace Metroidvania.BaseUnit
             OnHealthZero?.Invoke();
             Debug.Log("Health is 0!");
         }
-        private bool CanAvoidAttack() =>Random.Range(0, 100) < evasion.GetValue() + agility.GetValue();
+
+        private bool CanAvoidAttack() => Random.Range(0, 100) < evasion.GetValue() + agility.GetValue();
         private bool CanCrit() => Random.Range(0, 100) < critChance.GetValue() + agility.GetValue();
-        private int CalculateCrt(int damage) =>Mathf.RoundToInt(damage * ((critPower.GetValue() + strength.GetValue()) * 0.1f));
+
+        private int CalculateCrt(int damage) =>
+            Mathf.RoundToInt(damage * ((critPower.GetValue() + strength.GetValue()) * 0.1f));
+
         private int ArmorReduction(int damage) => Mathf.Clamp(damage - armor.GetValue(), 0, health.GetValue());
 
         public int GetMaxHealthValue()
@@ -91,16 +113,17 @@ namespace Metroidvania.BaseUnit
             maxHealth = health.GetValue() + vitality.GetValue() * 5;
             return maxHealth;
         }
+
         public int GetCurrentHealth() => currentHealth;
+
         public void RestoreHealth()
         {
             currentHealth = maxHealth;
         }
+
         public void IncreaseHealth(int amount)
         {
-            currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);   
+            currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         }
     }
 }
-
-

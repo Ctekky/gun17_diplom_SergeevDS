@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Metroidvania.Combat.Weapon;
 using Metroidvania.Common.Items;
@@ -18,6 +19,7 @@ namespace Metroidvania.Player
         [SerializeField] private List<InventoryItem> _potion;
         [SerializeField] private Dictionary<ItemDataPotion, InventoryItem> _potionDictionary;
         public event Action<List<InventoryItem>> OnUpdateInventoryUI;
+        public event Action<List<InventoryItem>, ItemType> OnUpdateUI; 
         public event Action<List<InventoryItem>> OnUpdateBuffUI;
         
         public event Action<List<InventoryItem>> OnUpdateAmmoUI;
@@ -41,27 +43,25 @@ namespace Metroidvania.Player
             {
                 case ItemType.Material:
                     AddItemToListAndDictionary(_inventory, _inventoryDictionary, item);
-                    OnUpdateInventoryUI?.Invoke(_inventory);
+                    OnUpdateUI?.Invoke(_inventory, ItemType.Material);
                     break;
                 case ItemType.Buff:
                     var buff = item as ItemDataBuff;
                     AddItemToListAndDictionary(_buff, _buffDictionary, buff);
-                    OnUpdateBuffUI?.Invoke(_buff);
+                    OnUpdateUI?.Invoke(_buff, ItemType.Buff);
                     if (buff != null) OnAppliedBuff?.Invoke(buff.buffType, buff.modifier);
                     break;
                 case ItemType.Ammo:
                     var ammo = item as ItemDataAmmo;
                     AddItemToListAndDictionary(_ammo, _ammoDictionary, ammo);
-                    OnUpdateAmmoUI?.Invoke(_ammo);
+                    OnUpdateUI?.Invoke(_ammo, ItemType.Ammo);
                     break;
                 case ItemType.Potion:
                     var potion = item as ItemDataPotion;
                     AddItemToListAndDictionary(_potion, _potionDictionary, potion);
-                    OnUpdatePotionUI?.Invoke(_potion);
+                    OnUpdateUI?.Invoke(_potion, ItemType.Potion);
                     break;
                 default:
-                    AddItemToListAndDictionary(_inventory, _inventoryDictionary, item);
-                    OnUpdateInventoryUI?.Invoke(_inventory);
                     break;
             }
         }
@@ -71,26 +71,24 @@ namespace Metroidvania.Player
             {
                 case ItemType.Material:
                     RemoveItemFromListAndDictionary(_inventory, _inventoryDictionary, item);
-                    OnUpdateInventoryUI?.Invoke(_inventory);
+                    OnUpdateUI?.Invoke(_inventory, ItemType.Material);
                     break;
                 case ItemType.Buff:
                     var buff = item as ItemDataBuff;
                     RemoveItemFromListAndDictionary(_buff, _buffDictionary, buff);
-                    OnUpdateBuffUI?.Invoke(_buff);
+                    OnUpdateUI?.Invoke(_buff, ItemType.Buff);
                     break;
                 case ItemType.Ammo:
                     var ammo = item as ItemDataAmmo;
                     RemoveItemFromListAndDictionary(_ammo, _ammoDictionary, ammo);
-                    OnUpdateAmmoUI?.Invoke(_ammo);
+                    OnUpdateUI?.Invoke(_ammo, ItemType.Ammo);
                     break;
                 case ItemType.Potion:
                     var potion = item as ItemDataPotion;
                     RemoveItemFromListAndDictionary(_potion, _potionDictionary, potion);
-                    OnUpdatePotionUI?.Invoke(_potion);
+                    OnUpdateUI?.Invoke(_potion, ItemType.Potion);
                     break;
                 default:
-                    RemoveItemFromListAndDictionary(_inventory, _inventoryDictionary, item);
-                    OnUpdateInventoryUI?.Invoke(_inventory);
                     break;
             }
         }
@@ -121,6 +119,36 @@ namespace Metroidvania.Player
             {
                 value.RemoveStack();
             }
+        }
+
+        public bool CanCraftItem<T>(T itemToCraft, IEnumerable<InventoryItem> requiredMaterials) where T : ItemData
+        {
+            var materialsToRemove = new List<InventoryItem>();
+            foreach (var item in requiredMaterials.ToList())
+            {
+                if (_inventoryDictionary.TryGetValue(item.ItemData, out var inventoryValue))
+                {
+                    if (inventoryValue.stackSize < item.stackSize)
+                    {
+                        Debug.Log("Not enough materials");
+                        return false;
+                    }
+                    materialsToRemove.Add(inventoryValue);
+                }
+                else
+                {
+                    Debug.Log("Not enough materials");
+                    return false;  
+                }
+            }
+
+            foreach (var itemToRemove in materialsToRemove.ToList())
+            {
+                RemoveItem(itemToRemove.ItemData);
+            }
+            AddItem(itemToCraft);
+            Debug.Log($"Craft item {itemToCraft}");
+            return true;
         }
     }
 }

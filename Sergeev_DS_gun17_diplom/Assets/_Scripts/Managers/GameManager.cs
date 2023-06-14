@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Metroidvania.Common.Items;
 using Metroidvania.Player;
@@ -17,30 +18,35 @@ namespace Metroidvania.Managers
         {
             _enemyManager.SpawnAll();
             _enemyManager.OnEnemyDied += EnemyDied;
-            _player.GetComponent<PlayerInventory>().OnUpdateInventoryUI += InventoryUIUpdate;
-            _player.GetComponent<PlayerInventory>().OnUpdateBuffUI += BuffUIUpdate;
+            _player.GetComponent<PlayerInventory>().OnUpdateUI += InventoryUIUpdate;
+        }
+
+        private void OnEnable()
+        {
+            _uiManager.UICanvasCraftClicked += OnCraftClicked;
+        }
+
+        private void OnCraftClicked(ItemData itemData, List<InventoryItem> craftingMaterials)
+        {
+            Debug.Log("Trying to craft some items");
+            _player.GetComponent<PlayerInventory>().CanCraftItem(itemData, craftingMaterials);
         }
 
         private void EnemyDied(Vector2 coordinates, LootType lootType)
         {
-            _itemManager.SpawnItem(lootType, coordinates);
+            _itemManager.ChooseItemToSpawn(lootType, coordinates);
             Debug.Log($"Enemy died on coordinates {coordinates} and have {lootType}");
         }
 
-        private void InventoryUIUpdate(List<InventoryItem> inventoryItems)
+        private void InventoryUIUpdate(List<InventoryItem> inventoryItems, ItemType itemType)
         {
-            _uiManager.UpdateInventoryUI(inventoryItems);
-        }
-        private void BuffUIUpdate(List<InventoryItem> buffs)
-        {
-            _uiManager.UpdateBuffUI(buffs);
+            _uiManager.UpdateInventoryUI(inventoryItems, itemType);
         }
 
         private void OnDisable()
         {
             _enemyManager.OnEnemyDied -= EnemyDied;
-            _player.GetComponent<PlayerInventory>().OnUpdateInventoryUI -= InventoryUIUpdate;
-            _player.GetComponent<PlayerInventory>().OnUpdateInventoryUI -= BuffUIUpdate;
+            _player.GetComponent<PlayerInventory>().OnUpdateUI -= InventoryUIUpdate;
         }
     }
 }

@@ -1,29 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CreateRope : MonoBehaviour
 {
     #region Fields
-
     // Переменные для хранения объёктов веревки
-    Transform _links;
+    private Transform _links;
     public GameObject firstSegment;
-    GameObject _rope;
-    GameObject _newRope;
-    GameObject _emptyGameObjectPrefab;
+    private GameObject _rope;
+    private GameObject _newRope;
+
+    private GameObject _emptyGameObjectPrefab;
     //Переменные для хранения первичной позиции и поворота
-    Vector3 _linkOneOriginalPosition;
-    Quaternion _linkOneOriginalRotation;
+    private Vector3 _linkOneOriginalPosition;
+
+    private Quaternion _linkOneOriginalRotation;
     //Новая верёвка и отступ при спавне
-    Vector2 _spawnLocation;
-    float _spawnLocationOffset;
+    private Vector2 _spawnLocation;
+
+    private float _spawnLocationOffset;
     //Переменные для присоединения позиций
-    float _ropeAttachPosition;
-    float _segmentSize;
+    private float _ropeAttachPosition;
+
+    private float _segmentSize;
     //Это основные компоненты физики веревки
-    HingeJoint2D _hingeJoint2D;
-    DistanceJoint2D _distanceJoint2D;
+    private HingeJoint2D _hingeJoint2D;
+
+    private DistanceJoint2D _distanceJoint2D;
     //Настройки для верёвки
     [Header("Rope Settings")]
     [Range(2, 50, order = 1)] [Tooltip("Количество сегментов")] [Delayed] 
@@ -52,14 +54,16 @@ public class CreateRope : MonoBehaviour
         BuildRope();
         ConnectRope();
     }
-    void OnDrawGizmosSelected()
+
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color=Color.red;
         Gizmos.DrawWireCube(firstSegment.transform.position, new Vector2(0, firstSegment.GetComponent<SpriteRenderer>().bounds.size.y - ropeAttachPositionOffset));
     }
-    void BuildRope()
+
+    private void BuildRope()
     {
-        for (int i = 0; i < ropeSegments - 1; i++)
+        for (var i = 0; i < ropeSegments - 1; i++)
         {
             var additionalOffset = Mathf.Abs(_links.GetChild(i).GetComponent<RopeLinks>().transform.position.y -
                                    _links.GetChild(i).GetComponent<RopeLinks>().ConnectionPoint.position.y) - 0.01f;
@@ -80,12 +84,12 @@ public class CreateRope : MonoBehaviour
             _newRope.transform.localScale = firstSegment.transform.localScale;
             _newRope.GetComponent<SpriteRenderer>().sprite = firstSegment.GetComponent<SpriteRenderer>().sprite;
             _newRope.GetComponent<SpriteRenderer>().color =firstSegment.GetComponent<SpriteRenderer>().color;
-
         }
     }
-    void ConnectRope()
+
+    private void ConnectRope()
     {
-        for (int i = 0; i < ropeSegments; i++)
+        for (var i = 0; i < ropeSegments; i++)
         {
             _rope = _links.GetChild(i).gameObject;
             _hingeJoint2D = _rope.GetComponent<HingeJoint2D>();
@@ -95,7 +99,6 @@ public class CreateRope : MonoBehaviour
             }
             else
             {
-                //hingeJoint2D.connectedBody = player.GetComponent<Rigidbody2D>();
                 _distanceJoint2D.connectedBody = _rope.GetComponent<Rigidbody2D>();
             }
         }

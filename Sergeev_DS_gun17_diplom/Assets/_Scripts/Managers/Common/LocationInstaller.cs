@@ -23,13 +23,13 @@ namespace Metroidvania.Common
         {
             var position1 = startPoint.position;
             var position = zeroPoint.position;
-            var uiCanvas =
-                Container.InstantiatePrefabForComponent<UICanvas>(uiCanvasPrefab, position, Quaternion.identity, null);
-            Container.Bind<UICanvas>().FromInstance(uiCanvas).AsSingle();
             var player =
                 Container.InstantiatePrefabForComponent<Player.Player>(playerPrefab, position1,
                     Quaternion.identity, null);
             Container.Bind<Player.Player>().FromInstance(player).AsSingle();
+            var uiCanvas =
+                Container.InstantiatePrefabForComponent<UICanvas>(uiCanvasPrefab, position, Quaternion.identity, null);
+            Container.Bind<UICanvas>().FromInstance(uiCanvas).AsSingle();
             var itemManager = Container.InstantiatePrefabForComponent<ItemManager>(itemManagerPrefab,
                 position,
                 Quaternion.identity, managersParent);

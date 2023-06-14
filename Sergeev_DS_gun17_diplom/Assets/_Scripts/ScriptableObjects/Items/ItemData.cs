@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Metroidvania.Common.Items
@@ -8,5 +9,6 @@ namespace Metroidvania.Common.Items
         public string itemName;
         public Sprite icon;
         public ItemType itemType;
+        public string itemDescription;
     }
 }

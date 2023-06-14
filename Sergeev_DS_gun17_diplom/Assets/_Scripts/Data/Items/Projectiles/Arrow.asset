@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e90a58cc30958459dcfb1b6cfdb5c7, type: 3}
+  m_Name: Arrow
+  m_EditorClassIdentifier: 
+  itemName: Arrow
+  icon: {fileID: 21300000, guid: eb0a9094628be4845a06ab74de794171, type: 3}
+  itemType: 2
+  arrowType: 0
+  arrowPrefab: {fileID: 3530684678689620418, guid: 9b841c81d757c974783efcdba91ee271, type: 3}
+  craftingMaterials:
+  - ItemData: {fileID: 11400000, guid: fcd2a9010b677804daa3a41b0a22fe12, type: 2}
+    stackSize: 1
+  - ItemData: {fileID: 11400000, guid: 63a94152cb3acaa4d98a73b09c7def55, type: 2}
+    stackSize: 1

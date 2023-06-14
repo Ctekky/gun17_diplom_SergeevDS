@@ -34,6 +34,7 @@ namespace Metroidvania.Player
             } 
             else if (!Player.InputHandler.SecondaryAttackStarted)
             {
+                _weapon.ExitWeaponAim();
                 StateMachine.ChangeState(Player.IdleState);
             }
         }

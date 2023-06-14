@@ -2,16 +2,19 @@ using System;
 using Metroidvania.Common.Items;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 using UnityEngine;
 
 namespace Metroidvania.UI
 {
-    public class UIItemSlot : MonoBehaviour
+    public class UIItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private Image itemImage;
         [SerializeField] private TextMeshProUGUI itemText;
 
         public InventoryItem item;
+        public event Action<ItemData, Vector2> PointerEnter;
+        public event Action PointerExit; 
 
         public void UpdateSlot(InventoryItem newItem)
         {
@@ -28,6 +31,24 @@ namespace Metroidvania.UI
             itemImage.color = Color.clear;
             itemImage.sprite = null;
             itemText.text = "";
+        }
+
+        public virtual void OnPointerDown(PointerEventData eventData)
+        {
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if(item == null) return;
+            if(item.ItemData == null) return;
+            PointerEnter?.Invoke(item.ItemData, transform.position);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if(item == null) return;
+            if(item.ItemData == null) return;
+            PointerExit?.Invoke();
         }
     }
 }

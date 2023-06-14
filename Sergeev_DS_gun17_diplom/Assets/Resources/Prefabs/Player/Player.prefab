@@ -472,6 +472,8 @@ MonoBehaviour:
     modifiers: 
   currentHealth: 0
   maxHealth: 0
+  unitLevel: 1
+  percentageModifier: 0.4
 --- !u!1 &4162063549535493538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1021,8 +1023,14 @@ MonoBehaviour:
   weapons:
   - {fileID: 2691158767698738268}
   - {fileID: 5614867931953778607}
-  _inventory: []
+  _inventory:
+  - ItemData: {fileID: 11400000, guid: 63a94152cb3acaa4d98a73b09c7def55, type: 2}
+    stackSize: 5
+  - ItemData: {fileID: 11400000, guid: fcd2a9010b677804daa3a41b0a22fe12, type: 2}
+    stackSize: 3
   _buff: []
+  _ammo: []
+  _potion: []
 --- !u!1 &5709313231389865799
 GameObject:
   m_ObjectHideFlags: 0

@@ -85,6 +85,13 @@ namespace Metroidvania.Combat.Weapon
             ShowDots();
             
         }
+
+        public override void ExitWeaponAim()
+        {
+            base.ExitWeaponAim();
+            DotsActive(false);
+        }
+
         private Vector2 AimDirection()
         {
             Vector2 playerPosition = player.position;

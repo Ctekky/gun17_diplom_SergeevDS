@@ -16,12 +16,13 @@ MonoBehaviour:
   - lootType: 0
     lootTable:
     - itemData: {fileID: 2929321370634355526, guid: 268794215da8c5241b09479c152462e8, type: 3}
-      dropChance: 0
+      dropChance: 50
     - itemData: {fileID: 2929321370634355526, guid: 77f10b1d0451bf749a81d150f980837d, type: 3}
-      dropChance: 0
+      dropChance: 50
     - itemData: {fileID: 2929321370634355526, guid: 40ae3b3000da9b14f844962228400580, type: 3}
-      dropChance: 0
+      dropChance: 5
     - itemData: {fileID: 2929321370634355526, guid: 24980b2cf829a0141801f07c856b0f66, type: 3}
-      dropChance: 100
+      dropChance: 5
     - itemData: {fileID: 2929321370634355526, guid: 3cde419e2beb236458f1d56d1baa0d6a, type: 3}
-      dropChance: 0
+      dropChance: 5
+    numberOfItemToDrop: 4

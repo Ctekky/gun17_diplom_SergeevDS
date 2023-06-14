@@ -71,7 +71,10 @@ namespace Metroidvania.Combat.Projectile
                 if (projectileData.isRopeArrow)
                 {
                     var transform1 = transform;
-                    Instantiate(projectileData.arrowRopePrefab, transform1.position, transform1.rotation);
+                    var position = transform1.position;
+                    var checkGround = Physics2D.Raycast(position, Vector2.down, 3f, groundLayer);
+                    if(!checkGround) Instantiate(projectileData.arrowRopePrefab, position, transform1.rotation);
+                    else Destroy(transform.gameObject);
                 }
                 Destroy(transform.gameObject);
             }
@@ -81,7 +84,6 @@ namespace Metroidvania.Combat.Projectile
             {
                 _rb.gravityScale = 0f;
                 _rb.velocity = Vector2.zero;
-
             }
             if(Mathf.Abs(_startPosX - transform.position.x) >= projectileData.travelDistance && !_isGravityOn)
             {

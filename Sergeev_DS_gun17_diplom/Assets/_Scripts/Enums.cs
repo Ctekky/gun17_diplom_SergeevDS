@@ -45,4 +45,17 @@ namespace Metroidvania
         Health,
         Buff
     }
+
+    public enum StatType : byte
+    {
+        Strength,
+        Agility,
+        Vitality,
+        Armor,
+        Evasion,
+        CritChance,
+        CritPower,
+        Health,
+        CurrentHealth
+    }
 }

@@ -79,6 +79,11 @@ namespace Metroidvania.Combat.Weapon
         {
             gameObject.SetActive(true);
         }
+
+        public virtual void ExitWeaponAim()
+        {
+            gameObject.SetActive(false);
+        }
         public virtual void ExitWeaponSecondary()
         {
             gameObject.SetActive(false);
