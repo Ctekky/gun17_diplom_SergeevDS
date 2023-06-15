@@ -9,8 +9,8 @@ namespace Metroidvania.UI
 {
     public class UIItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private Image itemImage;
-        [SerializeField] private TextMeshProUGUI itemText;
+        [SerializeField] protected Image itemImage;
+        [SerializeField] protected TextMeshProUGUI itemText;
 
         public InventoryItem item;
         public event Action<ItemData, Vector2> PointerEnter;

@@ -9,21 +9,24 @@ namespace Metroidvania.Managers
 {
     public class UIManager : MonoBehaviour
     {
-        [Inject] private UICanvas _uiCanvasInventory;
+        [Inject] private UICanvas _uiCanvas;
+
+        public UICanvas UICanvas => _uiCanvas;
+
         public event Action<ItemData, List<InventoryItem>> UICanvasCraftClicked;
         public void UpdateInventoryUI(List<InventoryItem> inventoryItems, ItemType itemType)
         {
-            _uiCanvasInventory.UpdateCharacterListsUI(inventoryItems, itemType);
+            _uiCanvas.UpdateCharacterListsUI(inventoryItems, itemType);
         }
 
         private void OnEnable()
         {
-            _uiCanvasInventory.CraftClicked += (data, list) => UICanvasCraftClicked?.Invoke(data, list);
+            _uiCanvas.CraftClicked += (data, list) => UICanvasCraftClicked?.Invoke(data, list);
         }
 
         private void OnDisable()
         {
-            _uiCanvasInventory.CraftClicked -= UICanvasCraftClicked;
+            _uiCanvas.CraftClicked -= UICanvasCraftClicked;
         }
     }
     

@@ -865,117 +865,81 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5709313231221714009}
-        m_TargetAssemblyTypeName: Metroidvania.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnMoveInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 1c2b364e-61f6-4852-b2d5-602a1d30ee1c
     m_ActionName: Gameplay/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5709313231221714009}
-        m_TargetAssemblyTypeName: Metroidvania.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnJumpInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: ec8d6230-a10c-4f7b-85ff-05b26830e5a8
     m_ActionName: Gameplay/Jump[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5709313231221714009}
-        m_TargetAssemblyTypeName: Metroidvania.Player.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnInteractionInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: e2f608f4-f665-4e0f-8888-bc5af12268c1
     m_ActionName: Gameplay/Interact[/Keyboard/e]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5709313231221714009}
-        m_TargetAssemblyTypeName: Metroidvania.Player.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnRollInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 41d60d54-6d52-4a7a-b998-f2da549e0659
     m_ActionName: Gameplay/Roll[/Keyboard/alt]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5709313231221714009}
-        m_TargetAssemblyTypeName: Metroidvania.Player.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnPrimaryAttackInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: f924c3fc-1c72-46e0-8318-e7a765ee0441
     m_ActionName: Gameplay/PrimaryAttack[/Mouse/leftButton]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5709313231221714009}
-        m_TargetAssemblyTypeName: Metroidvania.Player.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnSecondaryAttackInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 51e7778c-8b2d-4a8c-92e8-f7875616afa0
     m_ActionName: Gameplay/SecondaryAttack[/Mouse/rightButton]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5709313231221714009}
-        m_TargetAssemblyTypeName: Metroidvania.Player.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnChangeWeapon
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 83dbfbed-b9fa-44e0-99d9-c58cd49a6c62
     m_ActionName: Gameplay/ChangeWeapon[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ed4ae36e-3f45-4f3a-b10f-e1aa02fb6db1
+    m_ActionName: Gameplay/CharacterMenu[/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 624ad7b4-2a11-4bb8-a3df-bcd361192feb
+    m_ActionName: Gameplay/CraftMenu[/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3c082585-6d47-4fbd-aafb-5093e8875b2a
+    m_ActionName: Gameplay/OptionsMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 24673f08-8e38-400a-8b46-107a692051df
+    m_ActionName: Gameplay/SwitchAmmo[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dd8b9c55-494b-4bce-8c95-984dbe080480
+    m_ActionName: Gameplay/Potion_1[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b362e828-5b2a-4017-b15e-c31685f3659d
+    m_ActionName: Gameplay/Potion_2[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9e0ea9e0-3950-4ac4-8cb3-ae43b78fd861
+    m_ActionName: Gameplay/Potion_3[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 283802ec-8256-4f1f-8a15-010c640ecef2
+    m_ActionName: Gameplay/Potion_4[/Keyboard/4]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e0aab4e6-a9d5-4b28-9428-3e90bc15810b
+    m_ActionName: UI/CloseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0dd548a8-9568-4e60-806e-f63ba6486708
+    m_ActionName: UI/CharacterMenu[/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4a586b8f-d7ac-4807-918b-fd5e27ace154
+    m_ActionName: UI/CraftMenu[/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 06ae4896-3103-4ef9-ac24-1e39b5f09f38
+    m_ActionName: UI/OptionMenu[/Keyboard/o]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay

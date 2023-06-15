@@ -89,6 +89,78 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CharacterMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""ed4ae36e-3f45-4f3a-b10f-e1aa02fb6db1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CraftMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""624ad7b4-2a11-4bb8-a3df-bcd361192feb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OptionsMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c082585-6d47-4fbd-aafb-5093e8875b2a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchAmmo"",
+                    ""type"": ""Button"",
+                    ""id"": ""24673f08-8e38-400a-8b46-107a692051df"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Potion_1"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd8b9c55-494b-4bce-8c95-984dbe080480"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Potion_2"",
+                    ""type"": ""Button"",
+                    ""id"": ""b362e828-5b2a-4017-b15e-c31685f3659d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Potion_3"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e0ea9e0-3950-4ac4-8cb3-ae43b78fd861"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Potion_4"",
+                    ""type"": ""Button"",
+                    ""id"": ""283802ec-8256-4f1f-8a15-010c640ecef2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +284,182 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""ChangeWeapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""888fcce8-ae06-4a19-a19d-c00dc543e84f"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CharacterMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a6049bd-b30e-4558-af62-b4f3ab95f0d8"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CraftMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a21063c-5cae-415d-be45-56fe863ce7e3"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OptionsMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1778ed9e-afb9-4f84-83c4-0b52b4ef3030"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchAmmo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bdd03eaf-70ce-477e-b15e-69e6cf2e8608"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Potion_1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97df37c4-4ec3-485c-b9ff-251bb64dedd1"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Potion_2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c6667087-2a2a-4bf8-b932-791c2c0cf6ab"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Potion_3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8bc996f0-e797-4cab-8533-d2e0fae2f159"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Potion_4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""24141f66-5a1a-435b-9ba2-648d7c3d5ec5"",
+            ""actions"": [
+                {
+                    ""name"": ""CloseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""e0aab4e6-a9d5-4b28-9428-3e90bc15810b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CharacterMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""0dd548a8-9568-4e60-806e-f63ba6486708"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CraftMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""4a586b8f-d7ac-4807-918b-fd5e27ace154"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OptionMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""06ae4896-3103-4ef9-ac24-1e39b5f09f38"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9016cd71-d532-4303-91ec-11b448e6c948"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CloseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f598326d-5e9a-4855-ad0c-ed6fe95a5dcd"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CharacterMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""362b507a-10ba-43d3-bf67-46dbd9e1482c"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CraftMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8ac0f78-d1f9-473c-b4c8-e1c7b80fbbef"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OptionMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +475,20 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Gameplay_PrimaryAttack = m_Gameplay.FindAction("PrimaryAttack", throwIfNotFound: true);
         m_Gameplay_SecondaryAttack = m_Gameplay.FindAction("SecondaryAttack", throwIfNotFound: true);
         m_Gameplay_ChangeWeapon = m_Gameplay.FindAction("ChangeWeapon", throwIfNotFound: true);
+        m_Gameplay_CharacterMenu = m_Gameplay.FindAction("CharacterMenu", throwIfNotFound: true);
+        m_Gameplay_CraftMenu = m_Gameplay.FindAction("CraftMenu", throwIfNotFound: true);
+        m_Gameplay_OptionsMenu = m_Gameplay.FindAction("OptionsMenu", throwIfNotFound: true);
+        m_Gameplay_SwitchAmmo = m_Gameplay.FindAction("SwitchAmmo", throwIfNotFound: true);
+        m_Gameplay_Potion_1 = m_Gameplay.FindAction("Potion_1", throwIfNotFound: true);
+        m_Gameplay_Potion_2 = m_Gameplay.FindAction("Potion_2", throwIfNotFound: true);
+        m_Gameplay_Potion_3 = m_Gameplay.FindAction("Potion_3", throwIfNotFound: true);
+        m_Gameplay_Potion_4 = m_Gameplay.FindAction("Potion_4", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_CloseMenu = m_UI.FindAction("CloseMenu", throwIfNotFound: true);
+        m_UI_CharacterMenu = m_UI.FindAction("CharacterMenu", throwIfNotFound: true);
+        m_UI_CraftMenu = m_UI.FindAction("CraftMenu", throwIfNotFound: true);
+        m_UI_OptionMenu = m_UI.FindAction("OptionMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -293,6 +555,14 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_PrimaryAttack;
     private readonly InputAction m_Gameplay_SecondaryAttack;
     private readonly InputAction m_Gameplay_ChangeWeapon;
+    private readonly InputAction m_Gameplay_CharacterMenu;
+    private readonly InputAction m_Gameplay_CraftMenu;
+    private readonly InputAction m_Gameplay_OptionsMenu;
+    private readonly InputAction m_Gameplay_SwitchAmmo;
+    private readonly InputAction m_Gameplay_Potion_1;
+    private readonly InputAction m_Gameplay_Potion_2;
+    private readonly InputAction m_Gameplay_Potion_3;
+    private readonly InputAction m_Gameplay_Potion_4;
     public struct GameplayActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -304,6 +574,14 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @PrimaryAttack => m_Wrapper.m_Gameplay_PrimaryAttack;
         public InputAction @SecondaryAttack => m_Wrapper.m_Gameplay_SecondaryAttack;
         public InputAction @ChangeWeapon => m_Wrapper.m_Gameplay_ChangeWeapon;
+        public InputAction @CharacterMenu => m_Wrapper.m_Gameplay_CharacterMenu;
+        public InputAction @CraftMenu => m_Wrapper.m_Gameplay_CraftMenu;
+        public InputAction @OptionsMenu => m_Wrapper.m_Gameplay_OptionsMenu;
+        public InputAction @SwitchAmmo => m_Wrapper.m_Gameplay_SwitchAmmo;
+        public InputAction @Potion_1 => m_Wrapper.m_Gameplay_Potion_1;
+        public InputAction @Potion_2 => m_Wrapper.m_Gameplay_Potion_2;
+        public InputAction @Potion_3 => m_Wrapper.m_Gameplay_Potion_3;
+        public InputAction @Potion_4 => m_Wrapper.m_Gameplay_Potion_4;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -334,6 +612,30 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @ChangeWeapon.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeWeapon;
                 @ChangeWeapon.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeWeapon;
                 @ChangeWeapon.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeWeapon;
+                @CharacterMenu.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCharacterMenu;
+                @CharacterMenu.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCharacterMenu;
+                @CharacterMenu.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCharacterMenu;
+                @CraftMenu.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCraftMenu;
+                @CraftMenu.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCraftMenu;
+                @CraftMenu.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCraftMenu;
+                @OptionsMenu.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnOptionsMenu;
+                @OptionsMenu.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnOptionsMenu;
+                @OptionsMenu.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnOptionsMenu;
+                @SwitchAmmo.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSwitchAmmo;
+                @SwitchAmmo.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSwitchAmmo;
+                @SwitchAmmo.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSwitchAmmo;
+                @Potion_1.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_1;
+                @Potion_1.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_1;
+                @Potion_1.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_1;
+                @Potion_2.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_2;
+                @Potion_2.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_2;
+                @Potion_2.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_2;
+                @Potion_3.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_3;
+                @Potion_3.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_3;
+                @Potion_3.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_3;
+                @Potion_4.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_4;
+                @Potion_4.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_4;
+                @Potion_4.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPotion_4;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -359,10 +661,91 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @ChangeWeapon.started += instance.OnChangeWeapon;
                 @ChangeWeapon.performed += instance.OnChangeWeapon;
                 @ChangeWeapon.canceled += instance.OnChangeWeapon;
+                @CharacterMenu.started += instance.OnCharacterMenu;
+                @CharacterMenu.performed += instance.OnCharacterMenu;
+                @CharacterMenu.canceled += instance.OnCharacterMenu;
+                @CraftMenu.started += instance.OnCraftMenu;
+                @CraftMenu.performed += instance.OnCraftMenu;
+                @CraftMenu.canceled += instance.OnCraftMenu;
+                @OptionsMenu.started += instance.OnOptionsMenu;
+                @OptionsMenu.performed += instance.OnOptionsMenu;
+                @OptionsMenu.canceled += instance.OnOptionsMenu;
+                @SwitchAmmo.started += instance.OnSwitchAmmo;
+                @SwitchAmmo.performed += instance.OnSwitchAmmo;
+                @SwitchAmmo.canceled += instance.OnSwitchAmmo;
+                @Potion_1.started += instance.OnPotion_1;
+                @Potion_1.performed += instance.OnPotion_1;
+                @Potion_1.canceled += instance.OnPotion_1;
+                @Potion_2.started += instance.OnPotion_2;
+                @Potion_2.performed += instance.OnPotion_2;
+                @Potion_2.canceled += instance.OnPotion_2;
+                @Potion_3.started += instance.OnPotion_3;
+                @Potion_3.performed += instance.OnPotion_3;
+                @Potion_3.canceled += instance.OnPotion_3;
+                @Potion_4.started += instance.OnPotion_4;
+                @Potion_4.performed += instance.OnPotion_4;
+                @Potion_4.canceled += instance.OnPotion_4;
             }
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_CloseMenu;
+    private readonly InputAction m_UI_CharacterMenu;
+    private readonly InputAction m_UI_CraftMenu;
+    private readonly InputAction m_UI_OptionMenu;
+    public struct UIActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public UIActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @CloseMenu => m_Wrapper.m_UI_CloseMenu;
+        public InputAction @CharacterMenu => m_Wrapper.m_UI_CharacterMenu;
+        public InputAction @CraftMenu => m_Wrapper.m_UI_CraftMenu;
+        public InputAction @OptionMenu => m_Wrapper.m_UI_OptionMenu;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+                @CloseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
+                @CloseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
+                @CloseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
+                @CharacterMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCharacterMenu;
+                @CharacterMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCharacterMenu;
+                @CharacterMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCharacterMenu;
+                @CraftMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCraftMenu;
+                @CraftMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCraftMenu;
+                @CraftMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCraftMenu;
+                @OptionMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOptionMenu;
+                @OptionMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOptionMenu;
+                @OptionMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOptionMenu;
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @CloseMenu.started += instance.OnCloseMenu;
+                @CloseMenu.performed += instance.OnCloseMenu;
+                @CloseMenu.canceled += instance.OnCloseMenu;
+                @CharacterMenu.started += instance.OnCharacterMenu;
+                @CharacterMenu.performed += instance.OnCharacterMenu;
+                @CharacterMenu.canceled += instance.OnCharacterMenu;
+                @CraftMenu.started += instance.OnCraftMenu;
+                @CraftMenu.performed += instance.OnCraftMenu;
+                @CraftMenu.canceled += instance.OnCraftMenu;
+                @OptionMenu.started += instance.OnOptionMenu;
+                @OptionMenu.performed += instance.OnOptionMenu;
+                @OptionMenu.canceled += instance.OnOptionMenu;
+            }
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     public interface IGameplayActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -372,5 +755,20 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnPrimaryAttack(InputAction.CallbackContext context);
         void OnSecondaryAttack(InputAction.CallbackContext context);
         void OnChangeWeapon(InputAction.CallbackContext context);
+        void OnCharacterMenu(InputAction.CallbackContext context);
+        void OnCraftMenu(InputAction.CallbackContext context);
+        void OnOptionsMenu(InputAction.CallbackContext context);
+        void OnSwitchAmmo(InputAction.CallbackContext context);
+        void OnPotion_1(InputAction.CallbackContext context);
+        void OnPotion_2(InputAction.CallbackContext context);
+        void OnPotion_3(InputAction.CallbackContext context);
+        void OnPotion_4(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnCloseMenu(InputAction.CallbackContext context);
+        void OnCharacterMenu(InputAction.CallbackContext context);
+        void OnCraftMenu(InputAction.CallbackContext context);
+        void OnOptionMenu(InputAction.CallbackContext context);
     }
 }

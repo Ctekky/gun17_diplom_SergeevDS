@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27cc6c57cc9092b46b2e0290584a19d4, type: 3}
+  m_Name: MediumHealthPotion
+  m_EditorClassIdentifier: 
+  itemName: Medium health potion
+  icon: {fileID: 21300000, guid: 3ce96f2b6ad5cff438ea24c350555780, type: 3}
+  itemType: 3
+  itemDescription: Medium health potion. For seriously injure
+  potionType: 0
+  potionModifier: 50
+  craftingMaterials:
+  - ItemData: {fileID: 11400000, guid: 34a4e59aaaf025b488f5bc4f6a38c8f5, type: 2}
+    stackSize: 2
+  - ItemData: {fileID: 11400000, guid: d13b509f081b20f4f893d6882db4a76b, type: 2}
+    stackSize: 1

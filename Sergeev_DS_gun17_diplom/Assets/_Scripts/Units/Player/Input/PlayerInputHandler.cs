@@ -1,15 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Metroidvania;
 
 namespace Metroidvania.Player
 {
-    public class PlayerInputHandler : MonoBehaviour
+    public class PlayerInputHandler : MonoBehaviour, PlayerInputActions.IGameplayActions, PlayerInputActions.IUIActions
     {
-        public Vector2 RawMovementInput { get; private set; }
+        private Vector2 RawMovementInput { get; set; }
         public int NormalizedInputX { get; private set; }
         public int NormalizedInputY { get; private set; }
         public bool JumpInput { get; private set; }
@@ -20,21 +17,93 @@ namespace Metroidvania.Player
         public bool ChangeWeaponInput { get; private set; }
         public bool SecondaryAttackStarted { get; private set; }
 
-
         [SerializeField] private float inputHoldTime = 0.2f;
         private float _jumpInputStartTime;
+        private bool _isInCharMenu = false;
+        private bool _isInCraftMenu = false;
+        private bool _isInOptionMenu = false;
+
+        private PlayerInputActions _playerInputActions;
+        public event Action PressedCharacterUI;
+        public event Action PressedCraftUI;
+        public event Action PressedOptionsUI;
+        public event Action ClosedMenu; 
+
+        private void OnEnable()
+        {
+            if (_playerInputActions != null) return;
+            _playerInputActions = new PlayerInputActions();
+            _playerInputActions.Gameplay.SetCallbacks(this);
+            _playerInputActions.UI.SetCallbacks(this);
+        }
 
         private void Start()
         {
-            int count = Enum.GetValues(typeof(CombatInputs)).Length;
+            var count = Enum.GetValues(typeof(CombatInputs)).Length;
             AttackInputs = new bool[count];
+            SetGameplay();
         }
         private void Update()
         {
             CheckJumpInputHoldTime();
         }
 
-        public void OnPrimaryAttackInput(InputAction.CallbackContext context)
+        private void SetGameplay()
+        {
+            _playerInputActions.Gameplay.Enable();
+            _playerInputActions.UI.Disable();
+        }
+
+        private void SetUI()
+        {
+            _playerInputActions.Gameplay.Disable();
+            _playerInputActions.UI.Enable();
+        }
+        public void OnMove(InputAction.CallbackContext context)
+        {
+            RawMovementInput = context.ReadValue<Vector2>();
+            NormalizedInputX = Mathf.RoundToInt(RawMovementInput.x);
+            NormalizedInputY = Mathf.RoundToInt(RawMovementInput.y);
+        }
+
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                JumpInputStop = false;
+                JumpInput = true;
+                _jumpInputStartTime = Time.time;
+            }
+            if(context.canceled)
+            {
+                JumpInputStop = true;
+            }
+        }
+        public void OnInteract(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                InteractInput = true;
+            }
+            if(context.canceled)
+            {
+                InteractInput = false;
+            }
+        }
+
+        public void OnRoll(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                RollInput = true;
+            }
+            if(context.canceled)
+            {
+                RollInput = false;
+            }
+        }
+
+        public void OnPrimaryAttack(InputAction.CallbackContext context)
         {
             if (context.started)
             {
@@ -45,7 +114,8 @@ namespace Metroidvania.Player
                 AttackInputs[(int)CombatInputs.Primary] = false;
             }
         }
-        public void OnSecondaryAttackInput(InputAction.CallbackContext context)
+
+        public void OnSecondaryAttack(InputAction.CallbackContext context)
         {
             if( context.started)
             {
@@ -60,62 +130,139 @@ namespace Metroidvania.Player
             {
                 SecondaryAttackStarted = false;
                 AttackInputs[(int)CombatInputs.Secondary] = false;
-            }    
+            }  
         }
+
         public void OnChangeWeapon(InputAction.CallbackContext context)
         {
-            if(context.performed )
+            if(context.performed)
             {
                 ChangeWeaponInput = true;
             }
         }
-        public void OnMoveInput(InputAction.CallbackContext context)
+
+        public void OnCloseMenu(InputAction.CallbackContext context)
         {
-            RawMovementInput = context.ReadValue<Vector2>();
-            NormalizedInputX = Mathf.RoundToInt(RawMovementInput.x);
-            NormalizedInputY = Mathf.RoundToInt(RawMovementInput.y);
+            if (!context.started) return;
+            ClosedMenu?.Invoke();
+            _isInCraftMenu = false;
+            _isInCharMenu = false;
+            _isInOptionMenu = false;
+            SetGameplay();
         }
 
-        public void OnJumpInput(InputAction.CallbackContext context)
+        void PlayerInputActions.IUIActions.OnCharacterMenu(InputAction.CallbackContext context)
         {
-            if(context.started)
+            if (!context.started) return;
+            if (_isInCharMenu)
             {
-                JumpInputStop = false;
-                JumpInput = true;
-                _jumpInputStartTime = Time.time;
+                ClosedMenu?.Invoke();
+                _isInCharMenu = false;
+                SetGameplay();
             }
-            if(context.canceled)
+            else
             {
-                JumpInputStop = true;
+                PressedCharacterUI?.Invoke();
+                _isInCraftMenu = false;
+                _isInCharMenu = true;
+                _isInOptionMenu = false;  
             }
         }
-        public void OnInteractionInput(InputAction.CallbackContext context)
+
+        void PlayerInputActions.IUIActions.OnCraftMenu(InputAction.CallbackContext context)
         {
-            if(context.started)
+            if (!context.started) return;
+            if (_isInCraftMenu)
             {
-                InteractInput = true;
+                ClosedMenu?.Invoke();
+                _isInCraftMenu = false;
+                SetGameplay();
             }
-            if(context.canceled)
+            else
             {
-                InteractInput = false;
+                PressedCraftUI?.Invoke();
+                _isInCraftMenu = true;
+                _isInCharMenu = false;
+                _isInOptionMenu = false;
             }
         }
-        public void OnRollInput(InputAction.CallbackContext context)
+
+        public void OnOptionMenu(InputAction.CallbackContext context)
         {
-            if(context.started)
+            if (!context.started) return;
+            if (_isInOptionMenu)
             {
-                RollInput = true;
+                ClosedMenu?.Invoke();
+                _isInOptionMenu = false;
+                SetGameplay();
             }
-            if(context.canceled)
+            else
             {
-                RollInput = false;
+                PressedCraftUI?.Invoke();
+                _isInCraftMenu = false;
+                _isInCharMenu = false;
+                _isInOptionMenu = true;
             }
+        }
+
+        void PlayerInputActions.IGameplayActions.OnCharacterMenu(InputAction.CallbackContext context)
+        {
+            if (!context.started) return;
+            PressedCharacterUI?.Invoke();
+            SetUI();
+            _isInCharMenu = true;
+        }
+
+        void PlayerInputActions.IGameplayActions.OnCraftMenu(InputAction.CallbackContext context)
+        {
+            if(!context.started) return; 
+            PressedCraftUI?.Invoke();
+            SetUI();
+            _isInCraftMenu = true;
+        }
+
+        public void OnOptionsMenu(InputAction.CallbackContext context)
+        {
+            if (!context.started) return;
+            PressedOptionsUI?.Invoke();
+            SetUI();
+            _isInOptionMenu = true;
+        }
+
+        public void OnSwitchAmmo(InputAction.CallbackContext context)
+        {
+            Debug.Log("Switch Ammo");
+            //TODO switch ammo
+        }
+
+        public void OnPotion_1(InputAction.CallbackContext context)
+        {
+            Debug.Log("Use potion 1");
+            //TODO use potion 1
+        }
+
+        public void OnPotion_2(InputAction.CallbackContext context)
+        {
+            Debug.Log("Use potion 2");
+            //TODO use potion 2
+        }
+
+        public void OnPotion_3(InputAction.CallbackContext context)
+        {
+            Debug.Log("Use potion 3");
+            //TODO use potion 3
+        }
+
+        public void OnPotion_4(InputAction.CallbackContext context)
+        {
+            Debug.Log("Use potion 4");
+            //TODO use potion 4
         }
         public void UseJumpInput() => JumpInput = false;
         public void UseRollInput() => RollInput = false;
         public void UseChangeWeaponInput() => ChangeWeaponInput = false;
         public void UseSecondaryAttackInput() => AttackInputs[(int)CombatInputs.Secondary] = false;
-        public void UseSecondaryAttackPerfomedInput() => SecondaryAttackStarted = false;
+        public void UseSecondaryAttackPerformedInput() => SecondaryAttackStarted = false;
         private void CheckJumpInputHoldTime()
         {
             if(Time.time >= _jumpInputStartTime + inputHoldTime)

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27cc6c57cc9092b46b2e0290584a19d4, type: 3}
+  m_Name: BigHealthPotion
+  m_EditorClassIdentifier: 
+  itemName: Big health potion
+  icon: {fileID: 21300000, guid: a184d22a03582344e8351a7ccec11afc, type: 3}
+  itemType: 3
+  itemDescription: Big health potion. Now heal you body and soul
+  potionType: 0
+  potionModifier: 100
+  craftingMaterials:
+  - ItemData: {fileID: 11400000, guid: 34a4e59aaaf025b488f5bc4f6a38c8f5, type: 2}
+    stackSize: 4
+  - ItemData: {fileID: 11400000, guid: d13b509f081b20f4f893d6882db4a76b, type: 2}
+    stackSize: 1

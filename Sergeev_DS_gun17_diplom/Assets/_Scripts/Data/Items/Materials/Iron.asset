@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Iron
   m_EditorClassIdentifier: 
   itemName: Iron
-  icon: {fileID: 21300000, guid: e1a5dff345cbf984395cb829ab2e7f91, type: 3}
+  icon: {fileID: 21300000, guid: 1ae902367b57f5f4dad13086f084f8aa, type: 3}
   itemType: 0
   itemDescription: Some pieces of iron. Perfect for make some arrows

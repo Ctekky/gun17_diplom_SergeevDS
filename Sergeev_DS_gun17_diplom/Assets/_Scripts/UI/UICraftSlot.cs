@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Metroidvania.Common.Items;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Metroidvania.UI
@@ -19,6 +20,7 @@ namespace Metroidvania.UI
                 case ItemType.Ammo:
                     var craftAmmo = item.ItemData as ItemDataAmmo;
                     UISlotCraftClicked?.Invoke(craftAmmo, craftAmmo.craftingMaterials);
+                    Debug.Log("clicked");
                     break;
                 case ItemType.Potion:
                     var craftPotion = item.ItemData as ItemDataPotion;
@@ -28,10 +30,12 @@ namespace Metroidvania.UI
                     break;
             }
         }
-
-        private void OnEnable()
+        public void SetupSlot<T>(ItemData itemData) where T : ItemData
         {
-            UpdateSlot(item);
+            if(itemData == null) return;
+            item.ItemData = itemData;
+            itemImage.sprite = itemData.icon;
+            itemText.text = itemData.itemName;
         }
     }
 }

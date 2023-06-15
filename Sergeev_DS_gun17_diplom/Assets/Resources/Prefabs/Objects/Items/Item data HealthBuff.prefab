@@ -178,6 +178,7 @@ MonoBehaviour:
   maxXVelocity: 5
   minYVelocity: 5
   maxYVelocity: 15
+  timeBeforeInteract: 2
 --- !u!61 &2929321370634355527
 BoxCollider2D:
   m_ObjectHideFlags: 0

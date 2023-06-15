@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Metroidvania.BaseUnit;
 using Metroidvania.Common.Items;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace  Metroidvania.UI
@@ -21,38 +19,47 @@ namespace  Metroidvania.UI
         private UICraftSlot[] _craftItemSlots;
         private UIStatSlot[] _statSlots;
         private UIHealthSlot _healthSlot;
+        private UICraftPanel _craftPanel;
         
         [SerializeField] private Transform inventorySlotParent;
         [SerializeField] private Transform buffSlotParent;
         [SerializeField] private Transform ammoSlotParent;
         [SerializeField] private Transform potionSlotParent;
-        [SerializeField] private Transform craftSlotParent;
         [SerializeField] private Transform statSlotParent;
         [SerializeField] private UIItemTooltip itemTooltip;
 
-        public event Action<ItemData, List<InventoryItem>> CraftClicked; 
-        private void Start()
+        [SerializeField] private GameObject characterUI;
+        [SerializeField] private GameObject craftUI;
+        [SerializeField] private GameObject optionsUI;
+
+        public event Action<ItemData, List<InventoryItem>> CraftClicked;
+
+        private void Awake()
         {
             _inventoryItemSlots = inventorySlotParent.GetComponentsInChildren<UIItemSlot>();
-            ListenEventFromList(_inventoryItemSlots);
             _buffItemSlots = buffSlotParent.GetComponentsInChildren<UIItemSlot>();
-            ListenEventFromList(_buffItemSlots);
             _ammoItemSlots = ammoSlotParent.GetComponentsInChildren<UIItemSlot>();
-            ListenEventFromList(_ammoItemSlots);
             _potionItemSlots = potionSlotParent.GetComponentsInChildren<UIItemSlot>();
-            ListenEventFromList(_potionItemSlots);
-            _craftItemSlots = craftSlotParent.GetComponentsInChildren<UICraftSlot>();
             _healthSlot = statSlotParent.GetComponentInChildren<UIHealthSlot>();
             _statSlots = statSlotParent.GetComponentsInChildren<UIStatSlot>();
-
-            foreach (var craftSlot in _craftItemSlots)
-            {
-                craftSlot.UISlotCraftClicked += (data, list) => CraftClicked?.Invoke(data, list);
-            }
-            UpdateStatsUI();
-            UpdateHealthUI();
+            _craftPanel = GetComponentInChildren<UICraftPanel>();
         }
 
+        private void OnEnable()
+        {
+            ListenEventFromList(_inventoryItemSlots);
+            ListenEventFromList(_buffItemSlots);
+            ListenEventFromList(_ammoItemSlots);
+            ListenEventFromList(_potionItemSlots);
+            _craftPanel.CraftClicked += (data, list) => CraftClicked?.Invoke(data, list);
+        }
+
+        private void Start()
+        {
+            UpdateStatsUI();
+            UpdateHealthUI();
+            CloseAllUI();
+        }
         private void ListenEventFromList(IEnumerable<UIItemSlot> slots)
         {
             foreach (var slot in slots)
@@ -69,7 +76,6 @@ namespace  Metroidvania.UI
                 slot.PointerExit -= HideTooltip;
             }
         }
-
         private void ShowTooltip(ItemData itemData, Vector2 position)
         {
             itemTooltip.ShowTooltip(itemData, position);
@@ -126,10 +132,7 @@ namespace  Metroidvania.UI
             UnlistenEventFromList(_buffItemSlots);
             UnlistenEventFromList(_ammoItemSlots);
             UnlistenEventFromList(_potionItemSlots);
-            foreach (var craftSlot in _craftItemSlots)
-            {
-                craftSlot.UISlotCraftClicked -= CraftClicked;
-            }
+            _craftPanel.CraftClicked -= CraftClicked;
         }
         public void SwitchTo(GameObject menu)
         {
@@ -140,6 +143,29 @@ namespace  Metroidvania.UI
             if(menu != null) menu.SetActive(true);
             UpdateStatsUI();
             UpdateHealthUI();
+        }
+
+        public void CloseAllUI()
+        {
+            for (var i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
+        public void SwitchToCharacterUI()
+        {
+            SwitchTo(characterUI);
+        }
+
+        public void SwitchToCraftUI()
+        {
+            SwitchTo(craftUI);
+        }
+
+        public void SwitchToOptionsUI()
+        {
+            SwitchTo(optionsUI);
         }
     }
     

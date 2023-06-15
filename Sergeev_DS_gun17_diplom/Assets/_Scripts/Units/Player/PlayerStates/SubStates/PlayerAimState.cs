@@ -20,7 +20,7 @@ namespace Metroidvania.Player
         public override void Exit()
         {
             base.Exit();
-            Player.InputHandler.UseSecondaryAttackPerfomedInput();
+            Player.InputHandler.UseSecondaryAttackPerformedInput();
             Player.InputHandler.UseSecondaryAttackInput();
         }
         public override void LogicUpdate()
