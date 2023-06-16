@@ -1,6 +1,7 @@
 using UnityEngine;
 using Metroidvania.Player;
 using Metroidvania.BaseUnit;
+using Zenject;
 
 namespace Metroidvania.Combat.Weapon
 {
@@ -16,9 +17,11 @@ namespace Metroidvania.Combat.Weapon
 
         protected int AttackCounter;
         protected Unit Unit;
+        protected Player.Player Player;
 
         protected virtual void Awake()
         {
+            Player = GetComponentInParent<Player.Player>();
             gameObject.SetActive(false);
         }
         public virtual void EnterWeapon()

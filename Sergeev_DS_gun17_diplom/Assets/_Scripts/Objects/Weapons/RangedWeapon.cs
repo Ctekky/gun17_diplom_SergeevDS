@@ -1,3 +1,4 @@
+using System;
 using Metroidvania.BaseUnit;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -16,7 +17,7 @@ namespace Metroidvania.Combat.Weapon
         private IObjectPool<Projectile.Projectile> _projectilePool;
         private bool _isSimpleDirection;
         private Vector2 _finalDirection;
-
+        
         [Header("Aim")]
         [SerializeField] private int numberOfDots;
         [SerializeField] private float spaceBetweenDots;
@@ -43,6 +44,7 @@ namespace Metroidvania.Combat.Weapon
             if (_isSimpleDirection) projectile.SetupProjectile(UnitStats.ArrowDamage());
             else projectile.SetupProjectile(_finalDirection, UnitStats.ArrowDamage());
             projectile.SetPool(_projectilePool);
+            player.GetComponent<Player.Player>().PlayerShot();
             return projectile;
         }
         private void OnGetProjectile(Projectile.Projectile obj)
@@ -96,7 +98,7 @@ namespace Metroidvania.Combat.Weapon
         {
             Vector2 playerPosition = player.position;
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = mousePosition - playerPosition;
+            var direction = mousePosition - playerPosition;
             return direction;
         }
 
@@ -133,6 +135,11 @@ namespace Metroidvania.Combat.Weapon
                 //Debug.Log($"Point {i.ToString()} have coord {_dots[i].transform.position.x.ToString()} and {_dots[i].transform.position.y.ToString()}");
             }
         }
+        public void SetNewAmmo(GameObject ammoPrefab)
+        {
+            projectilePrefab = ammoPrefab.GetComponent<Projectile.Projectile>();
+        }
+
     }
 }
 

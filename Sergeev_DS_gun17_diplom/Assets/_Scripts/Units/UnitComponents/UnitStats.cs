@@ -8,6 +8,7 @@ namespace Metroidvania.BaseUnit
     {
         public event Action OnHealthZero;
         public event Action OnDecreaseHealth;
+        public event Action<int> onHealthChange;
         [Header("Major stats")] public Stats strength;
         public Stats agility;
         public Stats vitality;
@@ -94,6 +95,7 @@ namespace Metroidvania.BaseUnit
             if (CanAvoidAttack()) return;
             currentHealth -= ArmorReduction(amount);
             OnDecreaseHealth?.Invoke();
+            onHealthChange?.Invoke(currentHealth);
             if (currentHealth >= 0) return;
             currentHealth = 0;
             OnHealthZero?.Invoke();
@@ -124,6 +126,7 @@ namespace Metroidvania.BaseUnit
         public void IncreaseHealth(int amount)
         {
             currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+            onHealthChange?.Invoke(currentHealth);
         }
     }
 }

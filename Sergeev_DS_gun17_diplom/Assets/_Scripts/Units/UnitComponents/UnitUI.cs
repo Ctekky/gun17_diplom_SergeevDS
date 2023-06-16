@@ -1,10 +1,9 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Metroidvania.BaseUnit
 {
-    public class UI : UnitComponent
+    public class UnitUI : UnitComponent
     {
         private Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
         private Movement _movement;
@@ -18,22 +17,22 @@ namespace Metroidvania.BaseUnit
             base.Start();
             _rectTransform = GetComponent<RectTransform>();
             _slider = GetComponentInChildren<Slider>();
-            UpdateHealthUI();
+            UpdateHealthUI(UnitStats.GetMaxHealthValue());
         }
-        private void UpdateHealthUI()
+        private void UpdateHealthUI(int health)
         {
             _slider.maxValue = UnitStats.GetMaxHealthValue();
-            _slider.value = UnitStats.GetCurrentHealth();
+            _slider.value = health;
         }
         private void OnEnable()
         {
             Movement.onFlipped += FlipUI;
-            UnitStats.OnDecreaseHealth += UpdateHealthUI;
+            UnitStats.onHealthChange += UpdateHealthUI;
         }
         private void OnDisable()
         {
             Movement.onFlipped -= FlipUI;
-            UnitStats.OnDecreaseHealth -= UpdateHealthUI;
+            UnitStats.onHealthChange -= UpdateHealthUI;
         }
         private void FlipUI()
         {

@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Metroidvania.BaseUnit;
-using Metroidvania.Common.Items;
+using Metroidvania.Combat.Weapon;
 using Metroidvania.Interfaces;
-using Metroidvania.UI;
-using Zenject;
 
 namespace Metroidvania.Player
 {
@@ -60,13 +57,17 @@ namespace Metroidvania.Player
         }
         private WeaponType _currentWeaponEquip;
         private Vector2 _workVector;
-        
         #endregion
         #region Unity Func
-
+        
         private void Awake()
         {
             Unit = GetComponentInChildren<Unit>();
+            Inventory = GetComponent<PlayerInventory>();
+            Animator = GetComponent<Animator>();
+            InputHandler = GetComponent<PlayerInputHandler>();
+            Rb = GetComponent<Rigidbody2D>();
+            PlayerBodyCollider = GetComponentInChildren<BoxCollider2D>();
             StateMachine = new PlayerStateMachine();
             IdleState = new PlayerIdleState(this, StateMachine, playerData, "idle");
             MoveState = new PlayerMoveState(this, StateMachine, playerData, "move");
@@ -91,13 +92,8 @@ namespace Metroidvania.Player
 
         private void Start()
         {
-            Inventory = GetComponent<PlayerInventory>();
             Inventory.OnAppliedBuff += ApplyBuff;
-            Animator = GetComponent<Animator>();
-            InputHandler = GetComponent<PlayerInputHandler>();
-            Rb = GetComponent<Rigidbody2D>();
             _ropeLinksCollisions = new List<RopeLinks>();
-            PlayerBodyCollider = GetComponentInChildren<BoxCollider2D>();
             PrimaryAttackState.SetWeapon(Inventory.weapons[0]);
             AimState.SetWeapon(Inventory.weapons[0]);
             StateMachine.Initialize(IdleState);
@@ -216,9 +212,18 @@ namespace Metroidvania.Player
             }
         }
 
+        public bool CanShoot()
+        {
+            return Inventory.CanShootArrow();
+        }
+        
+        public void PlayerShot()
+        {
+            Inventory.DecreaseAmmo();
+        }
         public void SetColliderHeight(float height)
         {
-            Vector2 center = PlayerBodyCollider.offset;
+            var center = PlayerBodyCollider.offset;
             _workVector.Set(PlayerBodyCollider.size.x, height);
             center.y += (height - PlayerBodyCollider.size.y) / 2;
             PlayerBodyCollider.size = _workVector;
@@ -233,10 +238,43 @@ namespace Metroidvania.Player
         public void SetPlayerLayer(LayerMask layer) => gameObject.layer = (int)Mathf.Log(layer.value, 2);
 
         #endregion
+        private void SetNewAmmo(GameObject ammo)
+        {
+            var rangedWeapon = Inventory.weapons[1] as RangedWeapon;
+            if (rangedWeapon != null) rangedWeapon.SetNewAmmo(ammo);
+        }
+
+        private void OnSwitchAmmo()
+        {
+            Inventory.SwitchAmmo();
+        }
+
+        private void OnPotionUse(PotionSlotNumber number)
+        {
+            Inventory.UsePotionInSlot(number);
+            Inventory.DecreasePotion(number);
+        }
+
+        private void OnHealthUsedFromSlot(int healAmount)
+        {
+            Unit.GetUnitComponent<UnitStats>().IncreaseHealth(healAmount);
+        }
+        private void OnEnable()
+        {
+            Inventory.OnAppliedBuff += ApplyBuff;
+            Inventory.SetNewAmmo += SetNewAmmo;
+            InputHandler.SwitchedAmmo += OnSwitchAmmo;
+            InputHandler.UsedPotion += OnPotionUse;
+            Inventory.HealthPotionUsed += OnHealthUsedFromSlot;
+        }
 
         private void OnDisable()
         {
             Inventory.OnAppliedBuff -= ApplyBuff;
+            Inventory.SetNewAmmo -= SetNewAmmo;
+            InputHandler.SwitchedAmmo -= OnSwitchAmmo;
+            InputHandler.UsedPotion -= OnPotionUse;
+            Inventory.HealthPotionUsed -= OnHealthUsedFromSlot;
         }
     }
 }

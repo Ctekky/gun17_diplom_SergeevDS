@@ -16,13 +16,21 @@ MonoBehaviour:
   - lootType: 0
     lootTable:
     - itemData: {fileID: 2929321370634355526, guid: e3eec65ebf8c0b94798e11c87f458dde, type: 3}
-      dropChance: 70
+      dropChance: 100
     - itemData: {fileID: 2929321370634355526, guid: 77f10b1d0451bf749a81d150f980837d, type: 3}
-      dropChance: 70
+      dropChance: 100
     - itemData: {fileID: 2929321370634355526, guid: 9cdc618e4409b294bbbe854e75efd74e, type: 3}
-      dropChance: 40
+      dropChance: 100
     - itemData: {fileID: 2929321370634355526, guid: f274e87c3104b4d4cb0131e76d7189eb, type: 3}
-      dropChance: 30
+      dropChance: 100
     - itemData: {fileID: 2929321370634355526, guid: 5f5060e4e1dcfd449a9abbe0fb5ba9e9, type: 3}
+      dropChance: 100
+    - itemData: {fileID: 2929321370634355526, guid: b8f98a1bbbeb21b47b890a37b187d922, type: 3}
+      dropChance: 100
+    - itemData: {fileID: 2929321370634355526, guid: 876a3737732e7594aa5d9fa096e40473, type: 3}
+      dropChance: 100
+    - itemData: {fileID: 2929321370634355526, guid: 3db0f6e326818314da136b27ff31f5f9, type: 3}
+      dropChance: 100
+    - itemData: {fileID: 2929321370634355526, guid: ebb0f96bcc75f2846bc5e586c6e11ec9, type: 3}
       dropChance: 100
     numberOfItemToDrop: 99

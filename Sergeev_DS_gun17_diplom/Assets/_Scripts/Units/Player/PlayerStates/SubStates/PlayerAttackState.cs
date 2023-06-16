@@ -40,14 +40,10 @@ namespace Metroidvania.Player
             base.AnimationEndTrigger();
             IsAbilityDone = true;
         }
-        public override void AnimationTrigger()
-        {
-            base.AnimationTrigger();
-        }
         #endregion
         public void SetWeapon(Weapon weapon)
         {
-            this._weapon = weapon;
+            _weapon = weapon;
             weapon.InitializeWeapon(this, Unit);
         }
         public void SetPlayerVelocity(float velocity)

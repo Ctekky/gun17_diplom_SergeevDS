@@ -58,4 +58,12 @@ namespace Metroidvania
         Health,
         CurrentHealth
     }
+
+    public enum PotionSlotNumber : byte
+    {
+        First,
+        Second,
+        Third,
+        Fourth
+    }
 }

@@ -27,7 +27,9 @@ namespace Metroidvania.Player
         public event Action PressedCharacterUI;
         public event Action PressedCraftUI;
         public event Action PressedOptionsUI;
-        public event Action ClosedMenu; 
+        public event Action ClosedMenu;
+        public event Action SwitchedAmmo;
+        public event Action<PotionSlotNumber> UsedPotion;
 
         private void OnEnable()
         {
@@ -43,6 +45,7 @@ namespace Metroidvania.Player
             AttackInputs = new bool[count];
             SetGameplay();
         }
+
         private void Update()
         {
             CheckJumpInputHoldTime();
@@ -59,6 +62,7 @@ namespace Metroidvania.Player
             _playerInputActions.Gameplay.Disable();
             _playerInputActions.UI.Enable();
         }
+
         public void OnMove(InputAction.CallbackContext context)
         {
             RawMovementInput = context.ReadValue<Vector2>();
@@ -68,24 +72,27 @@ namespace Metroidvania.Player
 
         public void OnJump(InputAction.CallbackContext context)
         {
-            if(context.started)
+            if (context.started)
             {
                 JumpInputStop = false;
                 JumpInput = true;
                 _jumpInputStartTime = Time.time;
             }
-            if(context.canceled)
+
+            if (context.canceled)
             {
                 JumpInputStop = true;
             }
         }
+
         public void OnInteract(InputAction.CallbackContext context)
         {
-            if(context.started)
+            if (context.started)
             {
                 InteractInput = true;
             }
-            if(context.canceled)
+
+            if (context.canceled)
             {
                 InteractInput = false;
             }
@@ -93,11 +100,12 @@ namespace Metroidvania.Player
 
         public void OnRoll(InputAction.CallbackContext context)
         {
-            if(context.started)
+            if (context.started)
             {
                 RollInput = true;
             }
-            if(context.canceled)
+
+            if (context.canceled)
             {
                 RollInput = false;
             }
@@ -109,6 +117,7 @@ namespace Metroidvania.Player
             {
                 AttackInputs[(int)CombatInputs.Primary] = true;
             }
+
             if (context.canceled)
             {
                 AttackInputs[(int)CombatInputs.Primary] = false;
@@ -117,25 +126,27 @@ namespace Metroidvania.Player
 
         public void OnSecondaryAttack(InputAction.CallbackContext context)
         {
-            if( context.started)
+            if (context.started)
             {
                 SecondaryAttackStarted = true;
             }
+
             if (context.performed)
             {
                 SecondaryAttackStarted = false;
                 AttackInputs[(int)CombatInputs.Secondary] = true;
             }
-            if(context.canceled)
+
+            if (context.canceled)
             {
                 SecondaryAttackStarted = false;
                 AttackInputs[(int)CombatInputs.Secondary] = false;
-            }  
+            }
         }
 
         public void OnChangeWeapon(InputAction.CallbackContext context)
         {
-            if(context.performed)
+            if (context.performed)
             {
                 ChangeWeaponInput = true;
             }
@@ -165,7 +176,7 @@ namespace Metroidvania.Player
                 PressedCharacterUI?.Invoke();
                 _isInCraftMenu = false;
                 _isInCharMenu = true;
-                _isInOptionMenu = false;  
+                _isInOptionMenu = false;
             }
         }
 
@@ -215,7 +226,7 @@ namespace Metroidvania.Player
 
         void PlayerInputActions.IGameplayActions.OnCraftMenu(InputAction.CallbackContext context)
         {
-            if(!context.started) return; 
+            if (!context.started) return;
             PressedCraftUI?.Invoke();
             SetUI();
             _isInCraftMenu = true;
@@ -231,45 +242,46 @@ namespace Metroidvania.Player
 
         public void OnSwitchAmmo(InputAction.CallbackContext context)
         {
-            Debug.Log("Switch Ammo");
-            //TODO switch ammo
+            if (context.performed)
+                SwitchedAmmo?.Invoke();
         }
 
         public void OnPotion_1(InputAction.CallbackContext context)
         {
-            Debug.Log("Use potion 1");
-            //TODO use potion 1
+            if (context.performed)
+                UsedPotion?.Invoke(PotionSlotNumber.First);
         }
 
         public void OnPotion_2(InputAction.CallbackContext context)
         {
-            Debug.Log("Use potion 2");
-            //TODO use potion 2
+            if (context.performed)
+                UsedPotion?.Invoke(PotionSlotNumber.Second);
         }
 
         public void OnPotion_3(InputAction.CallbackContext context)
         {
-            Debug.Log("Use potion 3");
-            //TODO use potion 3
+            if (context.performed)
+                UsedPotion?.Invoke(PotionSlotNumber.Third);
         }
 
         public void OnPotion_4(InputAction.CallbackContext context)
         {
-            Debug.Log("Use potion 4");
-            //TODO use potion 4
+            if (context.performed)
+                UsedPotion?.Invoke(PotionSlotNumber.Fourth);
         }
+
         public void UseJumpInput() => JumpInput = false;
         public void UseRollInput() => RollInput = false;
         public void UseChangeWeaponInput() => ChangeWeaponInput = false;
         public void UseSecondaryAttackInput() => AttackInputs[(int)CombatInputs.Secondary] = false;
         public void UseSecondaryAttackPerformedInput() => SecondaryAttackStarted = false;
+
         private void CheckJumpInputHoldTime()
         {
-            if(Time.time >= _jumpInputStartTime + inputHoldTime)
+            if (Time.time >= _jumpInputStartTime + inputHoldTime)
             {
                 JumpInput = false;
             }
         }
     }
-
 }

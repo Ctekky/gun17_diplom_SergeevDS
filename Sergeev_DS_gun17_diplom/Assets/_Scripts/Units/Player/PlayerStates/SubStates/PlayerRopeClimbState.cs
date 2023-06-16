@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Metroidvania.Player
 {
     public class PlayerRopeClimbState : PlayerRopeTouchState
@@ -13,7 +9,7 @@ namespace Metroidvania.Player
         {
             base.LogicUpdate();
             if (IsExitingState) return;
-            Movement?.SetVelocityX(PlayerData.wallClimbVelocity * InputX);
+            Movement?.SetVelocityX(0f);
             Movement?.SetVelocityY(PlayerData.wallClimbVelocity * InputY);
             Movement?.Flip();
             if (InputY == 0 && InteractInput)

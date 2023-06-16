@@ -376,7 +376,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""UI"",
+            ""name"": ""UnitUI"",
             ""id"": ""24141f66-5a1a-435b-9ba2-648d7c3d5ec5"",
             ""actions"": [
                 {
@@ -483,8 +483,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Gameplay_Potion_2 = m_Gameplay.FindAction("Potion_2", throwIfNotFound: true);
         m_Gameplay_Potion_3 = m_Gameplay.FindAction("Potion_3", throwIfNotFound: true);
         m_Gameplay_Potion_4 = m_Gameplay.FindAction("Potion_4", throwIfNotFound: true);
-        // UI
-        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        // UnitUI
+        m_UI = asset.FindActionMap("UnitUI", throwIfNotFound: true);
         m_UI_CloseMenu = m_UI.FindAction("CloseMenu", throwIfNotFound: true);
         m_UI_CharacterMenu = m_UI.FindAction("CharacterMenu", throwIfNotFound: true);
         m_UI_CraftMenu = m_UI.FindAction("CraftMenu", throwIfNotFound: true);
@@ -690,7 +690,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
 
-    // UI
+    // UnitUI
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
     private readonly InputAction m_UI_CloseMenu;

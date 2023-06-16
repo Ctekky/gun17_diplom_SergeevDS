@@ -8,7 +8,7 @@ namespace Metroidvania.Common.Items
     public class ItemDataAmmo : ItemData
     {
         public ArrowType arrowType;
-        public Transform arrowPrefab;
+        public GameObject arrowPrefab;
         public List<InventoryItem> craftingMaterials;
         
     }

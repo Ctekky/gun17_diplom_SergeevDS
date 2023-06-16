@@ -17,7 +17,7 @@ MonoBehaviour:
   itemType: 2
   itemDescription: Arrow with a rope. How crafty!
   arrowType: 1
-  arrowPrefab: {fileID: 3530684678689620418, guid: d504eb5d1f3ea524dac409c1502802c7, type: 3}
+  arrowPrefab: {fileID: 7199083636683199249, guid: d504eb5d1f3ea524dac409c1502802c7, type: 3}
   craftingMaterials:
   - ItemData: {fileID: 11400000, guid: 63a94152cb3acaa4d98a73b09c7def55, type: 2}
     stackSize: 2

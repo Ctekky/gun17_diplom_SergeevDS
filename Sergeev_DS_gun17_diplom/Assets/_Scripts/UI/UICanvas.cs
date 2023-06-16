@@ -11,7 +11,7 @@ namespace  Metroidvania.UI
     public class UICanvas : MonoBehaviour
     {
         [Inject] private Player.Player _player;
-        [Header("Inventory UI")]
+        [Header("Inventory UnitUI")]
         private UIItemSlot[] _inventoryItemSlots;
         private UIItemSlot[] _buffItemSlots;
         private UIItemSlot[] _ammoItemSlots;
@@ -31,6 +31,7 @@ namespace  Metroidvania.UI
         [SerializeField] private GameObject characterUI;
         [SerializeField] private GameObject craftUI;
         [SerializeField] private GameObject optionsUI;
+        [SerializeField] private GameObject inGameUI;
 
         public event Action<ItemData, List<InventoryItem>> CraftClicked;
 
@@ -143,6 +144,7 @@ namespace  Metroidvania.UI
             if(menu != null) menu.SetActive(true);
             UpdateStatsUI();
             UpdateHealthUI();
+            inGameUI.gameObject.SetActive(true);
         }
 
         public void CloseAllUI()
@@ -151,6 +153,7 @@ namespace  Metroidvania.UI
             {
                 transform.GetChild(i).gameObject.SetActive(false);
             }
+            inGameUI.gameObject.SetActive(true);
         }
 
         public void SwitchToCharacterUI()
