@@ -37,7 +37,7 @@ MonoBehaviour:
     baseValue: 10
     modifiers: 
   knockbackAngle: {x: 1, y: 1}
-  knockbackStrength: 10
+  knockbackStrength: 15
   health: 30
   damageHopSpeed: 3
   deathParticles: {fileID: 0}

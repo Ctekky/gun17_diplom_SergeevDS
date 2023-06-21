@@ -31,6 +31,7 @@ namespace Metroidvania.Enemy
 
         private void OnDisable()
         {
+            if(_enemy == null) return;
             _enemy.GetComponentInChildren<EnemyDeathUnitComponent>().OnDied -= EnemyDied;
         }
 

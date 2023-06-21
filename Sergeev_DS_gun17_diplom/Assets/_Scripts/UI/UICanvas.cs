@@ -1,9 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Metroidvania.BaseUnit;
 using Metroidvania.Common.Items;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace  Metroidvania.UI
@@ -20,6 +23,11 @@ namespace  Metroidvania.UI
         private UIStatSlot[] _statSlots;
         private UIHealthSlot _healthSlot;
         private UICraftPanel _craftPanel;
+        private UIOptionPanel _optionPanel;
+        
+        [SerializeField] private UIFadeScreen fadeScreen;
+        [SerializeField] private GameObject diedText;
+        [Space]
         
         [SerializeField] private Transform inventorySlotParent;
         [SerializeField] private Transform buffSlotParent;
@@ -34,6 +42,9 @@ namespace  Metroidvania.UI
         [SerializeField] private GameObject inGameUI;
 
         public event Action<ItemData, List<InventoryItem>> CraftClicked;
+        public event Action GameSaved;
+        public event Action GameLoaded;
+        public event Action GameEnded; 
 
         private void Awake()
         {
@@ -44,6 +55,7 @@ namespace  Metroidvania.UI
             _healthSlot = statSlotParent.GetComponentInChildren<UIHealthSlot>();
             _statSlots = statSlotParent.GetComponentsInChildren<UIStatSlot>();
             _craftPanel = GetComponentInChildren<UICraftPanel>();
+            _optionPanel = GetComponentInChildren<UIOptionPanel>();
         }
 
         private void OnEnable()
@@ -53,6 +65,9 @@ namespace  Metroidvania.UI
             ListenEventFromList(_ammoItemSlots);
             ListenEventFromList(_potionItemSlots);
             _craftPanel.CraftClicked += (data, list) => CraftClicked?.Invoke(data, list);
+            _optionPanel.GameSavedFromUI += OnGameSaved;
+            _optionPanel.GameLoadedFromUI += OnGameLoaded;
+            _optionPanel.GameEndedFromUI += OnGameEnded;
         }
 
         private void Start()
@@ -80,6 +95,21 @@ namespace  Metroidvania.UI
         private void ShowTooltip(ItemData itemData, Vector2 position)
         {
             itemTooltip.ShowTooltip(itemData, position);
+        }
+
+        private void OnGameSaved()
+        {
+            GameSaved?.Invoke();
+        }
+
+        private void OnGameLoaded()
+        {
+            GameLoaded?.Invoke();
+        }
+
+        private void OnGameEnded()
+        {
+            GameEnded?.Invoke();
         }
         private void HideTooltip() => itemTooltip.HideTooltip();
         private void UpdateStatsUI()
@@ -134,24 +164,32 @@ namespace  Metroidvania.UI
             UnlistenEventFromList(_ammoItemSlots);
             UnlistenEventFromList(_potionItemSlots);
             _craftPanel.CraftClicked -= CraftClicked;
+            _optionPanel.GameSavedFromUI -= OnGameSaved;
+            _optionPanel.GameLoadedFromUI -= OnGameLoaded;
+            _optionPanel.GameEndedFromUI -= OnGameEnded;
         }
         public void SwitchTo(GameObject menu)
         {
             for (var i = 0; i < transform.childCount; i++)
             {
-                transform.GetChild(i).gameObject.SetActive(false);
+                var isFadeScreen = transform.GetChild(i).GetComponent<UIFadeScreen>() != null;
+                if (!isFadeScreen)
+                    transform.GetChild(i).gameObject.SetActive(false);
             }
             if(menu != null) menu.SetActive(true);
             UpdateStatsUI();
             UpdateHealthUI();
             inGameUI.gameObject.SetActive(true);
+            
         }
 
         public void CloseAllUI()
         {
             for (var i = 0; i < transform.childCount; i++)
-            {
-                transform.GetChild(i).gameObject.SetActive(false);
+            {   
+                var isFadeScreen = transform.GetChild(i).GetComponent<UIFadeScreen>() != null;
+                if (!isFadeScreen) 
+                    transform.GetChild(i).gameObject.SetActive(false);
             }
             inGameUI.gameObject.SetActive(true);
         }
@@ -170,6 +208,24 @@ namespace  Metroidvania.UI
         {
             SwitchTo(optionsUI);
         }
+
+        public void SwitchToEndScreen()
+        {
+            FadeOut();
+        }
+
+        public void DisableEndScreen()
+        {
+            diedText.SetActive(false);
+        }
+        private IEnumerator DieScreenCoroutine()
+        {
+            yield return new WaitForSeconds(1f);
+            diedText.SetActive(true);
+        }
+        
+        public void FadeOut() => fadeScreen.FadeOut();
+        public void FadeIn() => fadeScreen.FadeIn();
     }
     
 }

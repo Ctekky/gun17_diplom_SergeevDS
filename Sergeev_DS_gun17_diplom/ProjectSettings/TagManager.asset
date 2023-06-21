@@ -28,7 +28,7 @@ TagManager:
   - Weapon
   - Arrow
   - Item
-  - 
+  - Interactable
   - 
   - 
   - 
@@ -51,6 +51,12 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 1078588055
+    locked: 0
+  - name: Damage_Ground
+    uniqueID: 1408550313
+    locked: 0
+  - name: Interactable
+    uniqueID: 3788057403
     locked: 0
   - name: Item
     uniqueID: 2311103853

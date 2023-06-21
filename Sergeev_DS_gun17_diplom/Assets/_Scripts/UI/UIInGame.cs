@@ -36,12 +36,14 @@ namespace Metroidvania.UI
         }
         private void OnDisable()
         {
+            if(_player == null) return;
             _playerStats.onHealthChange -= OnHealthChange;
             _player.GetComponent<PlayerInventory>().SetNewAmmoIcon -= ChangeAmmoIcon;
             _player.GetComponent<PlayerInventory>().SetEmptyAmmo -= CleanUpAmmoSlot;
             _player.GetComponent<PlayerInventory>().SetNewPotionIcon -= ChangePotionIcon;
             _player.GetComponent<PlayerInventory>().SetEmptyPotion -= CleanPotionIcon;
         }
+
         private void ChangeAmmoIcon(InventoryItem item)
         {
             ChangeSlotIcon(item, arrowSlot);

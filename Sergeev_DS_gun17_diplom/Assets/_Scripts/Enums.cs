@@ -21,7 +21,8 @@ namespace Metroidvania
         Boar,
         Bat,
         Spider,
-        Crate
+        Crate,
+        Chest
     }
 
     public enum ItemType : byte

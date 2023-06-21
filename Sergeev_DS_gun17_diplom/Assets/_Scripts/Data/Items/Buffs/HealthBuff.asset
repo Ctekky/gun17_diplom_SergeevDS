@@ -15,5 +15,7 @@ MonoBehaviour:
   itemName: HealthBuff
   icon: {fileID: 21300000, guid: 097aa0cbb13e9d94da95ce9ccc760a73, type: 3}
   itemType: 1
+  itemDescription: 
+  itemID: 1d7fd7401022a8d4abe96c9c329ce3da
   buffType: 2
-  modifier: 25
+  modifier: 5

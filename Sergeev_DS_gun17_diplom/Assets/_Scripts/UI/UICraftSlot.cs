@@ -20,7 +20,6 @@ namespace Metroidvania.UI
                 case ItemType.Ammo:
                     var craftAmmo = item.ItemData as ItemDataAmmo;
                     UISlotCraftClicked?.Invoke(craftAmmo, craftAmmo.craftingMaterials);
-                    Debug.Log("clicked");
                     break;
                 case ItemType.Potion:
                     var craftPotion = item.ItemData as ItemDataPotion;

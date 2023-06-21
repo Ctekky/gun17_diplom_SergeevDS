@@ -12,11 +12,16 @@ namespace Metroidvania.BaseUnit
         private RectTransform _rectTransform;
         private Slider _slider;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            _rectTransform = GetComponent<RectTransform>();
+            _slider = GetComponentInChildren<Slider>();
+        }
+
         protected override void Start()
         {
             base.Start();
-            _rectTransform = GetComponent<RectTransform>();
-            _slider = GetComponentInChildren<Slider>();
             UpdateHealthUI(UnitStats.GetMaxHealthValue());
         }
         private void UpdateHealthUI(int health)

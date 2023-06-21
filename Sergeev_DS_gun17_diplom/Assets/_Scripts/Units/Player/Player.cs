@@ -1,12 +1,16 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Metroidvania.BaseUnit;
 using Metroidvania.Combat.Weapon;
 using Metroidvania.Interfaces;
+using ModestTree.Util;
+using Unity.VisualScripting;
+using Unit = Metroidvania.BaseUnit.Unit;
 
 namespace Metroidvania.Player
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, ISaveAndLoad
     {
         #region StateMachineVars
 
@@ -39,7 +43,9 @@ namespace Metroidvania.Player
         public PlayerInputHandler InputHandler { get; private set; }
         private BoxCollider2D PlayerBodyCollider { get; set; }
         public Rigidbody2D Rb { get; private set; }
+        [SerializeField] Vector2 _lastCheckpoint;
         [SerializeField] private PlayerData playerData;
+
         public bool IsTouchingRope
         {
             get => isTouchingRope;
@@ -49,6 +55,7 @@ namespace Metroidvania.Player
         [SerializeField] private bool isTouchingRope;
         private float _startCollisionTime;
         private List<RopeLinks> _ropeLinksCollisions;
+        private List<IInteractable> _interactables;
         private PlayerInventory Inventory { get; set; }
         public WeaponType CurrentWeaponEquip
         {
@@ -94,6 +101,7 @@ namespace Metroidvania.Player
         {
             Inventory.OnAppliedBuff += ApplyBuff;
             _ropeLinksCollisions = new List<RopeLinks>();
+            _interactables = new List<IInteractable>();
             PrimaryAttackState.SetWeapon(Inventory.weapons[0]);
             AimState.SetWeapon(Inventory.weapons[0]);
             StateMachine.Initialize(IdleState);
@@ -198,6 +206,10 @@ namespace Metroidvania.Player
             {
                 collision.GetComponent<IPickupable>().Pickup();
             }
+            else if (collision.GetComponent<IInteractable>() != null)
+            {
+                _interactables.Add(collision.GetComponent<IInteractable>());
+            }
         }
 
         private void OnTriggerExit2D(Collider2D collision)
@@ -209,6 +221,10 @@ namespace Metroidvania.Player
                 {
                     isTouchingRope = false;
                 }
+            }
+            else if (collision.GetComponent<IInteractable>() != null)
+            {
+                _interactables.Remove(collision.GetComponent<IInteractable>());
             }
         }
 
@@ -251,13 +267,43 @@ namespace Metroidvania.Player
 
         private void OnPotionUse(PotionSlotNumber number)
         {
+            
             Inventory.UsePotionInSlot(number);
             Inventory.DecreasePotion(number);
+        }
+
+        public void SetLastSpawnPoint(Vector2 position)
+        {
+            _lastCheckpoint = position;
         }
 
         private void OnHealthUsedFromSlot(int healAmount)
         {
             Unit.GetUnitComponent<UnitStats>().IncreaseHealth(healAmount);
+        }
+
+        private void SpawnPlayer()
+        {
+            transform.position = _lastCheckpoint;
+        }
+
+        public void SpawnPlayer(bool isHealed)
+        {
+            if(isHealed) Unit.GetUnitComponent<UnitStats>().RestoreHealth();
+            SpawnPlayer();
+        }
+
+        private void SpawnPlayer(Vector2 position)
+        {
+            transform.position = position;
+        }
+
+        private void OnInteract()
+        {
+            foreach (var interactable in _interactables)
+            {
+                interactable.Interact();
+            }
         }
         private void OnEnable()
         {
@@ -266,6 +312,7 @@ namespace Metroidvania.Player
             InputHandler.SwitchedAmmo += OnSwitchAmmo;
             InputHandler.UsedPotion += OnPotionUse;
             Inventory.HealthPotionUsed += OnHealthUsedFromSlot;
+            InputHandler.PressedInteract += OnInteract;
         }
 
         private void OnDisable()
@@ -275,6 +322,24 @@ namespace Metroidvania.Player
             InputHandler.SwitchedAmmo -= OnSwitchAmmo;
             InputHandler.UsedPotion -= OnPotionUse;
             Inventory.HealthPotionUsed -= OnHealthUsedFromSlot;
+            InputHandler.PressedInteract -= OnInteract;
         }
+
+        public void LoadData(GameData.GameData gameData)
+        {
+            var playerStats = Unit.GetUnitComponent<UnitStats>();
+            playerStats.SetCurrentHealth(gameData.playerHealth);
+            _lastCheckpoint.x = gameData.xPlayerPosition;
+            _lastCheckpoint.y = gameData.yPlayerPosition;
+            SpawnPlayer();
+        }
+        public void SaveData(ref GameData.GameData gameData)
+        {
+            var playerStats = Unit.GetUnitComponent<UnitStats>();
+            gameData.playerHealth = playerStats.GetCurrentHealth();
+            gameData.xPlayerPosition = _lastCheckpoint.x;
+            gameData.yPlayerPosition = _lastCheckpoint.y;
+        }
+        
     }
 }

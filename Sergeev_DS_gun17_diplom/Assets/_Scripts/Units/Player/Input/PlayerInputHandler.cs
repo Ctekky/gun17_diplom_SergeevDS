@@ -30,6 +30,7 @@ namespace Metroidvania.Player
         public event Action ClosedMenu;
         public event Action SwitchedAmmo;
         public event Action<PotionSlotNumber> UsedPotion;
+        public event Action PressedInteract;
 
         private void OnEnable()
         {
@@ -90,6 +91,7 @@ namespace Metroidvania.Player
             if (context.started)
             {
                 InteractInput = true;
+                PressedInteract?.Invoke();
             }
 
             if (context.canceled)

@@ -4,11 +4,12 @@ using System.Linq;
 using UnityEngine;
 using Metroidvania.Combat.Weapon;
 using Metroidvania.Common.Items;
+using Metroidvania.Interfaces;
 using Metroidvania.UI;
 
 namespace Metroidvania.Player
 {
-    public class PlayerInventory : MonoBehaviour
+    public class PlayerInventory : MonoBehaviour, ISaveAndLoad
     {
         public Weapon[] weapons;
         [SerializeField] private List<InventoryItem> _inventory;
@@ -114,6 +115,7 @@ namespace Metroidvania.Player
         }
         private void DecreasePotionInSlot(InventoryItem slot, PotionSlotNumber number)
         {
+            if(slot.ItemData == null) return;
             if (slot.stackSize == 1)
             {
                 RemoveItem(slot.ItemData);
@@ -186,7 +188,7 @@ namespace Metroidvania.Player
 
         private void UsePotion(InventoryItem potion)
         {
-            if (potion == null) return;
+            if (potion.ItemData == null) return;
             var potionData = potion.ItemData as ItemDataPotion;
             if (potionData == null) return;
             switch (potionData.potionType)
@@ -287,8 +289,18 @@ namespace Metroidvania.Player
                     break;
             }
         }
+
+        public void AddItem(InventoryItem item)
+        {
+            for (var i = 0; i < item.stackSize; i++)
+            {
+                AddItem(item.ItemData);
+            }
+            Debug.Log("Item Loaded");
+        }
         private void RemoveItem(ItemData item)
         {
+            if(item == null) return;
             switch (item.itemType)
             {
                 case ItemType.Material:
@@ -378,8 +390,33 @@ namespace Metroidvania.Player
                 RemoveItem(itemToRemove.ItemData);
             }
             AddItem(itemToCraft);
-            Debug.Log($"Craft item {itemToCraft}");
             return true;
+        }
+
+        public void LoadData(GameData.GameData gameData)
+        {
+        }
+
+        public void SaveData(ref GameData.GameData gameData)
+        {
+            gameData.inventory.Clear();
+
+            foreach (var pair in _inventoryDictionary)
+            {
+                gameData.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
+            }
+            foreach (var pair in _ammoDictionary)
+            {
+                gameData.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
+            }
+            foreach (var pair in _potionDictionary)
+            {
+                gameData.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
+            }
+            foreach (var pair in _buffDictionary)
+            {
+                gameData.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
+            }
         }
     }
 }
