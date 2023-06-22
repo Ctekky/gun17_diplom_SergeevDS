@@ -44,14 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c31593ecd90e3ab40b20983dcb931ea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnersStructs:
-  - SpawnCoordinates: {x: -4.51, y: -2.45}
-    EnemyPrefab: {fileID: 6740031038459215407, guid: d89c404a310cc0945ba0aa47df77594c, type: 3}
-    EnemyLevel: 1
-  - SpawnCoordinates: {x: 17.27, y: 10.13}
-    EnemyPrefab: {fileID: 6740031038459215407, guid: d89c404a310cc0945ba0aa47df77594c, type: 3}
-    EnemyLevel: 2
-  - SpawnCoordinates: {x: 34.57, y: -4.87}
-    EnemyPrefab: {fileID: 6740031038459215407, guid: d89c404a310cc0945ba0aa47df77594c, type: 3}
-    EnemyLevel: 3
+  _spawnersStructs: []
   spawnerPrefab: {fileID: 4746909510343445908, guid: e3c2b4ac7ed8dca4bb4934c7aaf630a7, type: 3}
