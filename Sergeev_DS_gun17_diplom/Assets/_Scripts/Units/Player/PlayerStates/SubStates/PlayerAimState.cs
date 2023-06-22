@@ -15,6 +15,7 @@ namespace Metroidvania.Player
         {
             base.Enter();
             Movement?.SetVelocityZero();
+            Player.OnAiming();
             _weapon.EnterWeaponAim();
         }
         public override void Exit()
@@ -22,6 +23,7 @@ namespace Metroidvania.Player
             base.Exit();
             Player.InputHandler.UseSecondaryAttackPerformedInput();
             Player.InputHandler.UseSecondaryAttackInput();
+            Player.OnEndAiming();
         }
         public override void LogicUpdate()
         {

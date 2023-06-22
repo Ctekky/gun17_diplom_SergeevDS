@@ -24,8 +24,7 @@ namespace Metroidvania.Managers
         private string _currentScene;
         [SerializeField] private string mainMenuScene = "MainMenu";
         [SerializeField, Range(1, 10)] private float delay = 1.5f;
-
-
+        
         private void Start()
         {
             _currentScene = SceneManager.GetActiveScene().name;

@@ -1,4 +1,5 @@
 using Metroidvania.BaseUnit;
+using UnityEngine;
 
 namespace Metroidvania.Player
 {
@@ -10,8 +11,9 @@ namespace Metroidvania.Player
         protected bool InteractInput;
         protected int InputX;
         protected int InputY;
-        private bool _jumpInput;
+        protected bool JumpInput;
         protected Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
+        protected Transform CurrentRope;
 
         private CollisionChecks CollisionChecks => _collisionChecks
             ? _collisionChecks
@@ -40,17 +42,17 @@ namespace Metroidvania.Player
             InputX = Player.InputHandler.NormalizedInputX;
             InputY = Player.InputHandler.NormalizedInputY;
             InteractInput = Player.InputHandler.InteractInput;
-            _jumpInput = Player.InputHandler.JumpInput;
-            if (_jumpInput)
+            JumpInput = Player.InputHandler.JumpInput;
+            if (JumpInput)
             {
                 Player.WallJumpState.WallJumpDirection(_isTouchingWall);
                 StateMachine.ChangeState(Player.WallJumpState);
             }
-            else if (_isGrounded && !InteractInput)
+            else if (_isGrounded)
             {
                 StateMachine.ChangeState(Player.IdleState);
             }
-            else if (!_isTouchingRope || (InputX != Movement?.FacingDirection && !InteractInput))
+            else if (!_isTouchingRope)
             {
                 StateMachine.ChangeState(Player.InAirState);
             }

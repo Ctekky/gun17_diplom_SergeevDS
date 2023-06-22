@@ -11,11 +11,6 @@ namespace Metroidvania.Player
         public PlayerRollState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
-        public override void DoChecks()
-        {
-            base.DoChecks();
-        }
-
         public override void AnimationEndTrigger()
         {
             base.AnimationEndTrigger();
@@ -27,7 +22,6 @@ namespace Metroidvania.Player
             base.AnimationTrigger();
             Player.SetPlayerLayer(PlayerData.invinciblePlayerLayer);
         }
-
         public override void Enter()
         {
             base.Enter();

@@ -1,11 +1,11 @@
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Metroidvania.BaseUnit;
 using Metroidvania.Combat.Weapon;
+using Metroidvania.Common.Rope;
 using Metroidvania.Interfaces;
-using ModestTree.Util;
-using Unity.VisualScripting;
 using Unit = Metroidvania.BaseUnit.Unit;
 
 namespace Metroidvania.Player
@@ -24,7 +24,7 @@ namespace Metroidvania.Player
         public PlayerWallGrabState WallGrabState { get; private set; }
         public PlayerWallClimbState WallClimbState { get; private set; }
         public PlayerWallJumpState WallJumpState { get; private set; }
-        public PlayerRopeGrabdState RopeGrabState { get; private set; }
+        public PlayerRopeGrabState RopeGrabState { get; private set; }
         public PlayerRopeClimbState RopeClimbState { get; private set; }
         public PlayerRopeSwingState RopeSwingState { get; private set; }
         public PlayerCrouchIdleState CrouchIdleState { get; private set; }
@@ -52,6 +52,7 @@ namespace Metroidvania.Player
             private set => isTouchingRope = value;
         }
         public Transform CurrentRope { get; private set; }
+        public bool AlreadyOnRope { get; set; }
         [SerializeField] private bool isTouchingRope;
         private float _startCollisionTime;
         private List<RopeLinks> _ropeLinksCollisions;
@@ -64,6 +65,8 @@ namespace Metroidvania.Player
         }
         private WeaponType _currentWeaponEquip;
         private Vector2 _workVector;
+        public event Action Aiming; 
+        public event Action EndAiming; 
         #endregion
         #region Unity Func
         
@@ -86,7 +89,7 @@ namespace Metroidvania.Player
             WallClimbState = new PlayerWallClimbState(this, StateMachine, playerData, "wallClimb");
             WallJumpState = new PlayerWallJumpState(this, StateMachine, playerData, "inAir");
             RopeClimbState = new PlayerRopeClimbState(this, StateMachine, playerData, "ropeClimb");
-            RopeGrabState = new PlayerRopeGrabdState(this, StateMachine, playerData, "ropeGrab");
+            RopeGrabState = new PlayerRopeGrabState(this, StateMachine, playerData, "ropeGrab");
             RopeSwingState = new PlayerRopeSwingState(this, StateMachine, playerData, "ropeGrab");
             CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, playerData, "crouchIdle");
             CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerData, "crouchMove");
@@ -201,6 +204,7 @@ namespace Metroidvania.Player
                 _ropeLinksCollisions.Add(collision.GetComponent<RopeLinks>());
                 CurrentRope = collision.transform;
                 isTouchingRope = true;
+                
             }
             else if (collision.GetComponent<IPickupable>() != null)
             {
@@ -249,6 +253,7 @@ namespace Metroidvania.Player
         public void PlayerMoveRope()
         {
             transform.SetParent(isTouchingRope ? CurrentRope.transform : null);
+            
         }
 
         public void SetPlayerLayer(LayerMask layer) => gameObject.layer = (int)Mathf.Log(layer.value, 2);
@@ -272,6 +277,16 @@ namespace Metroidvania.Player
             Inventory.DecreasePotion(number);
         }
 
+        public void OnAiming()
+        {
+            Aiming?.Invoke();
+        }
+
+        public void OnEndAiming()
+        {
+            EndAiming?.Invoke();
+        }
+
         public void SetLastSpawnPoint(Vector2 position)
         {
             _lastCheckpoint = position;
@@ -284,6 +299,7 @@ namespace Metroidvania.Player
 
         private void SpawnPlayer()
         {
+            if(_lastCheckpoint is { x: 0, y: 0 }) return;
             transform.position = _lastCheckpoint;
         }
 

@@ -18,7 +18,7 @@ namespace Metroidvania.Player
         {
             base.LogicUpdate();
             if (IsExitingState) return;
-            if (InputX != 0 && InteractInput)
+            if (InputX != 0)
             {
                 Player.PlayerMoveRope();
             }

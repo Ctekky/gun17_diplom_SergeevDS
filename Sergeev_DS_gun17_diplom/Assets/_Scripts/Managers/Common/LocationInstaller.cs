@@ -8,15 +8,16 @@ namespace Metroidvania.Common
     public class LocationInstaller : MonoInstaller
     {
         [SerializeField] private Transform startPoint;
-        [SerializeField] private  GameObject playerPrefab;
-        [SerializeField] private  ItemManager itemManagerPrefab;
-        [SerializeField] private  EnemyManager enemyManagerPrefab;
-        [SerializeField] private  GameManager gameManagerPrefab;
-        [SerializeField] private  UIManager uiManagerPrefab;
-        [SerializeField] private  UICanvas uiCanvasPrefab;
-        [SerializeField] private  SaveManager saveManagerPrefab;
-        [SerializeField] private  Transform managersParent;
-        [SerializeField] private  Transform zeroPoint;
+        [SerializeField] private GameObject playerPrefab;
+        [SerializeField] private ItemManager itemManagerPrefab;
+        [SerializeField] private EnemyManager enemyManagerPrefab;
+        [SerializeField] private GameManager gameManagerPrefab;
+        [SerializeField] private UIManager uiManagerPrefab;
+        [SerializeField] private UICanvas uiCanvasPrefab;
+        [SerializeField] private SaveManager saveManagerPrefab;
+        [SerializeField] private Transform managersParent;
+        [SerializeField] private Transform zeroPoint;
+        [SerializeField] private Transform audioManagerPrefab;
 
         public override void InstallBindings()
         {
@@ -44,11 +45,13 @@ namespace Metroidvania.Common
                 position,
                 Quaternion.identity, managersParent);
             Container.Bind<SaveManager>().FromInstance(saveManager).AsSingle();
+            var audioManager = Container.InstantiatePrefabForComponent<AudioManager>(audioManagerPrefab, position,
+                Quaternion.identity, managersParent);
+            Container.Bind<AudioManager>().FromInstance(audioManager).AsSingle();
             var gameManager =
                 Container.InstantiatePrefabForComponent<GameManager>(gameManagerPrefab, position, Quaternion.identity,
                     managersParent);
             Container.Bind<GameManager>().FromInstance(gameManager).AsSingle();
-            
         }
     }
 }

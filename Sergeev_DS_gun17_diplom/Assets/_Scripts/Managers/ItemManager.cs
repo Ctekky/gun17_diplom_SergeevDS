@@ -19,6 +19,7 @@ namespace Metroidvania.Managers
         private PlayerInventory _playerInventory;
         private readonly List<BaseItem> _itemsInGame = new List<BaseItem>();
         private List<BaseItem> _itemsToDrop = new List<BaseItem>();
+        private List<BaseItem> _pickupables;
         private List<IInteractable> _interactableObjects;
         private List<Campfire> _campfires;
         private int _numberOfDropped;
@@ -33,10 +34,16 @@ namespace Metroidvania.Managers
         {
             _interactableObjects = FindAllInteractableObjects();
             _campfires = FindAllCampfireOnMap();
+            _pickupables = FindAllPickupable();
             foreach (var interactableObject in _interactableObjects)
             {
                 interactableObject.Opened += ChooseItemToSpawn;
                 interactableObject.Saved += SaveOnCampfire;
+            }
+
+            foreach (var pickupable in _pickupables)
+            {
+                pickupable.OnPickuped += AddItemToPlayer;
             }
         }
 
@@ -168,6 +175,12 @@ namespace Metroidvania.Managers
         {
             var campfires = FindObjectsOfType<MonoBehaviour>().OfType<Campfire>();
             return new List<Campfire>(campfires);
+        }
+
+        private List<BaseItem> FindAllPickupable()
+        {
+            var pickupable = FindObjectsOfType<MonoBehaviour>().OfType<BaseItem>();
+            return new List<BaseItem>(pickupable);
         }
     }
 }

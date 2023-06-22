@@ -21,13 +21,11 @@ namespace Metroidvania.Player
             base.LogicUpdate();
             if (IsExitingState) return;
             HoldPosition();
-            //�������� �������� �� ������ (�.�. ��� ����������� ������ ��� �������
-            
+
             if (InputY > 0)
             {
                 //stateMachine.ChangeState(player.WallClimbState);
             }
-            
             if (InputY < 0 || !InteractInput)
             {
                 StateMachine.ChangeState(Player.WallSlideState);
