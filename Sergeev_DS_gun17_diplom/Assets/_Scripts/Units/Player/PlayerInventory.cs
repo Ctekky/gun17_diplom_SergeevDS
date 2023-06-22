@@ -245,7 +245,8 @@ namespace Metroidvania.Player
         
         private void SetNextAmmo()
         {
-            if(currentAmmo != null) return;
+            if(currentAmmo != null)
+                if(currentAmmo.ItemData != null) return;
             foreach (var ammo in _ammo.Where(ammo => ammo != _lastUsedAmmo))
             {
                 SetCurrentAmmo(ammo);
@@ -253,10 +254,26 @@ namespace Metroidvania.Player
             }
             if(currentAmmo == null) SetEmptyAmmo?.Invoke();
         }
+
         public bool CanShootArrow()
         {
-            if (currentAmmo == null) return false;
-            return currentAmmo.stackSize > 0;
+            if (currentAmmo == null)
+            {
+                _lastUsedAmmo = null;
+                SetNextAmmo();
+                if (currentAmmo == null) return false;
+                return currentAmmo.stackSize > 0;
+            }
+            else
+            {
+                if (currentAmmo.ItemData == null)
+                {
+                    SetNextAmmo();
+                    if (currentAmmo == null) return false;
+                    return currentAmmo.stackSize > 0;
+                }
+                return currentAmmo.stackSize > 0;
+            }
         }
         
         public void AddItem(ItemData item)

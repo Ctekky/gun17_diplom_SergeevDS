@@ -288,7 +288,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""888fcce8-ae06-4a19-a19d-c00dc543e84f"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -299,7 +299,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2a6049bd-b30e-4558-af62-b4f3ab95f0d8"",
-                    ""path"": ""<Keyboard>/k"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -376,7 +376,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""UnitUI"",
+            ""name"": ""UI"",
             ""id"": ""24141f66-5a1a-435b-9ba2-648d7c3d5ec5"",
             ""actions"": [
                 {
@@ -431,7 +431,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f598326d-5e9a-4855-ad0c-ed6fe95a5dcd"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -442,7 +442,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""362b507a-10ba-43d3-bf67-46dbd9e1482c"",
-                    ""path"": ""<Keyboard>/k"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -483,8 +483,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Gameplay_Potion_2 = m_Gameplay.FindAction("Potion_2", throwIfNotFound: true);
         m_Gameplay_Potion_3 = m_Gameplay.FindAction("Potion_3", throwIfNotFound: true);
         m_Gameplay_Potion_4 = m_Gameplay.FindAction("Potion_4", throwIfNotFound: true);
-        // UnitUI
-        m_UI = asset.FindActionMap("UnitUI", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_CloseMenu = m_UI.FindAction("CloseMenu", throwIfNotFound: true);
         m_UI_CharacterMenu = m_UI.FindAction("CharacterMenu", throwIfNotFound: true);
         m_UI_CraftMenu = m_UI.FindAction("CraftMenu", throwIfNotFound: true);
@@ -690,7 +690,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
 
-    // UnitUI
+    // UI
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
     private readonly InputAction m_UI_CloseMenu;
