@@ -23,10 +23,17 @@ namespace Metroidvania.Common
         {
             var position1 = startPoint.position;
             var position = zeroPoint.position;
+            var audioManager = Container.InstantiatePrefabForComponent<AudioManager>(audioManagerPrefab, position,
+                Quaternion.identity, managersParent);
+            Container.Bind<AudioManager>().FromInstance(audioManager).AsSingle();
             var player =
                 Container.InstantiatePrefabForComponent<Player.Player>(playerPrefab, position1,
                     Quaternion.identity, null);
             Container.Bind<Player.Player>().FromInstance(player).AsSingle();
+            var saveManager = Container.InstantiatePrefabForComponent<SaveManager>(saveManagerPrefab,
+                position,
+                Quaternion.identity, managersParent);
+            Container.Bind<SaveManager>().FromInstance(saveManager).AsSingle();
             var uiCanvas =
                 Container.InstantiatePrefabForComponent<UICanvas>(uiCanvasPrefab, position, Quaternion.identity, null);
             Container.Bind<UICanvas>().FromInstance(uiCanvas).AsSingle();
@@ -41,13 +48,7 @@ namespace Metroidvania.Common
                 Container.InstantiatePrefabForComponent<UIManager>(uiManagerPrefab, position, Quaternion.identity,
                     managersParent);
             Container.Bind<UIManager>().FromInstance(uiManager).AsSingle();
-            var saveManager = Container.InstantiatePrefabForComponent<SaveManager>(saveManagerPrefab,
-                position,
-                Quaternion.identity, managersParent);
-            Container.Bind<SaveManager>().FromInstance(saveManager).AsSingle();
-            var audioManager = Container.InstantiatePrefabForComponent<AudioManager>(audioManagerPrefab, position,
-                Quaternion.identity, managersParent);
-            Container.Bind<AudioManager>().FromInstance(audioManager).AsSingle();
+
             var gameManager =
                 Container.InstantiatePrefabForComponent<GameManager>(gameManagerPrefab, position, Quaternion.identity,
                     managersParent);

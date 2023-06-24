@@ -38,6 +38,7 @@ namespace Metroidvania.Player
         public override void AnimationEndTrigger()
         {
             base.AnimationEndTrigger();
+            
             IsAbilityDone = true;
         }
         #endregion

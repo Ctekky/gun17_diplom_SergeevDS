@@ -5,6 +5,8 @@ using UnityEngine;
 using Zenject;
 using Metroidvania.Structs;
 using Metroidvania.BaseUnit;
+using Metroidvania.Managers;
+using UnityEngine.Serialization;
 
 namespace Metroidvania.Enemy
 {
@@ -23,6 +25,7 @@ namespace Metroidvania.Enemy
         [SerializeField] private Transform playerCheck;
         [SerializeField] protected EnemyData enemyData;
         [SerializeField] private LootType lootType;
+        [Inject] public AudioManager audioManager;
         
         private int _lastDamageDirection;
         

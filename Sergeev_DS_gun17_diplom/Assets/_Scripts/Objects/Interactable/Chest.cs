@@ -1,7 +1,9 @@
 using System;
 using Metroidvania.Interfaces;
+using Metroidvania.Managers;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace Metroidvania.Combat.Objects
 {
@@ -13,6 +15,7 @@ namespace Metroidvania.Combat.Objects
         [SerializeField] private LootType lootType;
         private static readonly int IsOpening = Animator.StringToHash("isOpening");
         private static readonly int IsOpen = Animator.StringToHash("isOpen");
+        [Inject] private AudioManager _audioManager;
         public event Action<LootType, Vector2> Opened;
         public event Action<Vector2> Used;
         public event Action<Transform> Saved;
@@ -25,6 +28,7 @@ namespace Metroidvania.Combat.Objects
         public void Interact()
         {
             if(_state) return;
+            _audioManager.PlaySFX((int)SFXSlots.OpenChest);
             animator.SetBool(IsOpening, true);
             _state = true;
         }

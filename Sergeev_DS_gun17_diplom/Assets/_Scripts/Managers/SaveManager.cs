@@ -10,9 +10,9 @@ namespace Metroidvania.Managers
     public class SaveManager : MonoBehaviour
     {
         private GameData.GameData _gameData;
-        private List<ISaveAndLoad> _saveInterfacesInScripts;
         private FileDataHandler _dataHandler;
-        private string _fileName;
+        private string _fileName; 
+        private List<ISaveAndLoad> _saveInterfacesInScripts;
         [SerializeField] private bool encryptData;
 
         private void Awake()
@@ -26,6 +26,11 @@ namespace Metroidvania.Managers
             _dataHandler = new FileDataHandler(Application.persistentDataPath, _fileName, encryptData);
             _saveInterfacesInScripts = FindAllSaveAndLoadInterfaces();
             LoadGame();
+        }
+
+        public void AddScriptToList(ISaveAndLoad script)
+        {
+            _saveInterfacesInScripts.Add(script);
         }
 
         private void NewGame()

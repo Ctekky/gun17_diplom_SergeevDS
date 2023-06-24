@@ -267,6 +267,9 @@ MonoBehaviour:
   craftUI: {fileID: 942918893775382796}
   optionsUI: {fileID: 7996419391051707828}
   inGameUI: {fileID: 3081990300486257215}
+  volumeSliders:
+  - {fileID: 295336554252653510}
+  - {fileID: 3055111492724168791}
 --- !u!1 &45222602962855055
 GameObject:
   m_ObjectHideFlags: 0
@@ -5922,6 +5925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7568822858509903506}
   - component: {fileID: 3371383963332769905}
+  - component: {fileID: 295336554252653510}
   m_Layer: 5
   m_Name: SoundEffectSlider
   m_TagString: Untagged
@@ -5996,13 +6000,41 @@ MonoBehaviour:
   m_FillRect: {fileID: 5663218279546825733}
   m_HandleRect: {fileID: 5740220512798755376}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.001
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 0.599
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 295336554252653510}
+        m_TargetAssemblyTypeName: Metroidvania.UI.UIVolumeSlider, Assembly-CSharp
+        m_MethodName: SliderValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &295336554252653510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3007237387824936749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b5de0202115bb2489cec2b7fe281b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 3371383963332769905}
+  parameter: sfx
+  audioMixer: {fileID: 24100000, guid: b7725e6b8fda8d845bed26b071ee56d1, type: 2}
+  multiplier: 25
 --- !u!1 &3064942110470329002
 GameObject:
   m_ObjectHideFlags: 0
@@ -18337,6 +18369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6386107013232813135}
   - component: {fileID: 3452827437735825622}
+  - component: {fileID: 3055111492724168791}
   m_Layer: 5
   m_Name: BackgroundMusicSlider
   m_TagString: Untagged
@@ -18411,13 +18444,41 @@ MonoBehaviour:
   m_FillRect: {fileID: 8301226911397400083}
   m_HandleRect: {fileID: 2650701030534168892}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.001
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 0.599
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3055111492724168791}
+        m_TargetAssemblyTypeName: Metroidvania.UI.UIVolumeSlider, Assembly-CSharp
+        m_MethodName: SliderValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3055111492724168791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8881153370762215206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b5de0202115bb2489cec2b7fe281b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 3452827437735825622}
+  parameter: bgm
+  audioMixer: {fileID: 24100000, guid: b7725e6b8fda8d845bed26b071ee56d1, type: 2}
+  multiplier: 25
 --- !u!1 &8953852104700199890
 GameObject:
   m_ObjectHideFlags: 0

@@ -52,13 +52,13 @@ namespace Metroidvania.Player
             CheckJumpInputHoldTime();
         }
 
-        private void SetGameplay()
+        public void SetGameplay()
         {
             _playerInputActions.Gameplay.Enable();
             _playerInputActions.UI.Disable();
         }
 
-        private void SetUI()
+        public void SetUI()
         {
             _playerInputActions.Gameplay.Disable();
             _playerInputActions.UI.Enable();
@@ -156,6 +156,7 @@ namespace Metroidvania.Player
 
         public void OnCloseMenu(InputAction.CallbackContext context)
         {
+            if(!_playerInputActions.UI.enabled) return;
             if (!context.started) return;
             ClosedMenu?.Invoke();
             _isInCraftMenu = false;

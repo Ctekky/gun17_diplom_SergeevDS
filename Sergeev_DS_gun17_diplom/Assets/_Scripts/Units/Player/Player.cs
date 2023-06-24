@@ -6,6 +6,9 @@ using Metroidvania.BaseUnit;
 using Metroidvania.Combat.Weapon;
 using Metroidvania.Common.Rope;
 using Metroidvania.Interfaces;
+using Metroidvania.Managers;
+using UnityEngine.Serialization;
+using Zenject;
 using Unit = Metroidvania.BaseUnit.Unit;
 
 namespace Metroidvania.Player
@@ -45,6 +48,7 @@ namespace Metroidvania.Player
         public Rigidbody2D Rb { get; private set; }
         [SerializeField] Vector2 _lastCheckpoint;
         [SerializeField] private PlayerData playerData;
+        [Inject] public AudioManager audioManager;
 
         public bool IsTouchingRope
         {

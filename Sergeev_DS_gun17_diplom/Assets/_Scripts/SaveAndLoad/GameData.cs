@@ -15,6 +15,7 @@ namespace Metroidvania.GameData
         public SerializableDictionary<string, bool> chests;
         public SerializableDictionary<string, bool> campfires;
         public string lastScene;
+        public SerializableDictionary<string, float> audioVolume;
 
         public GameData()
         {
@@ -24,6 +25,7 @@ namespace Metroidvania.GameData
             yPlayerPosition = 0;
             chests = new SerializableDictionary<string, bool>();
             campfires = new SerializableDictionary<string, bool>();
+            audioVolume = new SerializableDictionary<string, float>();
 
         }
     }

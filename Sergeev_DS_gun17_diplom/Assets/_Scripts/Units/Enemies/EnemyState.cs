@@ -17,12 +17,12 @@ namespace Metroidvania.Enemy
         protected float StartTime;
         private string _animBoolName;
 
-        public EnemyState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName)
+        protected EnemyState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName)
         {
-            this.Enemy = enemy;
-            this.StateMachine = stateMachine;
-            this.EnemyData = enemyData;
-            this._animBoolName = animBoolName;
+            Enemy = enemy;
+            StateMachine = stateMachine;
+            EnemyData = enemyData;
+            _animBoolName = animBoolName;
             Unit = enemy.Unit;
         }
 

@@ -11061,6 +11061,7 @@ MonoBehaviour:
   saveManagerPrefab: {fileID: 1052961288779826704, guid: 2f0b8c0f6187e36468a889079ac33a51, type: 3}
   managersParent: {fileID: 1825659295}
   zeroPoint: {fileID: 3667423579348034217, guid: 11f2ae5293b3c454685346a64ffcbff1, type: 3}
+  audioManagerPrefab: {fileID: 1745440763057857057, guid: a637c1587b624684b920906385bbc248, type: 3}
 --- !u!1 &804310678
 GameObject:
   m_ObjectHideFlags: 0

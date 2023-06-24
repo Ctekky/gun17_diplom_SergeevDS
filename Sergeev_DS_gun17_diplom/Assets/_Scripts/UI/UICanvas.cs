@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Metroidvania.BaseUnit;
 using Metroidvania.Common.Items;
+using Metroidvania.Interfaces;
+using Metroidvania.Managers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,7 +13,7 @@ using Zenject;
 
 namespace  Metroidvania.UI
 {
-    public class UICanvas : MonoBehaviour
+    public class UICanvas : MonoBehaviour, ISaveAndLoad
     {
         [Inject] private Player.Player _player;
         [Header("Inventory UnitUI")]
@@ -40,6 +42,10 @@ namespace  Metroidvania.UI
         [SerializeField] private GameObject craftUI;
         [SerializeField] private GameObject optionsUI;
         [SerializeField] private GameObject inGameUI;
+
+        [SerializeField] private List<UIVolumeSlider> volumeSliders;
+
+        [Inject] private AudioManager _audioManager;
 
         public event Action<ItemData, List<InventoryItem>> CraftClicked;
         public event Action GameSaved;
@@ -176,7 +182,12 @@ namespace  Metroidvania.UI
                 if (!isFadeScreen)
                     transform.GetChild(i).gameObject.SetActive(false);
             }
-            if(menu != null) menu.SetActive(true);
+
+            if (menu != null)
+            {
+                _audioManager.PlaySFX((int)SFXSlots.Click);
+                menu.SetActive(true);
+            }
             UpdateStatsUI();
             UpdateHealthUI();
             inGameUI.gameObject.SetActive(true);
@@ -211,6 +222,7 @@ namespace  Metroidvania.UI
 
         public void SwitchToEndScreen()
         {
+            _audioManager.PlaySFX((int)SFXSlots.DeathScreen);
             FadeOut();
         }
 
@@ -226,6 +238,35 @@ namespace  Metroidvania.UI
         
         public void FadeOut() => fadeScreen.FadeOut();
         public void FadeIn() => fadeScreen.FadeIn();
+        public void LoadData(GameData.GameData gameData)
+        {
+            foreach (var slider in volumeSliders)
+            {
+                foreach (var pair in gameData.audioVolume)
+                {
+                    if (pair.Key == slider.parameter)
+                    {
+                        slider.slider.value = pair.Value;
+                    }
+                } 
+            }
+
+        }
+        public void SaveData(ref GameData.GameData gameData)
+        {
+            foreach (var slider in volumeSliders)
+            {
+                if (gameData.audioVolume.TryGetValue(slider.parameter, out var value))
+                {
+                    gameData.audioVolume[slider.parameter] = slider.slider.value;
+                }
+                else
+                {
+                    gameData.audioVolume.Add($"{slider.parameter}", slider.slider.value);    
+                }
+            }
+
+        }
     }
     
 }
