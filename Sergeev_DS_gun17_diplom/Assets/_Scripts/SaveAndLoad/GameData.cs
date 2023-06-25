@@ -9,24 +9,30 @@ namespace Metroidvania.GameData
     public class GameData
     {
         public int playerHealth;
-        public SerializableDictionary<string, int> inventory;
+        public int jumpCount;
+        public string lastScene;
         public float xPlayerPosition;
         public float yPlayerPosition;
         public SerializableDictionary<string, bool> chests;
         public SerializableDictionary<string, bool> campfires;
-        public string lastScene;
+        public SerializableDictionary<string, bool> levers;
+        public SerializableDictionary<string, bool> doors;
+        public SerializableDictionary<string, int> inventory;
         public SerializableDictionary<string, float> audioVolume;
-
+        
         public GameData()
         {
             playerHealth = 0;
-            inventory = new SerializableDictionary<string, int>();
+            jumpCount = 1;
+            lastScene = "";
             xPlayerPosition = 0;
             yPlayerPosition = 0;
             chests = new SerializableDictionary<string, bool>();
             campfires = new SerializableDictionary<string, bool>();
+            levers = new SerializableDictionary<string, bool>();
+            doors = new SerializableDictionary<string, bool>();
             audioVolume = new SerializableDictionary<string, float>();
-
+            inventory = new SerializableDictionary<string, int>();
         }
     }
 }

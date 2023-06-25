@@ -8,6 +8,7 @@ namespace Metroidvania.Player
     public class PlayerAimState : PlayerAbilityState
     {
         private Weapon _weapon;
+        private Vector2 _holdPosition;
         public PlayerAimState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
@@ -17,6 +18,7 @@ namespace Metroidvania.Player
             Movement?.SetVelocityZero();
             Player.OnAiming();
             _weapon.EnterWeaponAim();
+            IsAbilityDone = false;
         }
         public override void Exit()
         {
@@ -28,12 +30,13 @@ namespace Metroidvania.Player
         public override void LogicUpdate()
         {
             base.LogicUpdate();
+            Movement?.SetVelocityZero();
             _weapon.EnterWeaponAim();
             if (Player.InputHandler.AttackInputs[(int)CombatInputs.Secondary])
             {
                 _weapon.EnterWeaponSecondary();
                 StateMachine.ChangeState(Player.IdleState);
-            } 
+            }
             else if (!Player.InputHandler.SecondaryAttackStarted)
             {
                 _weapon.ExitWeaponAim();

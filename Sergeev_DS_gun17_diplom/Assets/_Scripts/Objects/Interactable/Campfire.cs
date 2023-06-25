@@ -6,13 +6,12 @@ using TMPro;
 using UnityEngine;
 using Zenject;
 
-namespace Metroidvania.Combat.Objects
+namespace Metroidvania.Common.Objects
 {
     public class Campfire : MonoBehaviour, IInteractable, ISaveAndLoad
     {
         [Inject] private Player.Player _player;
         private bool _state;
-        [SerializeField] private TextMeshProUGUI text;
         [SerializeField] private Animator animator;
         private static readonly int Active = Animator.StringToHash("Active");
         public event Action<LootType, Vector2> Opened;
@@ -39,14 +38,6 @@ namespace Metroidvania.Combat.Objects
             _player.Unit.GetUnitComponent<UnitStats>().RestoreHealth();
             animator.SetBool(Active, true);
             Saved?.Invoke(transform);
-        }
-        public void OnTriggerEnter2D(Collider2D other)
-        {
-            text.text = "Press E to save game";
-        }
-        public void OnTriggerExit2D(Collider2D other)
-        {
-            text.text = "";
         }
         public void SetState(bool state)
         {

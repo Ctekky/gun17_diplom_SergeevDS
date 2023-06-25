@@ -12,11 +12,6 @@ namespace Metroidvania.Managers
         [SerializeField] private CinemachineVirtualCamera playerCamera;
 
         [Inject] private Player.Player _player;
-        private void Construct(Player.Player player)
-        {
-            playerCamera.Follow = player.transform;
-        }
-
         private void Start()
         {
             playerCamera.Follow = _player.transform;

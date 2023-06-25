@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Metroidvania.Combat.Objects;
+using Metroidvania.Common.Objects;
 using Metroidvania.Common.Items;
 using Metroidvania.Interfaces;
 using Metroidvania.Player;

@@ -62,6 +62,7 @@ namespace Metroidvania.Managers
         
         private void OnGameEnd()
         {
+            _playerInputHandler.SetMainMenu();
             StartCoroutine(LoadSceneWithFade(delay, mainMenuScene));
         }
 
@@ -145,6 +146,7 @@ namespace Metroidvania.Managers
 
         private IEnumerator RespawnPlayer(float delayRespawn, bool isHealed)
         {
+            SceneManager.LoadScene(_currentScene);
             _uiManager.UICanvas.SwitchToEndScreen();
             yield return new WaitForSeconds(delayRespawn);
             _uiManager.UICanvas.FadeIn();

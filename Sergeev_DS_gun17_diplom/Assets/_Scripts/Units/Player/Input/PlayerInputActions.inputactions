@@ -440,6 +440,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "MainMenu",
+            "id": "26a6a92f-73b1-492a-b222-4c5773c02bec",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []

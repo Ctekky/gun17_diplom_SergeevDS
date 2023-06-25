@@ -21,8 +21,18 @@ namespace Metroidvania
         Boar,
         Bat,
         Spider,
+        Slime,
+        Skeleton,
+        SkeletonArcher,
+        Boss,
         Crate,
-        Chest
+        Chest,
+        HealBuffChest,
+        DamageBuffChest,
+        SpecialTutorialChest,
+        MaterialChest,
+        HealPotionChest,
+        ArrowChest
     }
 
     public enum ItemType : byte

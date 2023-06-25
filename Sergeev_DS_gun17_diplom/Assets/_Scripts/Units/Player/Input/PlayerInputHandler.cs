@@ -56,12 +56,21 @@ namespace Metroidvania.Player
         {
             _playerInputActions.Gameplay.Enable();
             _playerInputActions.UI.Disable();
+            _playerInputActions.MainMenu.Disable();
+        }
+
+        public void SetMainMenu()
+        {
+            _playerInputActions.Gameplay.Disable();
+            _playerInputActions.UI.Disable();
+            _playerInputActions.MainMenu.Enable();
         }
 
         public void SetUI()
         {
             _playerInputActions.Gameplay.Disable();
             _playerInputActions.UI.Enable();
+            _playerInputActions.MainMenu.Disable();
         }
 
         public void OnMove(InputAction.CallbackContext context)
@@ -156,7 +165,6 @@ namespace Metroidvania.Player
 
         public void OnCloseMenu(InputAction.CallbackContext context)
         {
-            if(!_playerInputActions.UI.enabled) return;
             if (!context.started) return;
             ClosedMenu?.Invoke();
             _isInCraftMenu = false;

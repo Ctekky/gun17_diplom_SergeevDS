@@ -65,7 +65,7 @@ namespace Metroidvania.Player
                     StateMachine.ChangeState(Player.PrimaryAttackState);
             }
             else if (Player.InputHandler.SecondaryAttackStarted && !IsHeadTouchingGround &&
-                     Player.CurrentWeaponEquip == WeaponType.Bow)
+                     Player.CurrentWeaponEquip == WeaponType.Bow && InputX == 0 && InputY == 0)
             {
                 if(!Player.CanShoot()) StateMachine.ChangeState(Player.IdleState);
                 else StateMachine.ChangeState(Player.AimState);

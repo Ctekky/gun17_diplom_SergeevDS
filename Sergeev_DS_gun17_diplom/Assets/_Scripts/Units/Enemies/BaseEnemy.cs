@@ -25,7 +25,7 @@ namespace Metroidvania.Enemy
         [SerializeField] private Transform playerCheck;
         [SerializeField] protected EnemyData enemyData;
         [SerializeField] private LootType lootType;
-        [Inject] public AudioManager audioManager;
+        public AudioManager audioManager;
         
         private int _lastDamageDirection;
         
@@ -37,8 +37,9 @@ namespace Metroidvania.Enemy
             Unit = GetComponentInChildren<Unit>();
         }
         protected virtual void Start()
-        { 
+        {
         }
+
         public virtual void Update()
         {
             Unit.LogicUpdate();
