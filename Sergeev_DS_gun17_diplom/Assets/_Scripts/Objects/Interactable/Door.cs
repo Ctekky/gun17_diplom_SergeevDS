@@ -17,6 +17,7 @@ namespace Metroidvania.Common.Objects
 
         private void Start()
         {
+            isIdle = true;
             animator.SetBool(IsOpen, isOpen);
             animator.SetBool(IsIdle, isIdle);
         }
