@@ -34,6 +34,10 @@ namespace Metroidvania.Common.Objects
                 isOpen = true;
             }
         }
+        private void OnValidate()
+        {
+            name = transform.parent.name;
+        }
 
         public bool ReturnState()
         {

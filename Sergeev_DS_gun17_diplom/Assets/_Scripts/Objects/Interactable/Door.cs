@@ -17,6 +17,10 @@ namespace Metroidvania.Common.Objects
             isOpen = state;
             animator.SetBool(IsOpen, isOpen);
         }
+        private void OnValidate()
+        {
+            name = transform.parent.name;
+        }
         public void LoadData(GameData.GameData gameData)
         {
             foreach (var pair in gameData.doors.Where(pair => pair.Key == gameObject.name))
