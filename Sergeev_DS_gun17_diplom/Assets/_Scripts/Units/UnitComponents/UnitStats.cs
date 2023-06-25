@@ -88,15 +88,15 @@ namespace Metroidvania.BaseUnit
             if (currentHealth == 0)
             {
                 OnHealthZero?.Invoke();
-                return;
+                return;    
             }
             if (CanAvoidAttack()) return;
             currentHealth -= ArmorReduction(amount);
             OnDecreaseHealth?.Invoke();
             onHealthChange?.Invoke(currentHealth);
             if (currentHealth >= 0) return;
-            OnHealthZero?.Invoke();
             currentHealth = 0;
+            OnHealthZero?.Invoke();
         }
         private bool CanAvoidAttack() => Random.Range(0, 100) < evasion.GetValue() + agility.GetValue();
         private bool CanCrit() => Random.Range(0, 100) < critChance.GetValue() + agility.GetValue();

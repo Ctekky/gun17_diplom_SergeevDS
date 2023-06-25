@@ -9,12 +9,32 @@ namespace Metroidvania.Common.Objects
     {
         [SerializeField] private Animator animator;
         [SerializeField] private bool isOpen;
+        [SerializeField] private bool isIdle;
         private static readonly int IsOpen = Animator.StringToHash("isOpen");
+        private static readonly int IsIdle = Animator.StringToHash("isIdle");
 
-        public void ChangeState(bool state)
+        private void Start()
         {
-            isOpen = state;
+            animator.SetBool(IsIdle, isIdle);
             animator.SetBool(IsOpen, isOpen);
+        }
+
+        public void ChangeState()
+        {
+            isIdle = false;
+            isOpen = !isOpen;
+            animator.SetBool(IsIdle, isIdle);
+            animator.SetBool(IsOpen, isOpen);
+        }
+        private void OnValidate()
+        {
+            name = transform.parent.name;
+        }
+
+        public void OnAnimationEnd()
+        {
+            isIdle = true;
+            animator.SetBool(IsIdle, isIdle);
         }
         public void LoadData(GameData.GameData gameData)
         {

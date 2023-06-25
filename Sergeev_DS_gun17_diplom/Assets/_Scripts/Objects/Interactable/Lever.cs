@@ -34,17 +34,19 @@ namespace Metroidvania.Common.Objects
                 isOpen = true;
             }
         }
-
+        private void OnValidate()
+        {
+            name = transform.parent.name;
+        }
         public bool ReturnState()
         {
             return isOpen;
         }
-
         private void ChangeDoorState()
         {
             foreach (var door in doors)
             {
-                door.ChangeState(isOpen);
+                door.ChangeState();
             }
         }
         public void OnAnimationEnd()

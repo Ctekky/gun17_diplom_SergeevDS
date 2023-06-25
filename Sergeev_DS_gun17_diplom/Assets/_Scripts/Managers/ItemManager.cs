@@ -99,6 +99,7 @@ namespace Metroidvania.Managers
         }
         private void AddItemToPlayer(BaseItem item)
         {
+            if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _itemsInGame.Remove(item);
             item.OnPickuped -= AddItemToPlayer;
             _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
@@ -107,8 +108,8 @@ namespace Metroidvania.Managers
 
         private void AddItemToPlayer(InventoryItem item)
         {
-            _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
             if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
+            _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
             _playerInventory.AddItem(item);
         }
 
@@ -116,10 +117,7 @@ namespace Metroidvania.Managers
         {
             if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _interactableObjects = FindAllInteractableObjects();
-
         }
-        
-
         private void OnDisable()
         {
             foreach (var baseItem in _itemsInGame)
@@ -132,7 +130,6 @@ namespace Metroidvania.Managers
                 interactableObject.Saved -= SaveOnCampfire;
             }
         }
-
         private List<ItemData> GetItemDataBase()
         {
             _itemDataBase = new List<ItemData>();
