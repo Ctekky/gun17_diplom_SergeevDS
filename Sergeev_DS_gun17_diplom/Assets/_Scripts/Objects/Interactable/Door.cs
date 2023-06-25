@@ -18,7 +18,6 @@ namespace Metroidvania.Common.Objects
             animator.SetBool(IsIdle, isIdle);
             animator.SetBool(IsOpen, isOpen);
         }
-
         public void ChangeState()
         {
             isIdle = false;
@@ -30,7 +29,6 @@ namespace Metroidvania.Common.Objects
         {
             name = transform.parent.name;
         }
-
         public void OnAnimationEnd()
         {
             isIdle = true;
