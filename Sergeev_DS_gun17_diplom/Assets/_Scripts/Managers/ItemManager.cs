@@ -102,23 +102,24 @@ namespace Metroidvania.Managers
             _itemsInGame.Remove(item);
             item.OnPickuped -= AddItemToPlayer;
             _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
+            if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerInventory.AddItem(item.GetItemData());
         }
 
         private void AddItemToPlayer(InventoryItem item)
         {
             _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
+            if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerInventory.AddItem(item);
         }
 
         private void Start()
         {
-            _playerInventory = _player.GetComponent<PlayerInventory>();
+            if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _interactableObjects = FindAllInteractableObjects();
 
         }
         
-
         private void OnDisable()
         {
             foreach (var baseItem in _itemsInGame)

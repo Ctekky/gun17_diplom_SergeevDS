@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,36 @@ namespace Metroidvania.Common.Objects
     {
         [SerializeField] private Animator animator;
         [SerializeField] private bool isOpen;
+        [SerializeField] private bool isIdle;
         private static readonly int IsOpen = Animator.StringToHash("isOpen");
+        private static readonly int IsIdle = Animator.StringToHash("isIdle");
 
-        public void ChangeState(bool state)
+        private void Start()
+        {
+            animator.SetBool(IsOpen, isOpen);
+            animator.SetBool(IsIdle, isIdle);
+        }
+
+        public void ChangeState()
+        {
+            isOpen = !isOpen;
+            isIdle = false;
+            animator.SetBool(IsOpen, isOpen);
+            animator.SetBool(IsIdle, isIdle);
+        }
+
+        private void SetState(bool state)
         {
             isOpen = state;
+            isIdle = false;
             animator.SetBool(IsOpen, isOpen);
+            animator.SetBool(IsIdle, isIdle);
+        }
+
+        public void OnAnimationEnd()
+        {
+            isIdle = true;
+            animator.SetBool(IsIdle, isIdle);
         }
         private void OnValidate()
         {
@@ -25,8 +50,7 @@ namespace Metroidvania.Common.Objects
         {
             foreach (var pair in gameData.doors.Where(pair => pair.Key == gameObject.name))
             {
-                isOpen = pair.Value;
-                if(isOpen) animator.SetBool(IsOpen, true);
+                SetState(pair.Value);
             }
         }
         public void SaveData(ref GameData.GameData gameData)

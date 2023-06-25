@@ -48,7 +48,7 @@ namespace Metroidvania.Common.Objects
         {
             foreach (var door in doors)
             {
-                door.ChangeState(isOpen);
+                door.ChangeState();
             }
         }
         public void OnAnimationEnd()
