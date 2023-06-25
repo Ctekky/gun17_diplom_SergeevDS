@@ -16,7 +16,7 @@ namespace Metroidvania.Common.Rope
 
         //Переменные для хранения первичной позиции и поворота
         private Vector3 _linkOneOriginalPosition;
-
+        private Rigidbody2D _firstSegmentRb;
         private Quaternion _linkOneOriginalRotation;
 
         //Новая верёвка и отступ при спавне

@@ -108,12 +108,13 @@ namespace Metroidvania.Managers
         private void AddItemToPlayer(InventoryItem item)
         {
             _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
+            if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerInventory.AddItem(item);
         }
 
         private void Start()
         {
-            _playerInventory = _player.GetComponent<PlayerInventory>();
+            if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _interactableObjects = FindAllInteractableObjects();
 
         }

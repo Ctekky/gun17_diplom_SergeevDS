@@ -78,26 +78,31 @@ namespace Metroidvania.Managers
 
         private void OnClosedMenu()
         {
+            if(_uiManager.UICanvas == null) return;
             _uiManager.UICanvas.CloseAllUI();
         }
 
         private void OnPressedOptionsUIUI()
         {
+            if(_uiManager.UICanvas == null) return;
             _uiManager.UICanvas.SwitchToOptionsUI();
         }
 
         private void OnPressedCharacterUI()
         {
+            if(_uiManager.UICanvas == null) return;
             _uiManager.UICanvas.SwitchToCharacterUI();
         }
 
         private void OnPressedCraftUI()
         {
+            if(_uiManager.UICanvas == null) return;
             _uiManager.UICanvas.SwitchToCraftUI();
         }
 
         private void OnCraftClicked(ItemData itemData, List<InventoryItem> craftingMaterials)
         {
+            if(_uiManager.UICanvas == null) return;
             var isCrafted = _player.GetComponent<PlayerInventory>().CanCraftItem(itemData, craftingMaterials);
             _uiManager.UICanvas.GetComponentInChildren<UICraftDetailPanel>().ShowErrorMessage(isCrafted);
         }
@@ -139,7 +144,7 @@ namespace Metroidvania.Managers
         }
         private IEnumerator LoadSceneWithFade(float delayScene, string scene)
         {
-            _uiManager.UICanvas.FadeOut();
+            if(_uiManager.UICanvas == null) _uiManager.UICanvas.FadeOut();
             yield return new WaitForSeconds(delayScene);
             SceneManager.LoadScene(scene);
         }
@@ -147,9 +152,9 @@ namespace Metroidvania.Managers
         private IEnumerator RespawnPlayer(float delayRespawn, bool isHealed)
         {
             SceneManager.LoadScene(_currentScene);
-            _uiManager.UICanvas.SwitchToEndScreen();
+            if(_uiManager.UICanvas == null) _uiManager.UICanvas.SwitchToEndScreen();
             yield return new WaitForSeconds(delayRespawn);
-            _uiManager.UICanvas.FadeIn();
+            if(_uiManager.UICanvas == null) _uiManager.UICanvas.FadeIn();
             _player.SpawnPlayer(true);
         }
     }
