@@ -86,10 +86,6 @@ namespace Metroidvania.Player
             {
                 StateMachine.ChangeState(Player.PrimaryAttackState);
             }
-            else if (Player.InputHandler.AttackInputs[(int)CombatInputs.Secondary])
-            {
-                StateMachine.ChangeState(Player.SecondaryAttackState);
-            }
             else if (_isGrounded && Movement?.CurrentVelocity.y < 0.01f)
             {
                 StateMachine.ChangeState(Player.LandState);

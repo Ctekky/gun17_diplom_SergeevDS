@@ -21,8 +21,18 @@ namespace Metroidvania
         Boar,
         Bat,
         Spider,
+        Slime,
+        Skeleton,
+        SkeletonArcher,
+        Boss,
         Crate,
-        Chest
+        Chest,
+        HealBuffChest,
+        DamageBuffChest,
+        SpecialTutorialChest,
+        MaterialChest,
+        HealPotionChest,
+        ArrowChest
     }
 
     public enum ItemType : byte
@@ -66,5 +76,41 @@ namespace Metroidvania
         Second,
         Third,
         Fourth
+    }
+
+    public enum SFXSlots : byte
+    {
+        SwordAttackMetal,
+        SwordAttackFlesh,
+        SwordAttackWind,
+        CampfireBurningVariant1,
+        CampfireBurningVariant2,
+        Click,
+        DeathScreen,
+        EvilVoice,
+        FootStep,
+        ItemPickup,
+        MonsterBreathing,
+        MonsterGrowl1,
+        MonsterGrowl2,
+        OpenChest,
+        Key,
+        SkeletonBones,
+        SwordThrow,
+        SwordThrow2,
+        ThunderStrike,
+        WindSound,
+        WomanSigh,
+        FootstepEnemy
+    }
+
+    public enum BGMSlots : byte
+    {
+        EpicMusic,
+        CastleMusic,
+        EpicMusic2,
+        BossBattle,
+        SlowMusic1,
+        SlowMusic2
     }
 }

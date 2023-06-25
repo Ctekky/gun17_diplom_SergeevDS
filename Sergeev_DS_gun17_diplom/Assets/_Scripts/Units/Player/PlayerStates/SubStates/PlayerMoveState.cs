@@ -9,6 +9,19 @@ namespace Metroidvania.Player
         public PlayerMoveState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
+
+        public override void Enter()
+        {
+            base.Enter();
+            Player.audioManager.PlaySFX((int)SFXSlots.FootStep);
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            Player.audioManager.StopSFX((int)SFXSlots.FootStep);
+        }
+
         public override void LogicUpdate()
         {
             base.LogicUpdate();

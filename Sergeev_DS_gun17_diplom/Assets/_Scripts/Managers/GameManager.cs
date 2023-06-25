@@ -20,6 +20,7 @@ namespace Metroidvania.Managers
         [Inject] private UIManager _uiManager;
         [Inject] private Player.Player _player;
         [Inject] private SaveManager _saveManager;
+        [Inject] private AudioManager _audioManager;
         private PlayerInputHandler _playerInputHandler;
         private string _currentScene;
         [SerializeField] private string mainMenuScene = "MainMenu";
@@ -29,6 +30,8 @@ namespace Metroidvania.Managers
         {
             _currentScene = SceneManager.GetActiveScene().name;
             _enemyManager.SpawnAll();
+            _audioManager.SetPlayer(_player);
+            _player.InputHandler.SetGameplay();
         }
 
         private void Awake()
@@ -59,6 +62,7 @@ namespace Metroidvania.Managers
         
         private void OnGameEnd()
         {
+            _playerInputHandler.SetMainMenu();
             StartCoroutine(LoadSceneWithFade(delay, mainMenuScene));
         }
 
@@ -142,6 +146,7 @@ namespace Metroidvania.Managers
 
         private IEnumerator RespawnPlayer(float delayRespawn, bool isHealed)
         {
+            SceneManager.LoadScene(_currentScene);
             _uiManager.UICanvas.SwitchToEndScreen();
             yield return new WaitForSeconds(delayRespawn);
             _uiManager.UICanvas.FadeIn();

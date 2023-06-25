@@ -36,8 +36,10 @@ namespace Metroidvania.Combat.Weapon
             _isSimpleDirection = true;
             GenerateDots();
         }
+
         private Projectile.Projectile CreateProjectile()
         {
+            Player.audioManager.PlaySFX((int)SFXSlots.SwordThrow);
             var projectile = Instantiate(projectilePrefab, player.position + new Vector3(attackPositionOffset * Movement.FacingDirection, 0f, 0f), player.rotation);
             _finalDirection = new Vector2(AimDirection().normalized.x * launchForce.x,
                 AimDirection().normalized.y * launchForce.y);

@@ -6,6 +6,9 @@ using Metroidvania.BaseUnit;
 using Metroidvania.Combat.Weapon;
 using Metroidvania.Common.Rope;
 using Metroidvania.Interfaces;
+using Metroidvania.Managers;
+using UnityEngine.SceneManagement;
+using Zenject;
 using Unit = Metroidvania.BaseUnit.Unit;
 
 namespace Metroidvania.Player
@@ -45,6 +48,7 @@ namespace Metroidvania.Player
         public Rigidbody2D Rb { get; private set; }
         [SerializeField] Vector2 _lastCheckpoint;
         [SerializeField] private PlayerData playerData;
+        [Inject] public AudioManager audioManager;
 
         public bool IsTouchingRope
         {
@@ -321,6 +325,11 @@ namespace Metroidvania.Player
                 interactable.Interact();
             }
         }
+
+        public void AddDoubleJump()
+        {
+            playerData.jumpCount = 2;
+        }
         private void OnEnable()
         {
             Inventory.OnAppliedBuff += ApplyBuff;
@@ -345,8 +354,12 @@ namespace Metroidvania.Player
         {
             var playerStats = Unit.GetUnitComponent<UnitStats>();
             playerStats.SetCurrentHealth(gameData.playerHealth);
-            _lastCheckpoint.x = gameData.xPlayerPosition;
-            _lastCheckpoint.y = gameData.yPlayerPosition;
+            playerData.jumpCount = gameData.jumpCount;
+            if (SceneManager.GetActiveScene().name == gameData.lastScene)
+            {
+                _lastCheckpoint.x = gameData.xPlayerPosition;
+                _lastCheckpoint.y = gameData.yPlayerPosition;
+            }
             SpawnPlayer();
         }
         public void SaveData(ref GameData.GameData gameData)
@@ -355,6 +368,7 @@ namespace Metroidvania.Player
             gameData.playerHealth = playerStats.GetCurrentHealth();
             gameData.xPlayerPosition = _lastCheckpoint.x;
             gameData.yPlayerPosition = _lastCheckpoint.y;
+            gameData.jumpCount = playerData.jumpCount;
         }
         
     }

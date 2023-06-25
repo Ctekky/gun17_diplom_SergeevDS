@@ -1,5 +1,6 @@
 using System;
 using Metroidvania.BaseUnit;
+using Metroidvania.Managers;
 using UnityEngine;
 
 namespace Metroidvania.Enemy
@@ -10,7 +11,7 @@ namespace Metroidvania.Enemy
         public event Action<Vector2, LootType> OnEnemyDied; 
         [SerializeField] private GameObject enemyPrefab;
         [SerializeField] private int enemyLevel;
-
+        public AudioManager audioManager;
         public int EnemyLevel
         {
             get => enemyLevel;
@@ -21,6 +22,7 @@ namespace Metroidvania.Enemy
         {
             _enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
             _enemy.GetComponentInChildren<UnitStats>().UnitLevel = enemyLevel;
+            _enemy.GetComponentInChildren<BaseEnemy>().audioManager = audioManager;
             _enemy.GetComponentInChildren<EnemyDeathUnitComponent>().OnDied += EnemyDied;
         }
 

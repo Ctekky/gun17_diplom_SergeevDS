@@ -18,6 +18,13 @@ namespace Metroidvania.Combat.Weapon
             if (weaponData.GetType() == typeof(DamageWeaponData)) _damageWeaponData = (DamageWeaponData)weaponData;
             else Debug.LogError("Wrong data for weapon");
         }
+
+        public override void EnterWeapon()
+        {
+            base.EnterWeapon();
+            Player.audioManager.PlaySFX((int)SFXSlots.SwordAttackWind);
+        }
+
         public override void AnimationActionTrigger()
         {
             base.AnimationActionTrigger();

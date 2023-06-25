@@ -52,16 +52,25 @@ namespace Metroidvania.Player
             CheckJumpInputHoldTime();
         }
 
-        private void SetGameplay()
+        public void SetGameplay()
         {
             _playerInputActions.Gameplay.Enable();
             _playerInputActions.UI.Disable();
+            _playerInputActions.MainMenu.Disable();
         }
 
-        private void SetUI()
+        public void SetMainMenu()
+        {
+            _playerInputActions.Gameplay.Disable();
+            _playerInputActions.UI.Disable();
+            _playerInputActions.MainMenu.Enable();
+        }
+
+        public void SetUI()
         {
             _playerInputActions.Gameplay.Disable();
             _playerInputActions.UI.Enable();
+            _playerInputActions.MainMenu.Disable();
         }
 
         public void OnMove(InputAction.CallbackContext context)

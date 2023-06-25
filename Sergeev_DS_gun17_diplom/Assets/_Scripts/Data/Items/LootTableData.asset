@@ -33,7 +33,7 @@ MonoBehaviour:
       dropChance: 100
     - itemData: {fileID: 2929321370634355526, guid: ebb0f96bcc75f2846bc5e586c6e11ec9, type: 3}
       dropChance: 100
-    numberOfItemToDrop: 99
+    numberOfItemToDrop: 4
   - lootType: 4
     lootTable:
     - itemData: {fileID: 2929321370634355526, guid: e3eec65ebf8c0b94798e11c87f458dde, type: 3}
@@ -54,4 +54,73 @@ MonoBehaviour:
       dropChance: 100
     - itemData: {fileID: 2929321370634355526, guid: ebb0f96bcc75f2846bc5e586c6e11ec9, type: 3}
       dropChance: 100
-    numberOfItemToDrop: 99
+    numberOfItemToDrop: 4
+  - lootType: 14
+    lootTable:
+    - itemData: {fileID: 2929321370634355526, guid: 5f5060e4e1dcfd449a9abbe0fb5ba9e9, type: 3}
+      dropChance: 100
+    - itemData: {fileID: 2929321370634355526, guid: 3f5e59008d100854c842ccaabd43d2a9, type: 3}
+      dropChance: 50
+    numberOfItemToDrop: 10
+  - lootType: 13
+    lootTable:
+    - itemData: {fileID: 2929321370634355526, guid: 3db0f6e326818314da136b27ff31f5f9, type: 3}
+      dropChance: 90
+    - itemData: {fileID: 2929321370634355526, guid: ebb0f96bcc75f2846bc5e586c6e11ec9, type: 3}
+      dropChance: 66
+    - itemData: {fileID: 2929321370634355526, guid: 876a3737732e7594aa5d9fa096e40473, type: 3}
+      dropChance: 33
+    numberOfItemToDrop: 3
+  - lootType: 9
+    lootTable:
+    - itemData: {fileID: 2929321370634355526, guid: 24980b2cf829a0141801f07c856b0f66, type: 3}
+      dropChance: 100
+    numberOfItemToDrop: 1
+  - lootType: 10
+    lootTable:
+    - itemData: {fileID: 2929321370634355526, guid: 3cde419e2beb236458f1d56d1baa0d6a, type: 3}
+      dropChance: 100
+    numberOfItemToDrop: 1
+  - lootType: 11
+    lootTable:
+    - itemData: {fileID: 2929321370634355526, guid: 5f5060e4e1dcfd449a9abbe0fb5ba9e9, type: 3}
+      dropChance: 100
+    - itemData: {fileID: 2929321370634355526, guid: 3f5e59008d100854c842ccaabd43d2a9, type: 3}
+      dropChance: 100
+    numberOfItemToDrop: 10
+  - lootType: 12
+    lootTable:
+    - itemData: {fileID: 2929321370634355526, guid: f274e87c3104b4d4cb0131e76d7189eb, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: 77f10b1d0451bf749a81d150f980837d, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: 9cdc618e4409b294bbbe854e75efd74e, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: e3eec65ebf8c0b94798e11c87f458dde, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: b8f98a1bbbeb21b47b890a37b187d922, type: 3}
+      dropChance: 60
+    numberOfItemToDrop: 10
+  - lootType: 8
+    lootTable:
+    - itemData: {fileID: 2929321370634355526, guid: f274e87c3104b4d4cb0131e76d7189eb, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: 77f10b1d0451bf749a81d150f980837d, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: 9cdc618e4409b294bbbe854e75efd74e, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: e3eec65ebf8c0b94798e11c87f458dde, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: b8f98a1bbbeb21b47b890a37b187d922, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: 876a3737732e7594aa5d9fa096e40473, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: ebb0f96bcc75f2846bc5e586c6e11ec9, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: 3db0f6e326818314da136b27ff31f5f9, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: 3f5e59008d100854c842ccaabd43d2a9, type: 3}
+      dropChance: 60
+    - itemData: {fileID: 2929321370634355526, guid: 5f5060e4e1dcfd449a9abbe0fb5ba9e9, type: 3}
+      dropChance: 60
+    numberOfItemToDrop: 10

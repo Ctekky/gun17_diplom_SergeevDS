@@ -1,18 +1,23 @@
 using System;
+using System.Linq;
 using Metroidvania.Interfaces;
+using Metroidvania.Managers;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
-namespace Metroidvania.Combat.Objects
+namespace Metroidvania.Common.Objects
 {
     public class Chest : MonoBehaviour, IInteractable, ISaveAndLoad
     {
         [SerializeField] private bool _state;
         [SerializeField] private Animator animator;
-        [SerializeField] private TextMeshProUGUI text;
         [SerializeField] private LootType lootType;
         private static readonly int IsOpening = Animator.StringToHash("isOpening");
         private static readonly int IsOpen = Animator.StringToHash("isOpen");
+        private PopUpText _popUpText;
+        [Inject] private AudioManager _audioManager;
         public event Action<LootType, Vector2> Opened;
         public event Action<Vector2> Used;
         public event Action<Transform> Saved;
@@ -21,40 +26,33 @@ namespace Metroidvania.Combat.Objects
         {
             _state = false;
         }
-
-        public void Interact()
-        {
-            if(_state) return;
-            animator.SetBool(IsOpening, true);
-            _state = true;
-        }
-
         private void OnValidate()
         {
             name = transform.parent.name;
         }
-
         private void Start()
         {
             if(_state) animator.SetBool(IsOpen, true);
+            ChangePopUpTextState();
         }
 
-        public void OnTriggerEnter2D(Collider2D other)
+        private void ChangePopUpTextState()
+        {
+            _popUpText = GetComponent<PopUpText>();
+            _popUpText.GetSetHideText = _state;
+        }
+
+        public void Interact()
         {
             if(_state) return;
-            text.text = "Press E to open chest";
+            _audioManager.PlaySFX((int)SFXSlots.OpenChest);
+            animator.SetBool(IsOpening, true);
+            _state = true;
         }
-
-        public void OnTriggerExit2D(Collider2D other)
-        {
-            text.text = "";
-        }
-
         public bool ReturnState()
         {
             return _state;
         }
-
         public void OnAnimationEnd()
         {
             animator.SetBool(IsOpening, false);
@@ -63,16 +61,13 @@ namespace Metroidvania.Combat.Objects
         }
         public void LoadData(GameData.GameData gameData)
         {
-            foreach (var pair in gameData.chests)
+            foreach (var pair in gameData.chests.Where(pair => pair.Key == gameObject.name))
             {
-                if (pair.Key == gameObject.name)
-                {
-                    _state = pair.Value;
-                    if(_state) animator.SetBool(IsOpen, true);
-                }
+                _state = pair.Value;
+                if(_state) animator.SetBool(IsOpen, true);
+                ChangePopUpTextState();
             }
         }
-
         public void SaveData(ref GameData.GameData gameData)
         {
             if (gameData.chests.TryGetValue(gameObject.name, out var value))

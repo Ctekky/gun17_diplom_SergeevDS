@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Metroidvania.Combat.Objects;
+using Metroidvania.Common.Objects;
 using Metroidvania.Common.Items;
 using Metroidvania.Interfaces;
 using Metroidvania.Player;
@@ -23,6 +23,7 @@ namespace Metroidvania.Managers
         private List<IInteractable> _interactableObjects;
         private List<Campfire> _campfires;
         private int _numberOfDropped;
+        [Inject] private AudioManager _audioManager;
         public event Action GameSaved;
 
         [Header("Item database")] 
@@ -55,6 +56,7 @@ namespace Metroidvania.Managers
                 campfire.GetComponent<Campfire>().SetState(true);
             }    
             GameSaved?.Invoke();
+            _audioManager.PlaySFX((int)SFXSlots.CampfireBurningVariant2);
         }
 
         private void DeactivateAllCampfires()
@@ -95,16 +97,17 @@ namespace Metroidvania.Managers
                 break;
             }
         }
-
         private void AddItemToPlayer(BaseItem item)
         {
             _itemsInGame.Remove(item);
             item.OnPickuped -= AddItemToPlayer;
+            _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
             _playerInventory.AddItem(item.GetItemData());
         }
 
         private void AddItemToPlayer(InventoryItem item)
         {
+            _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
             _playerInventory.AddItem(item);
         }
 

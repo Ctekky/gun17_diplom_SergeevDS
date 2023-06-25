@@ -6,10 +6,10 @@ namespace Metroidvania.Enemy
 {
     public class BoarMoveState : EnemyMoveState
     {
-        private BoarEnemy _boarEnemy;
+        private readonly BoarEnemy _boarEnemy;
         public BoarMoveState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName, BoarEnemy boarEnemy) : base(enemy, stateMachine, enemyData, animBoolName)
         {
-            this._boarEnemy = boarEnemy;
+            _boarEnemy = boarEnemy;
         }
         public override void LogicUpdate()
         {

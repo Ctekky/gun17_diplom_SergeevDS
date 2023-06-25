@@ -462,6 +462,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""MainMenu"",
+            ""id"": ""26a6a92f-73b1-492a-b222-4c5773c02bec"",
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": []
@@ -489,6 +495,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_UI_CharacterMenu = m_UI.FindAction("CharacterMenu", throwIfNotFound: true);
         m_UI_CraftMenu = m_UI.FindAction("CraftMenu", throwIfNotFound: true);
         m_UI_OptionMenu = m_UI.FindAction("OptionMenu", throwIfNotFound: true);
+        // MainMenu
+        m_MainMenu = asset.FindActionMap("MainMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -746,6 +754,31 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // MainMenu
+    private readonly InputActionMap m_MainMenu;
+    private IMainMenuActions m_MainMenuActionsCallbackInterface;
+    public struct MainMenuActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public MainMenuActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_MainMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MainMenuActions set) { return set.Get(); }
+        public void SetCallbacks(IMainMenuActions instance)
+        {
+            if (m_Wrapper.m_MainMenuActionsCallbackInterface != null)
+            {
+            }
+            m_Wrapper.m_MainMenuActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+            }
+        }
+    }
+    public MainMenuActions @MainMenu => new MainMenuActions(this);
     public interface IGameplayActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -770,5 +803,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnCharacterMenu(InputAction.CallbackContext context);
         void OnCraftMenu(InputAction.CallbackContext context);
         void OnOptionMenu(InputAction.CallbackContext context);
+    }
+    public interface IMainMenuActions
+    {
     }
 }

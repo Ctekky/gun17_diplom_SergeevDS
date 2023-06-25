@@ -14,6 +14,8 @@ namespace Metroidvania.Player
         private Movement _movement;
         private CollisionChecks _collisionChecks;
         private bool _isGrounded;
+        protected int InputX;
+        protected int InputY;
 
         protected PlayerAbilityState(Player player, PlayerStateMachine stateMachine, PlayerData playerData,
             string animBoolName) : base(player, stateMachine, playerData, animBoolName)
@@ -33,6 +35,8 @@ namespace Metroidvania.Player
         public override void LogicUpdate()
         {
             base.LogicUpdate();
+            InputX = Player.InputHandler.NormalizedInputX;
+            InputY = Player.InputHandler.NormalizedInputY;
             if (IsAbilityDone)
             {
                 if (_isGrounded && Movement?.CurrentVelocity.y < 0.01f)
