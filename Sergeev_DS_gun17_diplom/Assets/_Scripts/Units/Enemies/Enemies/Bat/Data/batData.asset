@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22d03a395740c2c4abe18c27c215c465, type: 3}
   m_Name: batData
   m_EditorClassIdentifier: 
-  movementVelocity: 3
+  movementVelocity: 5
   wallCheckDistance: 0.5
   ledgeCheckDistance: 0.2
   groundLayer:
@@ -26,7 +26,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 512
-  chargeVelocity: 6
+  chargeVelocity: 8
   chargeTime: 2
   amountOfTurns: 2
   timeOfTurns: 0.5
