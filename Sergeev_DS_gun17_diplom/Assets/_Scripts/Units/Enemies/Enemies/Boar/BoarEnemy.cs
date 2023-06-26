@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Metroidvania.Interfaces;
-using UnityEngine.Serialization;
 
 namespace Metroidvania.Enemy
 {
