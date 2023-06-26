@@ -1,11 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Metroidvania
+namespace Metroidvania.Enemy
 {
-    
-}
-public class BatMeleeAttackState : MonoBehaviour
-{
+    public class BatMeleeAttackState : EnemyMeleeAttackState
+    {
+        private readonly BatEnemy _batEnemy;
+        private bool _isPlayerInMaxAggroRange;
+        public BatMeleeAttackState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData,
+            string animBoolName, Transform attackPosition, BatEnemy batEnemy) : base(enemy, stateMachine, enemyData,
+            animBoolName,
+            attackPosition)
+        {
+            _batEnemy = batEnemy;
+        }
+
+        public override void LogicUpdate()
+        {
+            base.LogicUpdate();
+            if (!IsAnimationEnd) return;
+            StateMachine.ChangeState(_isPlayerInMaxAggroRange
+                ? _batEnemy.ChasingPlayerState
+                : _batEnemy.ReturnToStartingPositionState);
+        }
+
+        public override void DoChecks()
+        {
+            base.DoChecks();
+            _isPlayerInMaxAggroRange = _batEnemy.CheckPlayerInMaxRange();
+        }
+    }
 }

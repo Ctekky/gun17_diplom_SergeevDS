@@ -3,9 +3,9 @@ using Metroidvania.BaseUnit;
 
 namespace Metroidvania.Enemy
 {
-    public class EnemyChargeState : EnemyState
+    public class EnemyChasingPlayerState : EnemyState
     {
-        private Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
+        protected Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
 
         private CollisionChecks CollisionChecks => _collisionChecks
             ? _collisionChecks
@@ -14,12 +14,13 @@ namespace Metroidvania.Enemy
         private Movement _movement;
         private CollisionChecks _collisionChecks;
         protected bool IsPlayerInMinAggroRange;
+        protected bool IsPlayerInMaxAggroRange;
         protected bool IsDetectingWall;
         protected bool IsDetectingLedge;
         protected bool IsChargeTimeOver;
         protected bool PerformCloseRangeAction;
 
-        protected EnemyChargeState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData,
+        protected EnemyChasingPlayerState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData,
             string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
         {
         }
@@ -27,7 +28,6 @@ namespace Metroidvania.Enemy
         public override void Enter()
         {
             base.Enter();
-            Movement?.SetVelocityX(EnemyData.chargeVelocity * Movement.FacingDirection);
             IsChargeTimeOver = false;
         }
 
@@ -35,7 +35,6 @@ namespace Metroidvania.Enemy
         {
             base.LogicUpdate();
             if (IsExitingState) return;
-            Movement?.SetVelocityX(EnemyData.chargeVelocity * Movement.FacingDirection);
             if (Time.time >= StartTime + EnemyData.chargeTime)
             {
                 IsChargeTimeOver = true;

@@ -1,17 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Metroidvania.Enemy
 {
     public class EnemyIdleState : EnemyGroundedState
     {
-        protected bool FlipAfterIdle;
+        private bool _flipAfterIdle;
         protected float IdleTime;
         protected bool IsIdleTimeOver;
-        public EnemyIdleState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
+
+        protected EnemyIdleState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData,
+            string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
         {
         }
+
         public override void Enter()
         {
             base.Enter();
@@ -19,20 +20,22 @@ namespace Metroidvania.Enemy
             IsIdleTimeOver = false;
             SetRandomIdleTime();
         }
+
         public override void Exit()
         {
             base.Exit();
             IsIdleTimeOver = true;
-            if (FlipAfterIdle) Movement?.Flip();
+            if (_flipAfterIdle) Movement?.Flip();
         }
+
         public override void LogicUpdate()
         {
             base.LogicUpdate();
             if (IsExitingState) return;
             Movement?.SetVelocityZero();
         }
-        public void SetFlipAfterIdle(bool flip) => FlipAfterIdle = flip;
+
+        public void SetFlipAfterIdle(bool flip) => _flipAfterIdle = flip;
         private void SetRandomIdleTime() => IdleTime = Random.Range(EnemyData.minIdleTime, EnemyData.maxIdleTime);
     }
 }
-

@@ -17,22 +17,22 @@ MonoBehaviour:
   ledgeCheckDistance: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   minIdleTime: 1
   maxIdleTime: 4
   minAggroDistance: 3
-  maxAggroDistance: 4
+  maxAggroDistance: 10
   actionTime: 1.5
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   chargeVelocity: 6
   chargeTime: 2
   amountOfTurns: 2
   timeOfTurns: 0.5
   closeRangeActionDistance: 1
   longRangeActionDistance: 3
-  meleeAttackRadius: 0.5
+  meleeAttackRadius: 1
   meleeAttackDamage:
     baseValue: 0
     modifiers: 
