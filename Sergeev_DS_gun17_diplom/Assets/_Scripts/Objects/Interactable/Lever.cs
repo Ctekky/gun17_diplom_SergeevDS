@@ -11,6 +11,7 @@ namespace Metroidvania.Common.Objects
         [SerializeField] private List<Door> doors;
         [SerializeField] private bool isOpen = false;
         [SerializeField] private Animator animator;
+        private bool isOpening;
         public event Action<LootType, Vector2> Opened;
         public event Action<Vector2> Used;
         public event Action<Transform> Saved;
@@ -18,9 +19,17 @@ namespace Metroidvania.Common.Objects
         private static readonly int IsOpening = Animator.StringToHash("isOpening");
         private static readonly int IsClosing = Animator.StringToHash("isClosing");
         private static readonly int IsClose = Animator.StringToHash("isClose");
-        
+
+        private void Awake()
+        {
+            isOpening = false;
+        }
+
         public void Interact()
         {
+            if(isOpening) return;
+            isOpening = true;
+            ChangeDoorState();
             if (isOpen)
             {
                 animator.SetBool(IsOpen, false);
@@ -55,7 +64,7 @@ namespace Metroidvania.Common.Objects
         {
             animator.SetBool(isOpen ? IsOpening : IsClosing, false);
             animator.SetBool(isOpen ? IsOpen : IsClose, true);
-            ChangeDoorState();
+            isOpening = false;
         }
         public void LoadData(GameData.GameData gameData)
         {
