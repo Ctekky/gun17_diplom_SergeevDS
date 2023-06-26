@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Metroidvania.BaseUnit;
+
 namespace Metroidvania.Enemy
 {
     public class EnemyAttackState : EnemyState
@@ -13,10 +14,12 @@ namespace Metroidvania.Enemy
         protected readonly Transform AttackPosition;
         protected bool IsPlayerInMinAggroRange;
 
-        protected EnemyAttackState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animBoolName, Transform attackPosition) : base(enemy, stateMachine, enemyData, animBoolName)
+        protected EnemyAttackState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData,
+            string animBoolName, Transform attackPosition) : base(enemy, stateMachine, enemyData, animBoolName)
         {
-            this.AttackPosition = attackPosition;
+            AttackPosition = attackPosition;
         }
+
         public override void Enter()
         {
             base.Enter();
@@ -30,17 +33,17 @@ namespace Metroidvania.Enemy
             base.AnimationEndTrigger();
             IsAnimationEnd = true;
         }
+
         public override void DoChecks()
         {
             base.DoChecks();
             IsPlayerInMinAggroRange = Enemy.CheckPlayerInMinRange();
         }
+
         public override void LogicUpdate()
         {
             base.LogicUpdate();
             Movement?.SetVelocityZero();
         }
-
     }
 }
-

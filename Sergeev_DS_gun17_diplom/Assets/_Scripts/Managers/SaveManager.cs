@@ -4,6 +4,7 @@ using System.Linq;
 using Metroidvania.GameData;
 using Metroidvania.Interfaces;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Metroidvania.Managers
 {
@@ -14,6 +15,7 @@ namespace Metroidvania.Managers
         private string _fileName; 
         private List<ISaveAndLoad> _saveInterfacesInScripts;
         [SerializeField] private bool encryptData;
+        public string sceneName;
 
         private void Awake()
         {
@@ -23,6 +25,7 @@ namespace Metroidvania.Managers
 
         private void Start()
         {
+            _fileName = sceneName + "_data.test";
             _dataHandler = new FileDataHandler(Application.persistentDataPath, _fileName, encryptData);
             _saveInterfacesInScripts = FindAllSaveAndLoadInterfaces();
             LoadGame();

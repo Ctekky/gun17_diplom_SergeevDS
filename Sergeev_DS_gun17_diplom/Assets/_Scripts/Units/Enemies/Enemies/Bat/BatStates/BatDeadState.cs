@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class BatDeadState : MonoBehaviour
+namespace Metroidvania.Enemy
 {
-    // Start is called before the first frame update
-    void Start()
+    public class BatDeadState : EnemyDeadState
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        protected BatDeadState(BaseEnemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData,
+            string animBoolName) : base(enemy, stateMachine, enemyData, animBoolName)
+        {
+        }
     }
 }

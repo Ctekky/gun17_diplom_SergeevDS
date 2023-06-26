@@ -28,7 +28,6 @@ namespace Metroidvania.Managers
         
         private void Start()
         {
-            _currentScene = SceneManager.GetActiveScene().name;
             _enemyManager.SpawnAll();
             _audioManager.SetPlayer(_player);
             _player.InputHandler.SetGameplay();
@@ -37,7 +36,8 @@ namespace Metroidvania.Managers
         private void Awake()
         {
             _playerInputHandler = _player.GetComponent<PlayerInputHandler>();
-            
+            _currentScene = SceneManager.GetActiveScene().name;
+            _saveManager.sceneName = _currentScene;
         }
         private void OnEnable()
         {
