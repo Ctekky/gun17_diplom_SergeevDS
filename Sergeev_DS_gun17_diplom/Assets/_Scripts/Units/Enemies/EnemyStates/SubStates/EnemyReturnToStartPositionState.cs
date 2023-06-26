@@ -41,7 +41,7 @@ namespace Metroidvania.Enemy
             
         }
 
-        public override void DoChecks()
+        protected override void DoChecks()
         {
             base.DoChecks();
             if (CollisionChecks)

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22d03a395740c2c4abe18c27c215c465, type: 3}
+  m_Name: giantBoarData
+  m_EditorClassIdentifier: 
+  movementVelocity: 5
+  wallCheckDistance: 5
+  ledgeCheckDistance: 3
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  minIdleTime: 1
+  maxIdleTime: 4
+  minAggroDistance: 100
+  maxAggroDistance: 200
+  actionTime: 1.5
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  chargeVelocity: 7
+  chargeTime: 10
+  amountOfTurns: 2
+  timeOfTurns: 0.5
+  closeRangeActionDistance: 5
+  longRangeActionDistance: 50
+  meleeAttackRadius: 3
+  meleeAttackDamage:
+    baseValue: 0
+    modifiers: 
+  knockbackAngle: {x: 1, y: 1}
+  knockbackStrength: 10
+  health: 900
+  damageHopSpeed: 3
+  deathParticles: {fileID: 0}

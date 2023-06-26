@@ -27,7 +27,7 @@ namespace Metroidvania.Enemy
                 StateMachine.ChangeState(_batEnemy.IdleState);
         }
 
-        public override void DoChecks()
+        protected override void DoChecks()
         {
             base.DoChecks();
             _isOnStartingPosition = _batEnemy.CheckOnStartingPosition();

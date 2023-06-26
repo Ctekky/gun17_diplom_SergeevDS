@@ -19,7 +19,7 @@ namespace Metroidvania.Enemy
             StateMachine.ChangeState(_batEnemy.ChasingPlayerState);
         }
 
-        public override void DoChecks()
+        protected override void DoChecks()
         {
             base.DoChecks();
             _isPlayerInMaxAggroRange = _batEnemy.CheckPlayerInMaxRange();

@@ -1,6 +1,4 @@
 using Metroidvania.Interfaces;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -23,16 +21,19 @@ namespace Metroidvania.Combat.Projectile
         {
             _rb = GetComponent<Rigidbody2D>();
         }
+
         private void Start()
         {
             _startPosX = transform.position.x;
             _rb.gravityScale = 0f;
             _isGravityOn = false;
         }
+
         public void SetPool(IObjectPool<Projectile> pool)
         {
             _pool = pool;
         }
+
         public void SetupProjectile(int damage)
         {
             _rb.velocity = transform.right * projectileData.speed;
@@ -44,48 +45,65 @@ namespace Metroidvania.Combat.Projectile
             _rb.velocity = direction;
             _rb.gravityScale = gravity;
             _finalDamage = projectileData.damage.GetValue() + damage;
-
         }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if( collision.gameObject.layer == (int)Mathf.Log(groundLayer.value, 2))
+            if (collision.gameObject.layer == (int)Mathf.Log(groundLayer.value, 2))
             {
                 _isHitGround = true;
                 _landTime = Time.time;
             }
-            var damageable = collision.GetComponentInParent<IDamageable>();
-            if (damageable == null || _isHitGround) return;
-            damageable.Damage(_finalDamage);
-            Destroy(transform.gameObject);
+
+            var damageableInParent = collision.GetComponentInParent<IDamageable>();
+            var damageable = collision.GetComponent<IDamageable>();
+            if (_isHitGround) return;
+            if (damageable == null)
+            {
+                if (damageableInParent == null) return;
+                damageableInParent.Damage(_finalDamage);
+                transform.gameObject.SetActive(false);
+            }
+            else
+            {
+                damageable.Damage(_finalDamage);
+                transform.gameObject.SetActive(false);
+            }
         }
+
         private void Update()
         {
-            if(!_isHitGround && _isGravityOn)
+            if (!_isHitGround && _isGravityOn)
             {
                 var velocity = _rb.velocity;
                 var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
-            if(_isHitGround && Time.time >= _landTime + projectileData.lifeTime)
+
+            if (_isHitGround && Time.time >= _landTime + projectileData.lifeTime)
             {
                 if (projectileData.isRopeArrow)
                 {
                     var transform1 = transform;
                     var position = transform1.position;
                     var checkGround = Physics2D.Raycast(position, Vector2.down, 3f, groundLayer);
-                    if(!checkGround) Instantiate(projectileData.arrowRopePrefab, position, transform1.rotation);
+                    if (!checkGround) Instantiate(projectileData.arrowRopePrefab, position, transform1.rotation);
                     else Destroy(transform.gameObject);
                 }
+
                 Destroy(transform.gameObject);
             }
         }
+
         private void FixedUpdate()
-        {   if(_isHitGround)
+        {
+            if (_isHitGround)
             {
                 _rb.gravityScale = 0f;
                 _rb.velocity = Vector2.zero;
             }
-            if(Mathf.Abs(_startPosX - transform.position.x) >= projectileData.travelDistance && !_isGravityOn)
+
+            if (Mathf.Abs(_startPosX - transform.position.x) >= projectileData.travelDistance && !_isGravityOn)
             {
                 _isGravityOn = true;
                 _rb.gravityScale = gravity;
@@ -93,5 +111,3 @@ namespace Metroidvania.Combat.Projectile
         }
     }
 }
-
-

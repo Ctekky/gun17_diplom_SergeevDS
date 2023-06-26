@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6740031036777629657}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.71000004, y: -0.4100001, z: 0}
+  m_LocalPosition: {x: 0.696, y: -0.515, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -196,7 +196,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6740031036887469140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.132, y: -0.139, z: 0}
+  m_LocalPosition: {x: 0.002, y: -0.555, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -271,7 +271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6740031037250081572}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.76, y: -0.120000005, z: 0}
+  m_LocalPosition: {x: 0.75, y: 0.177, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -615,7 +615,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6740031037808318876}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.31, y: -0.061, z: 0}
+  m_LocalPosition: {x: 0.348, y: -0.573, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -800,8 +800,8 @@ MonoBehaviour:
   headCheck: {fileID: 0}
   ledgeCheckHorizontal: {fileID: 0}
   ledgeCheckVertical: {fileID: 6740031036777629662}
-  groundCheckRadius: 0.3
-  wallCheckDistance: 0.3
+  groundCheckRadius: 3
+  wallCheckDistance: 3
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -964,7 +964,7 @@ MonoBehaviour:
   wallCheck: {fileID: 6740031037250081573}
   ledgeCheck: {fileID: 6740031036777629662}
   playerCheck: {fileID: 6740031036887469141}
-  enemyData: {fileID: 11400000, guid: 0ee3b9ea669e11d46898275afa9086c2, type: 2}
+  enemyData: {fileID: 11400000, guid: 20919458a445695478d05637b1d17e48, type: 2}
   lootType: 0
   audioManager: {fileID: 0}
   meleeAttackPosition: {fileID: 6740031037808318877}

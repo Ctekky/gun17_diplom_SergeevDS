@@ -135,6 +135,7 @@ namespace Metroidvania.Managers
 
         public void LoadData(GameData.GameData gameData)
         {
+            if(gameData.lastScene != _currentScene) return;
             _currentScene = gameData.lastScene;
         }
 

@@ -34,7 +34,7 @@ namespace Metroidvania.Enemy
             IsAnimationEnd = true;
         }
 
-        public override void DoChecks()
+        protected override void DoChecks()
         {
             base.DoChecks();
             IsPlayerInMinAggroRange = Enemy.CheckPlayerInMinRange();

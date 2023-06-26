@@ -41,7 +41,7 @@ namespace Metroidvania.Enemy
             }
         }
 
-        public override void DoChecks()
+        protected override void DoChecks()
         {
             base.DoChecks();
             if (CollisionChecks)
@@ -49,9 +49,9 @@ namespace Metroidvania.Enemy
                 IsDetectingLedge = CollisionChecks.LedgeVertical;
                 IsDetectingWall = CollisionChecks.WallFront;
             }
-
             IsPlayerInMinAggroRange = Enemy.CheckPlayerInMinRange();
             PerformCloseRangeAction = Enemy.CheckPlayerInCloseRangeAction();
+            IsPlayerInMaxAggroRange = Enemy.CheckPlayerInMinRange();
         }
     }
 }

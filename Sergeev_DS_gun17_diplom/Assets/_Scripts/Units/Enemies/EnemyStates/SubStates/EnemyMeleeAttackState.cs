@@ -14,17 +14,16 @@ namespace Metroidvania.Enemy
         public override void AnimationTrigger()
         {
             base.AnimationTrigger();
-            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(AttackPosition.position,
+            var detectedObjects = Physics2D.OverlapCircleAll(AttackPosition.position,
                 EnemyData.meleeAttackRadius, EnemyData.playerLayer);
-            foreach (Collider2D collider in detectedObjects)
+            foreach (var collider in detectedObjects)
             {
-                IDamageable damageable = collider.GetComponent<IDamageable>();
+                var damageable = collider.GetComponent<IDamageable>();
                 var finalDamage = UnitStats.DoDamage(EnemyData.meleeAttackDamage.GetValue());
-                if (damageable != null) damageable.Damage(finalDamage);
-                IKnockbackable knockbackable = collider.GetComponent<IKnockbackable>();
-                if (knockbackable != null)
-                    knockbackable.Knockback(EnemyData.knockbackAngle, EnemyData.knockbackStrength,
-                        Movement.FacingDirection);
+                damageable?.Damage(finalDamage);
+                var knockbackable = collider.GetComponent<IKnockbackable>();
+                knockbackable?.Knockback(EnemyData.knockbackAngle, EnemyData.knockbackStrength,
+                    Movement.FacingDirection);
             }
         }
 

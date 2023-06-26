@@ -31,7 +31,7 @@ namespace Metroidvania.Enemy
             }
         }
 
-        public override void DoChecks()
+        protected override void DoChecks()
         {
             base.DoChecks();
             _isPlayerInMaxAggroRange = _batEnemy.CheckPlayerInMaxRange();

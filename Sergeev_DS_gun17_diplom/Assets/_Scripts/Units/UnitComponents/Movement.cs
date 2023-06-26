@@ -64,29 +64,28 @@ namespace Metroidvania.BaseUnit
         {
             if(target == null) return;
             var currentPosition = Rb.transform.position;
-            if (currentPosition.x > target.position.x)
+            var position = target.position;
+            FlipToTarget(currentPosition, position);
+            var direction = (position - currentPosition).normalized;
+            Rb.MovePosition(currentPosition + direction * velocity * Time.fixedDeltaTime);
+        }
+        public void FlipToTarget(Vector3 currentPosition, Vector3 target)
+        {
+            if (currentPosition.x > target.x)
             {
-                if(FacingDirection == 1) Flip();
+                if (FacingDirection == 1) Flip();
             }
             else
             {
-                if(FacingDirection != 1) Flip();
+                if (FacingDirection != 1) Flip();
             }
-            var direction = (target.position - currentPosition).normalized;
-            Rb.MovePosition(currentPosition + direction * velocity * Time.fixedDeltaTime);
         }
+
         public void SetVelocityToTarget(Vector3 target, float velocity)
         {
             var currentPosition = Rb.transform.position;
             var direction = (target - currentPosition).normalized;
-            if (currentPosition.x > target.x)
-            {
-                if(FacingDirection == 1) Flip();
-            }
-            else
-            {
-                if(FacingDirection != 1) Flip();
-            }
+            FlipToTarget(currentPosition, target);
             Rb.MovePosition(currentPosition + direction * velocity * Time.fixedDeltaTime);
         }
 

@@ -17,8 +17,10 @@ namespace Metroidvania.Enemy
         public AnimationToStateMachine AnimToStateMachine { get; private set; }
         public Vector2 CurrentVelocity { get; private set; }
         public Unit Unit { get; private set; }
-        private Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
+        protected Movement Movement => _movement ? _movement : Unit.GetUnitComponent<Movement>(ref _movement);
         private Movement _movement;
+        protected UnitStats UnitStats => _unitStats ? _unitStats : Unit.GetUnitComponent<UnitStats>(ref _unitStats);
+        private UnitStats _unitStats;
         private Vector2 _workVector;
         [SerializeField] private Transform wallCheck;
         [SerializeField] private Transform ledgeCheck;

@@ -17,22 +17,22 @@ namespace Metroidvania.Combat.Weapon
         private IObjectPool<Projectile.Projectile> _projectilePool;
         private bool _isSimpleDirection;
         private Vector2 _finalDirection;
-        
-        [Header("Aim")]
-        [SerializeField] private int numberOfDots;
+
+        [Header("Aim")] [SerializeField] private int numberOfDots;
         [SerializeField] private float spaceBetweenDots;
         [SerializeField] private GameObject dotPrefab;
         [SerializeField] private Transform dotsParent;
         [SerializeField] private float gravityScale;
         [SerializeField] private Vector2 launchForce = new Vector2(15f, 15f);
         private GameObject[] _dots;
-        
+
         protected override void Awake()
         {
             base.Awake();
             if (weaponData.GetType() == typeof(DamageWeaponData)) DamageWeaponData = (DamageWeaponData)weaponData;
             else Debug.LogError("Wrong data for weapon");
-            _projectilePool = new ObjectPool<Projectile.Projectile>(CreateProjectile, OnGetProjectile, OnReleaseProjectile);
+            _projectilePool =
+                new ObjectPool<Projectile.Projectile>(CreateProjectile, OnGetProjectile, OnReleaseProjectile);
             _isSimpleDirection = true;
             GenerateDots();
         }
@@ -40,7 +40,9 @@ namespace Metroidvania.Combat.Weapon
         private Projectile.Projectile CreateProjectile()
         {
             Player.audioManager.PlaySFX((int)SFXSlots.SwordThrow);
-            var projectile = Instantiate(projectilePrefab, player.position + new Vector3(attackPositionOffset * Movement.FacingDirection, 0f, 0f), player.rotation);
+            var projectile = Instantiate(projectilePrefab,
+                player.position + new Vector3(attackPositionOffset * Movement.FacingDirection, 0f, 0f),
+                player.rotation);
             _finalDirection = new Vector2(AimDirection().normalized.x * launchForce.x,
                 AimDirection().normalized.y * launchForce.y);
             if (_isSimpleDirection) projectile.SetupProjectile(UnitStats.ArrowDamage());
@@ -49,12 +51,14 @@ namespace Metroidvania.Combat.Weapon
             player.GetComponent<Player.Player>().PlayerShot();
             return projectile;
         }
+
         private void OnGetProjectile(Projectile.Projectile obj)
         {
             obj.gameObject.SetActive(true);
-            obj.transform.position = transform.position + new Vector3(attackPositionOffset * Movement.FacingDirection, 0f, 0f);
-
+            obj.transform.position =
+                transform.position + new Vector3(attackPositionOffset * Movement.FacingDirection, 0f, 0f);
         }
+
         private void OnReleaseProjectile(Projectile.Projectile obj)
         {
             obj.gameObject.SetActive(false);
@@ -65,16 +69,19 @@ namespace Metroidvania.Combat.Weapon
             base.AnimationActionTrigger();
             RangeAttack();
         }
+
         private void RangeAttack()
         {
             _isSimpleDirection = true;
             CreateProjectile();
         }
+
         private void SecondaryRangeAttack()
         {
             _isSimpleDirection = false;
             CreateProjectile();
         }
+
         public override void EnterWeaponSecondary()
         {
             base.EnterWeaponSecondary();
@@ -87,7 +94,6 @@ namespace Metroidvania.Combat.Weapon
             base.EnterWeaponAim();
             DotsActive(true);
             ShowDots();
-            
         }
 
         public override void ExitWeaponAim()
@@ -111,6 +117,7 @@ namespace Metroidvania.Combat.Weapon
                 _dots[i].SetActive(isActive);
             }
         }
+
         private void GenerateDots()
         {
             _dots = new GameObject[numberOfDots];
@@ -137,11 +144,10 @@ namespace Metroidvania.Combat.Weapon
                 //Debug.Log($"Point {i.ToString()} have coord {_dots[i].transform.position.x.ToString()} and {_dots[i].transform.position.y.ToString()}");
             }
         }
+
         public void SetNewAmmo(GameObject ammoPrefab)
         {
             projectilePrefab = ammoPrefab.GetComponent<Projectile.Projectile>();
         }
-
     }
 }
-
