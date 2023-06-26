@@ -69,7 +69,7 @@ namespace Metroidvania.Enemy
         }
         public virtual void OnDrawGizmos()
         {
-            //if (Unit == null) return;
+            if (Unit == null) return;
             Gizmos.DrawLine(wallCheck.position, wallCheck.position + (Vector3)(Vector2.right * Movement.FacingDirection * enemyData.wallCheckDistance));
             Gizmos.DrawLine(ledgeCheck.position, ledgeCheck.position + (Vector3)(Vector2.down * enemyData.ledgeCheckDistance));
             Gizmos.DrawWireSphere(playerCheck.position + (Vector3)(Vector2.right * enemyData.closeRangeActionDistance), 0.2f);
