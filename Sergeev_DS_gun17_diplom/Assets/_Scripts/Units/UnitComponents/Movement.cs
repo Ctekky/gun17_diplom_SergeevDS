@@ -73,11 +73,17 @@ namespace Metroidvania.BaseUnit
         {
             if (currentPosition.x > target.x)
             {
-                if (FacingDirection == 1) Flip();
+                if (FacingDirection == 1)
+                {
+                    Flip();
+                }
             }
             else
             {
-                if (FacingDirection != 1) Flip();
+                if (FacingDirection != 1)
+                {
+                    Flip();
+                }
             }
         }
 

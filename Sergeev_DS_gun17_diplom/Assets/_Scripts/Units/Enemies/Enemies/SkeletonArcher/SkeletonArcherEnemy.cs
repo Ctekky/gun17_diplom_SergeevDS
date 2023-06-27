@@ -16,8 +16,6 @@ namespace Metroidvania.Enemy
         [SerializeField] private Vector2 launchForce = new Vector2(15f, 15f);
 
         private IObjectPool<Projectile> _projectilePool;
-        private bool _isSimpleDirection;
-        private Vector2 _finalDirection;
         private Projectile _projectile;
 
         public override void Awake()
@@ -58,20 +56,17 @@ namespace Metroidvania.Enemy
 
         public void RangeAttack()
         {
-            _isSimpleDirection = true;
             CreateProjectile();
         }
 
         private Projectile CreateProjectile()
         {
             if(audioManager != null) audioManager.PlaySFX((int)SFXSlots.SwordThrow);
+            Movement?.FlipToTarget(transform.position, GetPlayerPosition().position);
             var projectile = Instantiate(projectilePrefab,
                 attackPosition.position + new Vector3(attackPositionOffset * Movement.FacingDirection, 0f, 0f),
                 transform.rotation);
-            _finalDirection = new Vector2(GetPlayerPosition().position.normalized.x * launchForce.x,
-                GetPlayerPosition().position.normalized.y * launchForce.y);
-            if (_isSimpleDirection) projectile.SetupProjectile(UnitStats.ArrowDamage());
-            else projectile.SetupProjectile(_finalDirection, UnitStats.ArrowDamage());
+            projectile.SetupProjectile(GetPlayerPosition(), transform, UnitStats.ArrowDamage());
             projectile.SetPool(_projectilePool);
             return projectile;
         }

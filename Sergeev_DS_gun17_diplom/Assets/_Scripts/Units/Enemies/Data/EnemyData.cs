@@ -39,7 +39,13 @@ namespace Metroidvania.Enemy
         public Stats meleeAttackDamage;
         public Vector2 knockbackAngle = Vector2.one;
         public float knockbackStrength = 10f;
+        public float pauseBetweenAttack = 1.5f;
 
+        [Header("Teleport State")] 
+        public Vector2 teleportOffsetAbove = new Vector2(0f, 3f);
+        public Vector2 teleportOffsetLeft = new Vector2(-3f, 3f);
+        public Vector2 teleportOffsetRight = new Vector2(3f, 3f);
+        public Vector2 teleportOffsetBehind = new Vector2(-1f, 0f);
 
         [Header("Enemy stats")] public float health = 30f;
         public float damageHopSpeed = 3f;

@@ -47,6 +47,13 @@ namespace Metroidvania.Combat.Projectile
             _finalDamage = projectileData.damage.GetValue() + damage;
         }
 
+        public void SetupProjectile(Transform target, Transform shooter, int damage)
+        {
+            var direction = target.position - shooter.position;
+            _rb.velocity = new Vector2(direction.x, direction.y).normalized * projectileData.speed;
+            _finalDamage = projectileData.damage.GetValue() + damage;
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.layer == (int)Mathf.Log(groundLayer.value, 2))

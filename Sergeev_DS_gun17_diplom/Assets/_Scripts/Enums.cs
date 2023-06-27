@@ -113,4 +113,12 @@ namespace Metroidvania
         SlowMusic1,
         SlowMusic2
     }
+    
+    public enum TeleportVariant : byte
+    {
+        Above,
+        Left,
+        Right,
+        Behind
+    }
 }

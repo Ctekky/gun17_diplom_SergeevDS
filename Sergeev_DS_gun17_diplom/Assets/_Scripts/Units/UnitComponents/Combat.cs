@@ -41,7 +41,6 @@ namespace Metroidvania.BaseUnit
         public void Damage(int amount)
         {
             if(_isImmune) return;
-            Debug.Log(Unit.transform.parent.name + " damaged!");
             StartCoroutine(nameof(FlashFX));
             UnitStats?.DecreaseHealth(amount);
             ParticleManager?.StartParticleWithRandomRotation(damageParticle);
