@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: batData
   m_EditorClassIdentifier: 
   movementVelocity: 5
+  minMovementTimer: 2
+  maxMovementTimer: 5
   wallCheckDistance: 0.5
   ledgeCheckDistance: 0.2
   groundLayer:
@@ -34,10 +36,15 @@ MonoBehaviour:
   longRangeActionDistance: 3
   meleeAttackRadius: 1
   meleeAttackDamage:
-    baseValue: 0
+    baseValue: 15
     modifiers: 
   knockbackAngle: {x: 1, y: 1}
   knockbackStrength: 10
+  pauseBetweenAttack: 1.5
+  teleportOffsetAbove: {x: 0, y: 3}
+  teleportOffsetLeft: {x: -3, y: 3}
+  teleportOffsetRight: {x: 3, y: 3}
+  teleportOffsetBehind: {x: -1, y: 0}
   health: 30
   damageHopSpeed: 3
   deathParticles: {fileID: 0}

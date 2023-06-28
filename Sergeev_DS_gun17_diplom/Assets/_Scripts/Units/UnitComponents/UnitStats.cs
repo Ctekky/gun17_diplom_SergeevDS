@@ -94,7 +94,7 @@ namespace Metroidvania.BaseUnit
             currentHealth -= ArmorReduction(amount);
             OnDecreaseHealth?.Invoke();
             onHealthChange?.Invoke(currentHealth);
-            if (currentHealth >= 0) return;
+            if (currentHealth > 0) return;
             currentHealth = 0;
             OnHealthZero?.Invoke();
         }
@@ -102,7 +102,7 @@ namespace Metroidvania.BaseUnit
         private bool CanCrit() => Random.Range(0, 100) < critChance.GetValue() + agility.GetValue();
         private int CalculateCrt(int damage) =>
             Mathf.RoundToInt(damage * ((critPower.GetValue() + strength.GetValue()) * 0.1f));
-        private int ArmorReduction(int damage) => Mathf.Clamp(damage - armor.GetValue(), 0, health.GetValue());
+        private int ArmorReduction(int damage) => Mathf.Clamp(damage - armor.GetValue(), 0, currentHealth);
         public int GetMaxHealthValue()
         {
             maxHealth = health.GetValue() + vitality.GetValue() * 5;

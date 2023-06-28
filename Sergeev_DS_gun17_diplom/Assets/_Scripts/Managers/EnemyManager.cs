@@ -17,6 +17,7 @@ namespace Metroidvania.Managers
         private List<EnemySpawner> _spawnersList;
         private List<Transform> _spawners;
         [Inject] private AudioManager _audioManager;
+        public event Action bossDied;
 
         private void Awake()
         {
@@ -30,9 +31,15 @@ namespace Metroidvania.Managers
             foreach (var spawner in _spawnersList)
             {
                 spawner.OnEnemyDied += EnemyDied;
+                spawner.bossDied += OnBossDied;
                 _spawners.Add(spawner.transform);
                 spawner.audioManager = _audioManager;
             }
+        }
+
+        private void OnBossDied()
+        {
+            bossDied?.Invoke();
         }
 
         private void EnemyDied(Vector2 coordinates, LootType lootType)
@@ -44,7 +51,8 @@ namespace Metroidvania.Managers
         {
             foreach (var spawner in _spawnersList)
             {
-                spawner.OnEnemyDied -= OnEnemyDied;
+                spawner.OnEnemyDied -= EnemyDied;
+                spawner.bossDied -= OnBossDied;
             }
         }
 
@@ -55,12 +63,11 @@ namespace Metroidvania.Managers
                 spawner.SpawnEnemy();
             }
         }
-        
+
         private List<EnemySpawner> FindAllSpawners()
         {
             var spawners = FindObjectsOfType<MonoBehaviour>().OfType<EnemySpawner>();
             return new List<EnemySpawner>(spawners);
         }
-
     }
 }

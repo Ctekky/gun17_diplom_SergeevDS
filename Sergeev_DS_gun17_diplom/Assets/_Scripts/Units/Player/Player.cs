@@ -1,6 +1,6 @@
-
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Metroidvania.BaseUnit;
 using Metroidvania.Combat.Weapon;
@@ -41,6 +41,7 @@ namespace Metroidvania.Player
         #endregion
 
         #region Components
+
         public Unit Unit { get; private set; }
         public Animator Animator { get; private set; }
         public PlayerInputHandler InputHandler { get; private set; }
@@ -55,6 +56,7 @@ namespace Metroidvania.Player
             get => isTouchingRope;
             private set => isTouchingRope = value;
         }
+
         public Transform CurrentRope { get; private set; }
         public bool AlreadyOnRope { get; set; }
         [SerializeField] private bool isTouchingRope;
@@ -62,18 +64,22 @@ namespace Metroidvania.Player
         private List<RopeLinks> _ropeLinksCollisions;
         private List<IInteractable> _interactables;
         private PlayerInventory Inventory { get; set; }
+
         public WeaponType CurrentWeaponEquip
         {
             get => _currentWeaponEquip;
             private set => _currentWeaponEquip = value;
         }
+
         private WeaponType _currentWeaponEquip;
         private Vector2 _workVector;
-        public event Action Aiming; 
-        public event Action EndAiming; 
+        public event Action Aiming;
+        public event Action EndAiming;
+
         #endregion
+
         #region Unity Func
-        
+
         private void Awake()
         {
             Unit = GetComponentInChildren<Unit>();
@@ -114,29 +120,31 @@ namespace Metroidvania.Player
             StateMachine.Initialize(IdleState);
             _currentWeaponEquip = WeaponType.Sword;
         }
+
         private void ApplyBuff(BuffType buffType, int modifier)
         {
-             var unitStats = Unit.GetUnitComponent<UnitStats>();
-             switch (buffType)
-             {
-                 case BuffType.Strength:
-                     unitStats.strength.AddModifier(modifier);
-                     break;
-                 case BuffType.Agility:
-                     unitStats.agility.AddModifier(modifier);
-                     break;
-                 case BuffType.Vitality:
-                     unitStats.vitality.AddModifier(modifier);
-                     unitStats.GetMaxHealthValue();
-                     unitStats.RestoreHealth();
-                     break;
-                 case BuffType.Armor:
-                     unitStats.armor.AddModifier(modifier);
-                     break;
-                 default:
-                     break;
-             }
+            var unitStats = Unit.GetUnitComponent<UnitStats>();
+            switch (buffType)
+            {
+                case BuffType.Strength:
+                    unitStats.strength.AddModifier(modifier);
+                    break;
+                case BuffType.Agility:
+                    unitStats.agility.AddModifier(modifier);
+                    break;
+                case BuffType.Vitality:
+                    unitStats.vitality.AddModifier(modifier);
+                    unitStats.GetMaxHealthValue();
+                    unitStats.RestoreHealth();
+                    break;
+                case BuffType.Armor:
+                    unitStats.armor.AddModifier(modifier);
+                    break;
+                default:
+                    break;
+            }
         }
+
         private void RemoveBuff(BuffType buffType, int modifier)
         {
             var unitStats = Unit.GetUnitComponent<UnitStats>();
@@ -208,7 +216,6 @@ namespace Metroidvania.Player
                 _ropeLinksCollisions.Add(collision.GetComponent<RopeLinks>());
                 CurrentRope = collision.transform;
                 isTouchingRope = true;
-                
             }
             else if (collision.GetComponent<IPickupable>() != null)
             {
@@ -240,11 +247,12 @@ namespace Metroidvania.Player
         {
             return Inventory.CanShootArrow();
         }
-        
+
         public void PlayerShot()
         {
             Inventory.DecreaseAmmo();
         }
+
         public void SetColliderHeight(float height)
         {
             var center = PlayerBodyCollider.offset;
@@ -257,12 +265,12 @@ namespace Metroidvania.Player
         public void PlayerMoveRope()
         {
             transform.SetParent(isTouchingRope ? CurrentRope.transform : null);
-            
         }
 
         public void SetPlayerLayer(LayerMask layer) => gameObject.layer = (int)Mathf.Log(layer.value, 2);
 
         #endregion
+
         private void SetNewAmmo(GameObject ammo)
         {
             var rangedWeapon = Inventory.weapons[1] as RangedWeapon;
@@ -276,7 +284,6 @@ namespace Metroidvania.Player
 
         private void OnPotionUse(PotionSlotNumber number)
         {
-            
             Inventory.UsePotionInSlot(number);
             Inventory.DecreasePotion(number);
         }
@@ -303,13 +310,14 @@ namespace Metroidvania.Player
 
         private void SpawnPlayer()
         {
-            if(_lastCheckpoint is { x: 0, y: 0 }) return;
+            if (_lastCheckpoint is { x: 0, y: 0 }) return;
             transform.position = _lastCheckpoint;
         }
 
         public void SpawnPlayer(bool isHealed)
         {
-            if(isHealed) Unit.GetUnitComponent<UnitStats>().RestoreHealth();
+            if (isHealed)
+                Unit.GetUnitComponent<UnitStats>().RestoreHealth();
             SpawnPlayer();
         }
 
@@ -330,6 +338,7 @@ namespace Metroidvania.Player
         {
             playerData.jumpCount = 2;
         }
+
         private void OnEnable()
         {
             Inventory.OnAppliedBuff += ApplyBuff;
@@ -355,21 +364,43 @@ namespace Metroidvania.Player
             var playerStats = Unit.GetUnitComponent<UnitStats>();
             playerStats.SetCurrentHealth(gameData.playerHealth);
             playerData.jumpCount = gameData.jumpCount;
-            if (SceneManager.GetActiveScene().name == gameData.lastScene)
+            var currentScene = SceneManager.GetActiveScene().name;
+            foreach (var pair in gameData.xPlayerPosition.Where(pair => pair.Key == currentScene))
             {
-                _lastCheckpoint.x = gameData.xPlayerPosition;
-                _lastCheckpoint.y = gameData.yPlayerPosition;
+                _lastCheckpoint.x = pair.Value;
             }
+
+            foreach (var pair in gameData.yPlayerPosition.Where(pair => pair.Key == currentScene))
+            {
+                _lastCheckpoint.y = pair.Value;
+            }
+
             SpawnPlayer();
         }
+
         public void SaveData(ref GameData.GameData gameData)
         {
             var playerStats = Unit.GetUnitComponent<UnitStats>();
             gameData.playerHealth = playerStats.GetCurrentHealth();
-            gameData.xPlayerPosition = _lastCheckpoint.x;
-            gameData.yPlayerPosition = _lastCheckpoint.y;
             gameData.jumpCount = playerData.jumpCount;
+            var currentScene = SceneManager.GetActiveScene().name;
+            if (gameData.xPlayerPosition.TryGetValue(currentScene, out var value1))
+            {
+                gameData.xPlayerPosition[currentScene] = _lastCheckpoint.x;
+            }
+            else
+            {
+                gameData.xPlayerPosition.Add($"{currentScene}", _lastCheckpoint.x);
+            }
+
+            if (gameData.yPlayerPosition.TryGetValue(currentScene, out var value2))
+            {
+                gameData.yPlayerPosition[currentScene] = _lastCheckpoint.y;
+            }
+            else
+            {
+                gameData.yPlayerPosition.Add($"{currentScene}", _lastCheckpoint.y);
+            }
         }
-        
     }
 }

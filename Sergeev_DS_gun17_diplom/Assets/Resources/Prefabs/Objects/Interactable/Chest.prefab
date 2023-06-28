@@ -231,7 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _state: 0
   animator: {fileID: 6692373758262038450}
-  lootType: 8
+  lootType: 6
 --- !u!95 &6692373758262038450
 Animator:
   serializedVersion: 5

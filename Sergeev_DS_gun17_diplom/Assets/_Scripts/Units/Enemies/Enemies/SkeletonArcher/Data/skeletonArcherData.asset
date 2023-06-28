@@ -39,7 +39,12 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   knockbackAngle: {x: 1, y: 1}
-  knockbackStrength: 10
+  knockbackStrength: 0
+  pauseBetweenAttack: 1.5
+  teleportOffsetAbove: {x: 0, y: 3}
+  teleportOffsetLeft: {x: -3, y: 3}
+  teleportOffsetRight: {x: 3, y: 3}
+  teleportOffsetBehind: {x: -1, y: 0}
   health: 30
   damageHopSpeed: 3
   deathParticles: {fileID: 0}

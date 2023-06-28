@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using Metroidvania.BaseUnit;
 using Metroidvania.Interfaces;
 using Metroidvania.Managers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Metroidvania.Common.Objects
@@ -17,6 +19,7 @@ namespace Metroidvania.Common.Objects
         public event Action<LootType, Vector2> Opened;
         public event Action<Vector2> Used;
         public event Action<Transform> Saved;
+
         private void Awake()
         {
             _state = false;
@@ -29,8 +32,9 @@ namespace Metroidvania.Common.Objects
 
         private void Start()
         {
-            if(_state) animator.SetBool(Active, true);
+            if (_state) animator.SetBool(Active, true);
         }
+
         public void Interact()
         {
             var position = transform.position;
@@ -39,40 +43,41 @@ namespace Metroidvania.Common.Objects
             animator.SetBool(Active, true);
             Saved?.Invoke(transform);
         }
+
         public void SetState(bool state)
         {
             _state = state;
             animator.SetBool(Active, _state);
         }
-        
+
         public bool ReturnState()
         {
             return true;
         }
-        
+
         public void LoadData(GameData.GameData gameData)
         {
-            foreach (var pair in gameData.campfires)
+            var currentScene = SceneManager.GetActiveScene().name;
+            var dictKey = currentScene + "_" + gameObject.name;
+            foreach (var pair in gameData.campfires.Where(pair => pair.Key == dictKey))
             {
-                if (pair.Key == gameObject.name)
-                {
-                    _state = pair.Value;
-                    animator.SetBool(Active, _state);
-                }
-            }
-        }
-        public void SaveData(ref GameData.GameData gameData)
-        {
-            if (gameData.campfires.TryGetValue(gameObject.name, out var value))
-            {
-                gameData.campfires[gameObject.name] = _state;
-            }
-            else
-            {
-                gameData.campfires.Add($"{gameObject.name}", _state);    
+                _state = pair.Value;
+                animator.SetBool(Active, _state);
             }
         }
 
+        public void SaveData(ref GameData.GameData gameData)
+        {
+            var currentScene = SceneManager.GetActiveScene().name;
+            var dictKey = currentScene + "_" + gameObject.name;
+            if (gameData.campfires.TryGetValue(dictKey, out var value))
+            {
+                gameData.campfires[dictKey] = _state;
+            }
+            else
+            {
+                gameData.campfires.Add($"{dictKey}", _state);
+            }
+        }
     }
-    
 }

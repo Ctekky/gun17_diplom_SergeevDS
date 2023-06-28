@@ -160,10 +160,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 10
+  m_GravityScale: 50
   m_Material: {fileID: 6200000, guid: 04449e95676fcf24cacb6a9905631511, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -217,7 +217,7 @@ MonoBehaviour:
   ledgeCheck: {fileID: 228790079102078859}
   playerCheck: {fileID: 228790079554274304}
   enemyData: {fileID: 11400000, guid: 46c6e56f435a79d4086c459bd441ca64, type: 2}
-  lootType: 5
+  lootType: 3
   audioManager: {fileID: 0}
   attackPosition: {fileID: 228790078222258632}
   playerCheckPosition: {fileID: 228790079554274304}

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22d03a395740c2c4abe18c27c215c465, type: 3}
   m_Name: giantBoarData
   m_EditorClassIdentifier: 
-  movementVelocity: 5
+  movementVelocity: 10
+  minMovementTimer: 2
+  maxMovementTimer: 5
   wallCheckDistance: 5
   ledgeCheckDistance: 3
   groundLayer:
@@ -26,7 +28,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 512
-  chargeVelocity: 7
+  chargeVelocity: 15
   chargeTime: 10
   amountOfTurns: 2
   timeOfTurns: 0.5
@@ -38,6 +40,11 @@ MonoBehaviour:
     modifiers: 
   knockbackAngle: {x: 1, y: 1}
   knockbackStrength: 10
+  pauseBetweenAttack: 1.5
+  teleportOffsetAbove: {x: 0, y: 3}
+  teleportOffsetLeft: {x: -3, y: 3}
+  teleportOffsetRight: {x: 3, y: 3}
+  teleportOffsetBehind: {x: -1, y: 0}
   health: 900
   damageHopSpeed: 3
   deathParticles: {fileID: 0}

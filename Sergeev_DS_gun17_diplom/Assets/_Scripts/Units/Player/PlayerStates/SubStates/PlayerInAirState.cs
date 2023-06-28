@@ -82,7 +82,7 @@ namespace Metroidvania.Player
             _interactInput = Player.InputHandler.InteractInput;
 
             CheckJumpMultiplier();
-            if (Player.InputHandler.AttackInputs[(int)CombatInputs.Primary])
+            if (Player.InputHandler.AttackInputs[(int)CombatInputs.Primary] && Player.CurrentWeaponEquip == WeaponType.Sword)
             {
                 StateMachine.ChangeState(Player.PrimaryAttackState);
             }

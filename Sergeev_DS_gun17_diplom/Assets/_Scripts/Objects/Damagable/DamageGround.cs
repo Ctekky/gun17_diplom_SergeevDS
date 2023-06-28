@@ -10,8 +10,9 @@ namespace Metroidvania.Combat
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if(other.transform.GetComponentInChildren<IDamageable>() != null)
-                other.transform.GetComponentInChildren<IDamageable>().Damage(damage);
+            if (other.transform.GetComponentInChildren<IDamageable>() != null)
+                if (other.transform.GetComponentInParent<Player.Player>())
+                    other.transform.GetComponentInChildren<IDamageable>().Damage(damage);
         }
     }
 }

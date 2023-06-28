@@ -19,11 +19,13 @@ namespace Metroidvania.Managers
         
         private void OnEndAiming()
         {
+            StopAllCoroutines();
             StartCoroutine(ChangeCamerOrtoSize(8, 2));
         }
 
         private void OnAiming()
         {
+            StopAllCoroutines();
             StartCoroutine(ChangeCamerOrtoSize(15, 2));
         }
         private void OnEnable()

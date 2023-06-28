@@ -15,7 +15,7 @@ MonoBehaviour:
   speed: 35
   travelDistance: 0
   damage:
-    baseValue: 5
+    baseValue: 10
     modifiers: 
   lifeTime: 1
   isRopeArrow: 1

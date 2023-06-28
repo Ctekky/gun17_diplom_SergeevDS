@@ -446,7 +446,7 @@ MonoBehaviour:
   ledgeCheck: {fileID: 4033891119540683916}
   playerCheck: {fileID: 4033891119630077703}
   enemyData: {fileID: 11400000, guid: 7fc13e3107e6af1488573e699a56424d, type: 2}
-  lootType: 4
+  lootType: 2
   audioManager: {fileID: 0}
   meleeAttackPosition: {fileID: 4033891118407113423}
   playerCheckPosition: {fileID: 4033891119630077703}

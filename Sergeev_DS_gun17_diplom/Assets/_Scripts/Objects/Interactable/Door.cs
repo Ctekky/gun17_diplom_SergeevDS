@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Metroidvania.Interfaces;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Metroidvania.Common.Objects
 {
@@ -41,28 +42,34 @@ namespace Metroidvania.Common.Objects
             isIdle = true;
             animator.SetBool(IsIdle, isIdle);
         }
+
         private void OnValidate()
         {
             name = transform.parent.name;
         }
+
         public void LoadData(GameData.GameData gameData)
         {
-            foreach (var pair in gameData.doors.Where(pair => pair.Key == gameObject.name))
+            var currentScene = SceneManager.GetActiveScene().name;
+            var dictKey = currentScene + "_" + gameObject.name;
+            foreach (var pair in gameData.doors.Where(pair => pair.Key == dictKey))
             {
                 SetState(pair.Value);
             }
         }
+
         public void SaveData(ref GameData.GameData gameData)
         {
-            if (gameData.doors.TryGetValue(gameObject.name, out var value))
+            var currentScene = SceneManager.GetActiveScene().name;
+            var dictKey = currentScene + "_" + gameObject.name;
+            if (gameData.doors.TryGetValue(dictKey, out var value))
             {
-                gameData.doors[gameObject.name] = isOpen;
+                gameData.doors[dictKey] = isOpen;
             }
             else
             {
-                gameData.doors.Add($"{gameObject.name}", isOpen);    
+                gameData.doors.Add($"{dictKey}", isOpen);
             }
         }
     }
-    
 }

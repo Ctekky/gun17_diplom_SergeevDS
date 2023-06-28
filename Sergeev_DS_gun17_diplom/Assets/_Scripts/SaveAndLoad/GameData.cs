@@ -11,8 +11,9 @@ namespace Metroidvania.GameData
         public int playerHealth;
         public int jumpCount;
         public string lastScene;
-        public float xPlayerPosition;
-        public float yPlayerPosition;
+        public float playingTime;
+        public SerializableDictionary<string, float> xPlayerPosition;
+        public SerializableDictionary<string, float> yPlayerPosition;
         public SerializableDictionary<string, bool> chests;
         public SerializableDictionary<string, bool> campfires;
         public SerializableDictionary<string, bool> levers;
@@ -25,8 +26,9 @@ namespace Metroidvania.GameData
             playerHealth = 0;
             jumpCount = 1;
             lastScene = "";
-            xPlayerPosition = 0;
-            yPlayerPosition = 0;
+            playingTime = 0;
+            xPlayerPosition = new SerializableDictionary<string, float>();
+            yPlayerPosition = new SerializableDictionary<string, float>();
             chests = new SerializableDictionary<string, bool>();
             campfires = new SerializableDictionary<string, bool>();
             levers = new SerializableDictionary<string, bool>();

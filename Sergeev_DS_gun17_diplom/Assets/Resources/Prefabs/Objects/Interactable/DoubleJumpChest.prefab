@@ -280,7 +280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _state: 0
   animator: {fileID: 6692373758262038450}
-  lootType: 7
+  lootType: 5
 --- !u!1 &6692373759320285395
 GameObject:
   m_ObjectHideFlags: 0

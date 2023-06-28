@@ -28,15 +28,7 @@ namespace Metroidvania.Enemy
             }
             else
             {
-                if (Random.Range(0, 100) >= 35)
-                {
-                    StateMachine.ChangeState(_bossEnemy.RangeAttackState);
-                }
-                else
-                {
-                    StateMachine.ChangeState(_bossEnemy.IdleState);
-                    //TODO spawn bats
-                }
+                StateMachine.ChangeState(_bossEnemy.RangeAttackState);
             }
         }
     }

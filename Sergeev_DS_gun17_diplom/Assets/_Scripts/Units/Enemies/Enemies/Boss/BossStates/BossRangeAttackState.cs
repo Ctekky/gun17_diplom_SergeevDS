@@ -23,7 +23,15 @@ namespace Metroidvania.Enemy
         public override void AnimationTrigger()
         {
             base.AnimationTrigger();
-            _bossEnemy.RangeAttack();
+            if (Random.Range(0, 100) >= 35)
+            {
+                _bossEnemy.RangeAttack();    
+            }
+            else
+            {
+                _bossEnemy.SpawnBats();
+            }
+            
         }
 
         public override void LogicUpdate()

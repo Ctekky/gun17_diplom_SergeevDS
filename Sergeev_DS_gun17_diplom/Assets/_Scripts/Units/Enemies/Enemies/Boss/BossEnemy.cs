@@ -1,3 +1,4 @@
+using System;
 using Metroidvania.Combat.Projectile;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -21,11 +22,21 @@ namespace Metroidvania.Enemy
         private Projectile _projectile;
 
         [SerializeField] private Transform meleeAttackPosition;
-        [SerializeField] private Transform rangeAttackPosition;
+
         [SerializeField] private Transform playerCheckPosition;
-        [SerializeField] private Projectile projectilePrefab;
+
+        [Header("Range attack")] [SerializeField]
+        private Projectile projectilePrefab;
+
+        [SerializeField] private Transform rangeAttackPosition;
         [SerializeField] private float attackPositionOffset;
-        [SerializeField] private Vector2 launchForce = new Vector2(15f, 15f);
+
+        [Header("Spawn bats")] [SerializeField]
+        private GameObject batPrefab;
+
+        [SerializeField] private int numberOfBats;
+        [SerializeField] private Vector2 batOffset;
+        public event Action bossDied;
 
         public override void Awake()
         {
@@ -79,14 +90,24 @@ namespace Metroidvania.Enemy
             CreateProjectile();
         }
 
+        public void SpawnBats()
+        {
+            for (var i = 0; i < numberOfBats; i++)
+            {
+                CreateBat(batOffset.x, batOffset.y);
+            }
+        }
+
+        #region Range attack
+
         private Projectile CreateProjectile()
         {
             if (audioManager != null) audioManager.PlaySFX((int)SFXSlots.SwordThrow);
             Movement?.FlipToTarget(transform.position, GetPlayerPosition().position);
             var projectile = Instantiate(projectilePrefab,
                 rangeAttackPosition.position + new Vector3(attackPositionOffset * Movement.FacingDirection, 0f, 0f),
-                transform.rotation);
-            projectile.SetupProjectile(GetPlayerPosition(), transform, UnitStats.ArrowDamage());
+                Quaternion.identity);
+            projectile.SetupProjectile(GetPlayerPosition(), rangeAttackPosition, UnitStats.ArrowDamage());
             projectile.SetPool(_projectilePool);
             return projectile;
         }
@@ -101,6 +122,37 @@ namespace Metroidvania.Enemy
         private void OnReleaseProjectile(Projectile obj)
         {
             obj.gameObject.SetActive(false);
+        }
+
+        #endregion
+
+        #region Spawn bat
+
+        private void CreateBat(float xOffset, float yOffset)
+        {
+            Movement?.FlipToTarget(transform.position, GetPlayerPosition().position);
+            var bat = Instantiate(batPrefab,
+                rangeAttackPosition.position + new Vector3((attackPositionOffset + xOffset) * Movement.FacingDirection,
+                    yOffset, 0f),
+                transform.rotation);
+            if (audioManager != null) bat.GetComponent<BatEnemy>().audioManager = audioManager;
+        }
+
+        #endregion
+
+        private void OnBossKilled()
+        {
+            bossDied?.Invoke();
+        }
+
+        private void OnEnable()
+        {
+            UnitStats.OnHealthZero += OnBossKilled;
+        }
+
+        protected void OnDisable()
+        {
+            UnitStats.OnHealthZero -= OnBossKilled;
         }
     }
 }

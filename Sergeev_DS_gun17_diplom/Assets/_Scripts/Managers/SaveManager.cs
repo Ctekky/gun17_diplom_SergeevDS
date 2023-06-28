@@ -25,7 +25,6 @@ namespace Metroidvania.Managers
 
         private void Start()
         {
-            _fileName = sceneName + "_data.test";
             _dataHandler = new FileDataHandler(Application.persistentDataPath, _fileName, encryptData);
             _saveInterfacesInScripts = FindAllSaveAndLoadInterfaces();
             LoadGame();

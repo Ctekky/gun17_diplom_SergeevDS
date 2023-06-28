@@ -45,3 +45,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootTableData: {fileID: 11400000, guid: 02f14ecf4f5b65d4ea7ab8d381772788, type: 2}
+  itemDataBase:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: d24337d2e9980de4dbb778ba5e9247b0, type: 2}
+  - {fileID: 11400000, guid: 1d7fd7401022a8d4abe96c9c329ce3da, type: 2}
+  - {fileID: 11400000, guid: 4fbe701acfddbd34d97b3feeb6ed98ff, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 34a4e59aaaf025b488f5bc4f6a38c8f5, type: 2}
+  - {fileID: 11400000, guid: 63a94152cb3acaa4d98a73b09c7def55, type: 2}
+  - {fileID: 11400000, guid: d13b509f081b20f4f893d6882db4a76b, type: 2}
+  - {fileID: 11400000, guid: fcd2a9010b677804daa3a41b0a22fe12, type: 2}
+  - {fileID: 11400000, guid: 19c4cada27efa7a4298934053791c301, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 89e52622ab81d0f43b12751d915b75c1, type: 2}
+  - {fileID: 11400000, guid: 1c5f3841c7cd88942a8f588ec28a111f, type: 2}
+  - {fileID: 11400000, guid: d2eefc93b761747458aeb923ccf8c89d, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 460c38f29701a264faf9f55dc358404e, type: 2}
+  - {fileID: 11400000, guid: aa8475ffc9a38164bb3a7ad03a602cde, type: 2}
+  loadedItems: []

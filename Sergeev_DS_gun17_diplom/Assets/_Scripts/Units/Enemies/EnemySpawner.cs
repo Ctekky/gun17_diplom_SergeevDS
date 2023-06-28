@@ -12,6 +12,7 @@ namespace Metroidvania.Enemy
         [SerializeField] private GameObject enemyPrefab;
         [SerializeField] private int enemyLevel;
         public AudioManager audioManager;
+        public event Action bossDied;
         public int EnemyLevel
         {
             get => enemyLevel;
@@ -24,6 +25,14 @@ namespace Metroidvania.Enemy
             _enemy.GetComponentInChildren<UnitStats>().UnitLevel = enemyLevel;
             _enemy.GetComponentInChildren<BaseEnemy>().audioManager = audioManager;
             _enemy.GetComponentInChildren<EnemyDeathUnitComponent>().OnDied += EnemyDied;
+            if (_enemy.GetComponent<BossEnemy>() != null) 
+                _enemy.GetComponent<BossEnemy>().bossDied += BossDied;
+        }
+
+        private void BossDied()
+        {
+            bossDied?.Invoke();
+            _enemy.GetComponent<BossEnemy>().bossDied -= BossDied;
         }
 
         private void EnemyDied(Vector2 coordinates, LootType lootType)

@@ -1,12 +1,14 @@
 using System;
+using System.Linq;
 using Metroidvania.Interfaces;
 using Metroidvania.Managers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Metroidvania.Common.Objects
 {
-    public class DoubleJump : MonoBehaviour,IInteractable,ISaveAndLoad
+    public class DoubleJump : MonoBehaviour, IInteractable, ISaveAndLoad
     {
         public event Action<LootType, Vector2> Opened;
         public event Action<Vector2> Used;
@@ -19,17 +21,20 @@ namespace Metroidvania.Common.Objects
         private static readonly int IsOpen = Animator.StringToHash("isOpen");
         private PopUpText _popUpText;
         [Inject] private AudioManager _audioManager;
+
         private void Awake()
         {
             _state = false;
         }
+
         private void OnValidate()
         {
             name = transform.parent.name;
         }
+
         private void Start()
         {
-            if(_state) animator.SetBool(IsOpen, true);
+            if (_state) animator.SetBool(IsOpen, true);
             ChangePopUpTextState();
         }
 
@@ -41,45 +46,48 @@ namespace Metroidvania.Common.Objects
 
         public void Interact()
         {
-            if(_state) return;
+            if (_state) return;
             _audioManager.PlaySFX((int)SFXSlots.OpenChest);
             animator.SetBool(IsOpening, true);
             _state = true;
-            
         }
+
         public bool ReturnState()
         {
             return _state;
         }
+
         public void OnAnimationEnd()
         {
             animator.SetBool(IsOpening, false);
             animator.SetBool(IsOpen, true);
             _player.AddDoubleJump();
         }
+
         public void LoadData(GameData.GameData gameData)
         {
-            foreach (var pair in gameData.chests)
+            var currentScene = SceneManager.GetActiveScene().name;
+            var dictKey = currentScene + "_" + gameObject.name;
+            foreach (var pair in gameData.chests.Where(pair => pair.Key == dictKey))
             {
-                if (pair.Key == gameObject.name)
-                {
-                    _state = pair.Value;
-                    if(_state) animator.SetBool(IsOpen, true);
-                    ChangePopUpTextState();
-                }
+                _state = pair.Value;
+                if (_state) animator.SetBool(IsOpen, true);
+                ChangePopUpTextState();
             }
         }
+
         public void SaveData(ref GameData.GameData gameData)
         {
-            if (gameData.chests.TryGetValue(gameObject.name, out var value))
+            var currentScene = SceneManager.GetActiveScene().name;
+            var dictKey = currentScene + "_" + gameObject.name;
+            if (gameData.chests.TryGetValue(dictKey, out var value))
             {
-                gameData.chests[gameObject.name] = _state;
+                gameData.chests[dictKey] = _state;
             }
             else
             {
-                gameData.chests.Add($"{gameObject.name}", _state);    
+                gameData.chests.Add($"{dictKey}", _state);
             }
         }
     }
-    
 }

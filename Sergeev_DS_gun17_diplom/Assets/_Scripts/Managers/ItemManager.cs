@@ -5,7 +5,9 @@ using Metroidvania.Common.Objects;
 using Metroidvania.Common.Items;
 using Metroidvania.Interfaces;
 using Metroidvania.Player;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -26,7 +28,7 @@ namespace Metroidvania.Managers
         [Inject] private AudioManager _audioManager;
         public event Action GameSaved;
 
-        [Header("Item database")] 
+        [Header("Item database")] public List<ItemData> itemDataBase;
         private List<ItemData> _itemDataBase;
         public List<InventoryItem> loadedItems;
 
@@ -54,7 +56,8 @@ namespace Metroidvania.Managers
             {
                 DeactivateAllCampfires();
                 campfire.GetComponent<Campfire>().SetState(true);
-            }    
+            }
+
             GameSaved?.Invoke();
             _audioManager.PlaySFX((int)SFXSlots.CampfireBurningVariant2);
         }
@@ -97,41 +100,47 @@ namespace Metroidvania.Managers
                 break;
             }
         }
+
         private void AddItemToPlayer(BaseItem item)
         {
             _itemsInGame.Remove(item);
             item.OnPickuped -= AddItemToPlayer;
             _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
-            if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
+            if (_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerInventory.AddItem(item.GetItemData());
         }
 
         private void AddItemToPlayer(InventoryItem item)
         {
             _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
-            if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
+            if (_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerInventory.AddItem(item);
         }
 
         private void Start()
         {
-            if(_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
+            if (_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _interactableObjects = FindAllInteractableObjects();
-
         }
-        
+
         private void OnDisable()
         {
             foreach (var baseItem in _itemsInGame)
             {
                 baseItem.OnPickuped -= AddItemToPlayer;
             }
+
             foreach (var interactableObject in _interactableObjects)
             {
                 interactableObject.Opened -= ChooseItemToSpawn;
                 interactableObject.Saved -= SaveOnCampfire;
             }
         }
+
+#if UNITY_EDITOR
+
+        [ContextMenu("Fill up item data base")]
+        private void FillUpItemDataBase() => itemDataBase = new List<ItemData>(GetItemDataBase());
 
         private List<ItemData> GetItemDataBase()
         {
@@ -147,11 +156,12 @@ namespace Metroidvania.Managers
             return _itemDataBase;
         }
 
+#endif
         public void LoadData(GameData.GameData gameData)
         {
             foreach (var pair in gameData.inventory)
             {
-                foreach (var item in GetItemDataBase())
+                foreach (var item in itemDataBase)
                 {
                     if (item == null) continue;
                     if (item.itemID != pair.Key) continue;
@@ -174,7 +184,7 @@ namespace Metroidvania.Managers
             var interactableObjects = FindObjectsOfType<MonoBehaviour>().OfType<IInteractable>();
             return new List<IInteractable>(interactableObjects);
         }
-        
+
         private List<Campfire> FindAllCampfireOnMap()
         {
             var campfires = FindObjectsOfType<MonoBehaviour>().OfType<Campfire>();
