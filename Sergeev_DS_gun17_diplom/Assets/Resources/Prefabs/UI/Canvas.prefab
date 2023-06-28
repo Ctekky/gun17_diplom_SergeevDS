@@ -5008,7 +5008,7 @@ MonoBehaviour:
   itemNameText: {fileID: 5788843077571125819}
   itemTypeText: {fileID: 5798553625456743703}
   itemDescription: {fileID: 89895496023269128}
-  offset: {x: -100, y: -30}
+  offset: {x: -200, y: -30}
 --- !u!1 &2451668994315208989
 GameObject:
   m_ObjectHideFlags: 0
