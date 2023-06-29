@@ -13,13 +13,13 @@ namespace Metroidvania.Player
         {
             base.Enter();
             Player.SetColliderHeight(PlayerData.colliderCrouchHeight);
-            Player.audioManager.PlaySFX((int)SFXSlots.FootStep);
+            Player.audioManager.PlaySfx((int)SFXSlots.FootStep);
         }
         public override void Exit()
         {
             base.Exit();
             Player.SetColliderHeight(PlayerData.colliderStandHeight);
-            Player.audioManager.StopSFX((int)SFXSlots.FootStep);
+            Player.audioManager.StopSfx((int)SFXSlots.FootStep);
         }
         public override void LogicUpdate()
         {

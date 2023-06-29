@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Metroidvania.BaseUnit;
@@ -6,7 +5,6 @@ using Metroidvania.Common.Items;
 using Metroidvania.Interfaces;
 using Metroidvania.Player;
 using Metroidvania.UI;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;

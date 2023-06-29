@@ -11,7 +11,7 @@ namespace Metroidvania.Enemy
         public override void Enter()
         {
             base.Enter();
-            Enemy.audioManager.PlaySFX((int)SFXSlots.MonsterGrowl1);
+            Enemy.audioManager.PlaySfx((int)SFXSlots.MonsterGrowl1);
         }
 
         public override void LogicUpdate()

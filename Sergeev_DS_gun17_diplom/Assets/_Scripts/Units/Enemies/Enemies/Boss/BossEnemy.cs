@@ -102,7 +102,7 @@ namespace Metroidvania.Enemy
 
         private Projectile CreateProjectile()
         {
-            if (audioManager != null) audioManager.PlaySFX((int)SFXSlots.SwordThrow);
+            if (audioManager != null) audioManager.PlaySfx((int)SFXSlots.SwordThrow);
             Movement?.FlipToTarget(transform.position, GetPlayerPosition().position);
             var projectile = Instantiate(projectilePrefab,
                 rangeAttackPosition.position + new Vector3(attackPositionOffset * Movement.FacingDirection, 0f, 0f),

@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using Cinemachine;
@@ -12,11 +10,12 @@ namespace Metroidvania.Managers
         [SerializeField] private CinemachineVirtualCamera playerCamera;
 
         [Inject] private Player.Player _player;
+
         private void Start()
         {
             playerCamera.Follow = _player.transform;
         }
-        
+
         private void OnEndAiming()
         {
             StopAllCoroutines();
@@ -28,11 +27,13 @@ namespace Metroidvania.Managers
             StopAllCoroutines();
             StartCoroutine(ChangeCamerOrtoSize(15, 2));
         }
+
         private void OnEnable()
         {
             _player.Aiming += OnAiming;
             _player.EndAiming += OnEndAiming;
         }
+
         private void OnDisable()
         {
             _player.Aiming -= OnAiming;
@@ -49,10 +50,8 @@ namespace Metroidvania.Managers
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
+
             playerCamera.m_Lens.OrthographicSize = result;
         }
     }
 }
-
-
-

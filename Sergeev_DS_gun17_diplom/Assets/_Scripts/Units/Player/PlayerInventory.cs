@@ -5,27 +5,26 @@ using UnityEngine;
 using Metroidvania.Combat.Weapon;
 using Metroidvania.Common.Items;
 using Metroidvania.Interfaces;
-using Metroidvania.UI;
 
 namespace Metroidvania.Player
 {
     public class PlayerInventory : MonoBehaviour, ISaveAndLoad
     {
         public Weapon[] weapons;
-        [SerializeField] private List<InventoryItem> _inventory;
-        [SerializeField] private Dictionary<ItemData, InventoryItem> _inventoryDictionary;
-        [SerializeField] private List<InventoryItem> _buff;
-        [SerializeField] private Dictionary<ItemDataBuff, InventoryItem> _buffDictionary;
-        [SerializeField] private List<InventoryItem> _ammo;
-        [SerializeField] private Dictionary<ItemDataAmmo, InventoryItem> _ammoDictionary;
-        [SerializeField] private List<InventoryItem> _potion;
-        [SerializeField] private Dictionary<ItemDataPotion, InventoryItem> _potionDictionary;
-        [SerializeField] private InventoryItem currentAmmo;
-        [SerializeField] private InventoryItem potion1;
-        [SerializeField] private InventoryItem potion2;
-        [SerializeField] private InventoryItem potion3;
-        [SerializeField] private InventoryItem potion4;
-        [SerializeField] private List<InventoryItem> potionOnHotBar;
+        private List<InventoryItem> _inventory;
+        private Dictionary<ItemData, InventoryItem> _inventoryDictionary;
+        private List<InventoryItem> _buff;
+        private Dictionary<ItemDataBuff, InventoryItem> _buffDictionary;
+        private List<InventoryItem> _ammo;
+        private Dictionary<ItemDataAmmo, InventoryItem> _ammoDictionary;
+        private List<InventoryItem> _potion;
+        private Dictionary<ItemDataPotion, InventoryItem> _potionDictionary;
+        private InventoryItem _currentAmmo;
+        private InventoryItem _potion1;
+        private InventoryItem _potion2;
+        private InventoryItem _potion3;
+        private InventoryItem _potion4;
+        private List<InventoryItem> _potionOnHotBar;
         private InventoryItem _lastUsedAmmo;
 
         public event Action<List<InventoryItem>, ItemType> OnUpdateUI;
@@ -37,7 +36,7 @@ namespace Metroidvania.Player
         public event Action<PotionSlotNumber> SetEmptyPotion;
         public event Action<int> HealthPotionUsed;
 
-        private void Start()
+        private void Awake()
         {
             _inventory = new List<InventoryItem>();
             _inventoryDictionary = new Dictionary<ItemData, InventoryItem>();
@@ -46,96 +45,105 @@ namespace Metroidvania.Player
             _ammo = new List<InventoryItem>();
             _ammoDictionary = new Dictionary<ItemDataAmmo, InventoryItem>();
             _potion = new List<InventoryItem>();
+            _potionOnHotBar = new List<InventoryItem>(4);
             _potionDictionary = new Dictionary<ItemDataPotion, InventoryItem>();
         }
 
         public void SetCurrentAmmo(InventoryItem item)
         {
-            GetItemFromList(item, _ammo, out currentAmmo);
-            var currentAmmoData = currentAmmo.ItemData as ItemDataAmmo;
+            GetItemFromList(item, _ammo, out _currentAmmo);
+            var currentAmmoData = _currentAmmo.ItemData as ItemDataAmmo;
             if (currentAmmoData != null) SetNewAmmo?.Invoke(currentAmmoData.arrowPrefab);
             SetNewAmmoIcon?.Invoke(item);
         }
-        private void SetCurrentPotion(InventoryItem item, PotionSlotNumber slotNumber)
+
+        public void SetCurrentPotion(InventoryItem item, PotionSlotNumber slotNumber)
         {
             switch (slotNumber)
             {
                 case PotionSlotNumber.First:
-                    GetItemFromList(item, _potion, out potion1);
+                    GetItemFromList(item, _potion, out _potion1);
                     SetNewPotionIcon?.Invoke(item, slotNumber);
                     break;
                 case PotionSlotNumber.Second:
-                    GetItemFromList(item, _potion, out potion2);
+                    GetItemFromList(item, _potion, out _potion2);
                     SetNewPotionIcon?.Invoke(item, slotNumber);
                     break;
                 case PotionSlotNumber.Third:
-                    GetItemFromList(item, _potion, out potion3);
+                    GetItemFromList(item, _potion, out _potion3);
                     SetNewPotionIcon?.Invoke(item, slotNumber);
                     break;
                 case PotionSlotNumber.Fourth:
-                    GetItemFromList(item, _potion, out potion4);
+                    GetItemFromList(item, _potion, out _potion4);
                     SetNewPotionIcon?.Invoke(item, slotNumber);
                     break;
                 default:
+                    Debug.Log("default switch");
                     break;
             }
         }
+
         private void GetItemFromList(InventoryItem item, List<InventoryItem> list, out InventoryItem value)
         {
             var index = list.IndexOf(item);
+            if (index == -1) index++;
             value = list[index];
         }
+
         public void ChoosePotionSlot(InventoryItem item)
         {
-            if(potionOnHotBar.Contains(item)) return;
-            switch (potionOnHotBar.Count)
+            if (_potionOnHotBar.Contains(item)) return;
+            switch (_potionOnHotBar.Count)
             {
                 case 0:
                     SetCurrentPotion(item, PotionSlotNumber.First);
-                    potionOnHotBar.Add(item);
+                    _potionOnHotBar.Add(item);
                     break;
                 case 1:
                     SetCurrentPotion(item, PotionSlotNumber.Second);
-                    potionOnHotBar.Add(item);
+                    _potionOnHotBar.Add(item);
                     break;
                 case 2:
                     SetCurrentPotion(item, PotionSlotNumber.Third);
-                    potionOnHotBar.Add(item);
+                    _potionOnHotBar.Add(item);
                     break;
                 case 3:
                     SetCurrentPotion(item, PotionSlotNumber.Fourth);
-                    potionOnHotBar.Add(item);
+                    _potionOnHotBar.Add(item);
                     break;
                 case 4:
                     Debug.Log("no slots");
                     break;
                 default:
+                    Debug.Log("default switch");
                     break;
             }
         }
+
         private void DecreasePotionInSlot(InventoryItem slot, PotionSlotNumber number)
         {
-            if(slot.ItemData == null) return;
+            if (slot.ItemData == null) return;
             if (slot.stackSize == 1)
             {
                 RemoveItem(slot.ItemData);
-                potionOnHotBar.Remove(slot);
+                _potionOnHotBar.Remove(slot);
                 SetEmptyPotion?.Invoke(number);
                 switch (number)
                 {
                     case PotionSlotNumber.First:
-                        potion1 = null;
+                        _potion1 = null;
                         break;
                     case PotionSlotNumber.Second:
-                        potion2 = null;
+                        _potion2 = null;
                         break;
                     case PotionSlotNumber.Third:
-                        potion3 = null;
+                        _potion3 = null;
                         break;
                     case PotionSlotNumber.Fourth:
-                        potion4 = null;
+                        _potion4 = null;
                         break;
                     default:
+                        Debug.Log("default switch");
                         break;
                 }
             }
@@ -145,49 +153,54 @@ namespace Metroidvania.Player
                 SetNewPotionIcon?.Invoke(slot, number);
             }
         }
+
         public void DecreasePotion(PotionSlotNumber number)
         {
             switch (number)
             {
                 case PotionSlotNumber.First:
-                    DecreasePotionInSlot(potion1, PotionSlotNumber.First);
+                    DecreasePotionInSlot(_potion1, PotionSlotNumber.First);
                     break;
                 case PotionSlotNumber.Second:
-                    DecreasePotionInSlot(potion2, PotionSlotNumber.Second);
+                    DecreasePotionInSlot(_potion2, PotionSlotNumber.Second);
                     break;
                 case PotionSlotNumber.Third:
-                    DecreasePotionInSlot(potion3, PotionSlotNumber.Third);
+                    DecreasePotionInSlot(_potion3, PotionSlotNumber.Third);
                     break;
                 case PotionSlotNumber.Fourth:
-                    DecreasePotionInSlot(potion4, PotionSlotNumber.Fourth);
+                    DecreasePotionInSlot(_potion4, PotionSlotNumber.Fourth);
                     break;
                 default:
+                    Debug.Log("default switch");
                     break;
             }
         }
+
         public void UsePotionInSlot(PotionSlotNumber number)
         {
             switch (number)
             {
                 case PotionSlotNumber.First:
-                    UsePotion(potion1);
-                   break;
+                    UsePotion(_potion1);
+                    break;
                 case PotionSlotNumber.Second:
-                    UsePotion(potion2);
+                    UsePotion(_potion2);
                     break;
                 case PotionSlotNumber.Third:
-                    UsePotion(potion3);
+                    UsePotion(_potion3);
                     break;
                 case PotionSlotNumber.Fourth:
-                    UsePotion(potion4);
+                    UsePotion(_potion4);
                     break;
                 default:
+                    Debug.Log("default switch");
                     break;
             }
         }
 
         private void UsePotion(InventoryItem potion)
         {
+            if (potion == null) return;
             if (potion.ItemData == null) return;
             var potionData = potion.ItemData as ItemDataPotion;
             if (potionData == null) return;
@@ -200,31 +213,33 @@ namespace Metroidvania.Player
                     //TODO buff potions
                     break;
                 default:
+                    Debug.Log("default switch");
                     break;
             }
         }
 
         public void DecreaseAmmo()
         {
-            if (currentAmmo.stackSize == 1)
+            if (_currentAmmo.stackSize == 1)
             {
-                RemoveItem(currentAmmo.ItemData);
-                currentAmmo = null;
+                RemoveItem(_currentAmmo.ItemData);
+                _currentAmmo = null;
                 _lastUsedAmmo = null;
                 SetNextAmmo();
             }
             else
             {
-                RemoveItem(currentAmmo.ItemData);
-                SetNewAmmoIcon?.Invoke(currentAmmo);
+                RemoveItem(_currentAmmo.ItemData);
+                SetNewAmmoIcon?.Invoke(_currentAmmo);
             }
         }
+
         private void UpdateAmmoSlot(Dictionary<ItemDataAmmo, InventoryItem> dictionary, ItemDataAmmo ammo)
         {
             if (!dictionary.TryGetValue(ammo, out var value)) return;
-            if (currentAmmo == null) return;
+            if (_currentAmmo == null) return;
             var index = _ammo.IndexOf(value);
-            if (currentAmmo == _ammo[index]) SetNewAmmoIcon?.Invoke(value);
+            if (_currentAmmo == _ammo[index]) SetNewAmmoIcon?.Invoke(value);
         }
 
         private void UpdatePotionSlot(Dictionary<ItemDataPotion, InventoryItem> dictionary, ItemDataPotion potion,
@@ -236,46 +251,49 @@ namespace Metroidvania.Player
             if (potionSlot == _potion[index]) SetNewPotionIcon?.Invoke(value, number);
         }
 
-    public void SwitchAmmo()
+        public void SwitchAmmo()
         {
-            _lastUsedAmmo = currentAmmo;
-            currentAmmo = null;
+            _lastUsedAmmo = _currentAmmo;
+            _currentAmmo = null;
             SetNextAmmo();
         }
-        
+
         private void SetNextAmmo()
         {
-            if(currentAmmo != null)
-                if(currentAmmo.ItemData != null) return;
+            if (_currentAmmo != null)
+                if (_currentAmmo.ItemData != null)
+                    return;
             foreach (var ammo in _ammo.Where(ammo => ammo != _lastUsedAmmo))
             {
                 SetCurrentAmmo(ammo);
                 break;
             }
-            if(currentAmmo == null) SetEmptyAmmo?.Invoke();
+
+            if (_currentAmmo == null) SetEmptyAmmo?.Invoke();
         }
 
         public bool CanShootArrow()
         {
-            if (currentAmmo == null)
+            if (_currentAmmo == null)
             {
                 _lastUsedAmmo = null;
                 SetNextAmmo();
-                if (currentAmmo == null) return false;
-                return currentAmmo.stackSize > 0;
+                if (_currentAmmo == null) return false;
+                return _currentAmmo.stackSize > 0;
             }
             else
             {
-                if (currentAmmo.ItemData == null)
+                if (_currentAmmo.ItemData == null)
                 {
                     SetNextAmmo();
-                    if (currentAmmo == null) return false;
-                    return currentAmmo.stackSize > 0;
+                    if (_currentAmmo == null) return false;
+                    return _currentAmmo.stackSize > 0;
                 }
-                return currentAmmo.stackSize > 0;
+
+                return _currentAmmo.stackSize > 0;
             }
         }
-        
+
         public void AddItem(ItemData item)
         {
             switch (item.itemType)
@@ -302,8 +320,6 @@ namespace Metroidvania.Player
                     UpdateAllPotionSlots(potion);
                     OnUpdateUI?.Invoke(_potion, ItemType.Potion);
                     break;
-                default:
-                    break;
             }
         }
 
@@ -313,11 +329,13 @@ namespace Metroidvania.Player
             {
                 AddItem(item.ItemData);
             }
+
             Debug.Log("Item Loaded");
         }
+
         private void RemoveItem(ItemData item)
         {
-            if(item == null) return;
+            if (item == null) return;
             switch (item.itemType)
             {
                 case ItemType.Material:
@@ -341,20 +359,21 @@ namespace Metroidvania.Player
                     UpdateAllPotionSlots(potion);
                     OnUpdateUI?.Invoke(_potion, ItemType.Potion);
                     break;
-                default:
-                    break;
             }
         }
-        
+
+
         private void UpdateAllPotionSlots(ItemDataPotion potion)
         {
-            UpdatePotionSlot(_potionDictionary, potion, PotionSlotNumber.First, potion1);
-            UpdatePotionSlot(_potionDictionary, potion, PotionSlotNumber.Second, potion2);
-            UpdatePotionSlot(_potionDictionary, potion, PotionSlotNumber.Third, potion3);
-            UpdatePotionSlot(_potionDictionary, potion, PotionSlotNumber.Fourth, potion4);
+            UpdatePotionSlot(_potionDictionary, potion, PotionSlotNumber.First, _potion1);
+            UpdatePotionSlot(_potionDictionary, potion, PotionSlotNumber.Second, _potion2);
+            UpdatePotionSlot(_potionDictionary, potion, PotionSlotNumber.Third, _potion3);
+            UpdatePotionSlot(_potionDictionary, potion, PotionSlotNumber.Fourth, _potion4);
         }
-        private void AddItemToListAndDictionary<T>(ICollection<InventoryItem> list, IDictionary<T, InventoryItem> dictionary,
-            T item) where T: ItemData
+
+        private void AddItemToListAndDictionary<T>(ICollection<InventoryItem> list,
+            IDictionary<T, InventoryItem> dictionary,
+            T item) where T : ItemData
         {
             if (dictionary.TryGetValue(item, out var value))
             {
@@ -367,8 +386,10 @@ namespace Metroidvania.Player
                 dictionary.Add(item, newItem);
             }
         }
-        private void RemoveItemFromListAndDictionary<T>(ICollection<InventoryItem> list, IDictionary<T, InventoryItem> dictionary,
-            T item) where T: ItemData
+
+        private void RemoveItemFromListAndDictionary<T>(ICollection<InventoryItem> list,
+            IDictionary<T, InventoryItem> dictionary,
+            T item) where T : ItemData
         {
             if (!dictionary.TryGetValue(item, out var value)) return;
             if (value.stackSize <= 1)
@@ -381,6 +402,7 @@ namespace Metroidvania.Player
                 value.RemoveStack();
             }
         }
+
         public bool CanCraftItem<T>(T itemToCraft, IEnumerable<InventoryItem> requiredMaterials) where T : ItemData
         {
             var materialsToRemove = new List<InventoryItem>();
@@ -393,12 +415,13 @@ namespace Metroidvania.Player
                         Debug.Log("Not enough materials");
                         return false;
                     }
+
                     materialsToRemove.Add(inventoryValue);
                 }
                 else
                 {
                     Debug.Log("Not enough materials");
-                    return false;  
+                    return false;
                 }
             }
 
@@ -406,6 +429,7 @@ namespace Metroidvania.Player
             {
                 RemoveItem(itemToRemove.ItemData);
             }
+
             AddItem(itemToCraft);
             return true;
         }
@@ -422,18 +446,33 @@ namespace Metroidvania.Player
             {
                 gameData.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
             }
+
             foreach (var pair in _ammoDictionary)
             {
                 gameData.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
             }
+
             foreach (var pair in _potionDictionary)
             {
                 gameData.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
             }
+
             foreach (var pair in _buffDictionary)
             {
                 gameData.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
             }
+
+            gameData.currentAmmo.Clear();
+            gameData.potion1.Clear();
+            gameData.potion2.Clear();
+            gameData.potion3.Clear();
+            gameData.potion4.Clear();
+
+            if (_currentAmmo != null) gameData.currentAmmo.Add(_currentAmmo.ItemData.itemID, _currentAmmo.stackSize);
+            if (_potion1 != null) gameData.potion1.Add(_potion1.ItemData.itemID, _potion1.stackSize);
+            if (_potion2 != null) gameData.potion2.Add(_potion2.ItemData.itemID, _potion2.stackSize);
+            if (_potion3 != null) gameData.potion3.Add(_potion3.ItemData.itemID, _potion3.stackSize);
+            if (_potion4 != null) gameData.potion4.Add(_potion4.ItemData.itemID, _potion4.stackSize);
         }
     }
 }

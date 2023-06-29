@@ -1,4 +1,3 @@
-using System;
 using Metroidvania.Interfaces;
 using UnityEngine;
 

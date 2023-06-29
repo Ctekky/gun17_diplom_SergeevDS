@@ -1,5 +1,4 @@
 using Zenject;
-using Metroidvania.Generic;
 using Metroidvania.Managers;
 using Metroidvania.UI;
 using UnityEngine;
@@ -8,19 +7,17 @@ namespace Metroidvania.Common
 {
     public class BootstrapInstaller : MonoInstaller
     {
+        public ItemManager itemManagerPrefab;
+        public EnemyManager enemyManagerPrefab;
+        public GameManager gameManagerPrefab;
+        public UIManager uiManagerPrefab;
+        public UICanvas uiCanvasPrefab;
+        public SaveManager saveManagerPrefab;
+        public Transform managersParent;
+        public Transform zeroPoint;
 
-        public  ItemManager itemManagerPrefab;
-        public  EnemyManager enemyManagerPrefab;
-        public  GameManager gameManagerPrefab;
-        public  UIManager uiManagerPrefab;
-        public  UICanvas uiCanvasPrefab;
-        public  SaveManager saveManagerPrefab;
-        public  Transform managersParent;
-        public  Transform zeroPoint;
         public override void InstallBindings()
         {
-            //Container.Bind<PlayerManager>().To<PlayerManager>().FromComponentInNewPrefab(playerManagerPrefab).AsSingle();
-            //Container.Bind<SkillManager>().To<SkillManager>().FromComponentInNewPrefab(skillManagerPrefab).AsSingle();
             var position = zeroPoint.position;
             var uiCanvas =
                 Container.InstantiatePrefabForComponent<UICanvas>(uiCanvasPrefab, position, Quaternion.identity, null);
@@ -47,4 +44,3 @@ namespace Metroidvania.Common
         }
     }
 }
-

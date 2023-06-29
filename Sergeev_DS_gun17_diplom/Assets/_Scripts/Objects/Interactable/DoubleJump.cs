@@ -47,7 +47,7 @@ namespace Metroidvania.Common.Objects
         public void Interact()
         {
             if (_state) return;
-            _audioManager.PlaySFX((int)SFXSlots.OpenChest);
+            _audioManager.PlaySfx((int)SFXSlots.OpenChest);
             animator.SetBool(IsOpening, true);
             _state = true;
         }

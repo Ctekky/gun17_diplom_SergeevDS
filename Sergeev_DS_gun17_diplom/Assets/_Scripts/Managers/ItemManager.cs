@@ -59,7 +59,7 @@ namespace Metroidvania.Managers
             }
 
             GameSaved?.Invoke();
-            _audioManager.PlaySFX((int)SFXSlots.CampfireBurningVariant2);
+            _audioManager.PlaySfx((int)SFXSlots.CampfireBurningVariant2);
         }
 
         private void DeactivateAllCampfires()
@@ -105,16 +105,28 @@ namespace Metroidvania.Managers
         {
             _itemsInGame.Remove(item);
             item.OnPickuped -= AddItemToPlayer;
-            _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
+            _audioManager.PlaySfx((int)SFXSlots.ItemPickup);
             if (_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerInventory.AddItem(item.GetItemData());
         }
 
         private void AddItemToPlayer(InventoryItem item)
         {
-            _audioManager.PlaySFX((int)SFXSlots.ItemPickup);
+            _audioManager.PlaySfx((int)SFXSlots.ItemPickup);
             if (_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
             _playerInventory.AddItem(item);
+        }
+
+        private void SetCurrentAmmo(InventoryItem item)
+        {
+            if (_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
+            _playerInventory.SetCurrentAmmo(item);
+        }
+
+        private void SetCurrentPotion(InventoryItem item, PotionSlotNumber slotNumber)
+        {
+            if (_playerInventory == null) _playerInventory = _player.GetComponent<PlayerInventory>();
+            _playerInventory.SetCurrentPotion(item, slotNumber);
         }
 
         private void Start()
@@ -159,19 +171,49 @@ namespace Metroidvania.Managers
 #endif
         public void LoadData(GameData.GameData gameData)
         {
-            foreach (var pair in gameData.inventory)
+            foreach (var itemToLoad in from pair in gameData.inventory
+                     from item in itemDataBase
+                     where item != null
+                     where item.itemID == pair.Key
+                     select new InventoryItem(item)
+                     {
+                         stackSize = pair.Value
+                     })
             {
-                foreach (var item in itemDataBase)
-                {
-                    if (item == null) continue;
-                    if (item.itemID != pair.Key) continue;
-                    var itemToLoad = new InventoryItem(item)
-                    {
-                        stackSize = pair.Value
-                    };
-                    AddItemToPlayer(itemToLoad);
-                    loadedItems.Add(itemToLoad);
-                }
+                AddItemToPlayer(itemToLoad);
+                loadedItems.Add(itemToLoad);
+            }
+
+            LoadPotionInSlot(gameData.potion1, PotionSlotNumber.First);
+            LoadPotionInSlot(gameData.potion2, PotionSlotNumber.Second);
+            LoadPotionInSlot(gameData.potion3, PotionSlotNumber.Third);
+            LoadPotionInSlot(gameData.potion4, PotionSlotNumber.Fourth);
+            foreach (var itemToLoad in from pair in gameData.currentAmmo
+                     from item in itemDataBase
+                     where item != null
+                     where item.itemID == pair.Key
+                     select new InventoryItem(item)
+                     {
+                         stackSize = pair.Value
+                     })
+            {
+                SetCurrentAmmo(itemToLoad);
+            }
+        }
+
+        private void LoadPotionInSlot(GameData.SerializableDictionary<string, int> dictionary,
+            PotionSlotNumber slotNumber)
+        {
+            foreach (var itemToLoad in from pair in dictionary
+                     from item in itemDataBase
+                     where item != null
+                     where item.itemID == pair.Key
+                     select new InventoryItem(item)
+                     {
+                         stackSize = pair.Value
+                     })
+            {
+                SetCurrentPotion(itemToLoad, slotNumber);
             }
         }
 

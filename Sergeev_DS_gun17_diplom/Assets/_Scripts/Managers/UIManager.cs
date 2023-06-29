@@ -16,7 +16,8 @@ namespace Metroidvania.Managers
         public event Action<ItemData, List<InventoryItem>> UICanvasCraftClicked;
         public event Action GameSaved;
         public event Action GameLoaded;
-        public event Action GameEnded; 
+        public event Action GameEnded;
+
         public void UpdateInventoryUI(List<InventoryItem> inventoryItems, ItemType itemType)
         {
             _uiCanvas.UpdateCharacterListsUI(inventoryItems, itemType);
@@ -50,5 +51,4 @@ namespace Metroidvania.Managers
             _uiCanvas.CraftClicked -= UICanvasCraftClicked;
         }
     }
-    
 }

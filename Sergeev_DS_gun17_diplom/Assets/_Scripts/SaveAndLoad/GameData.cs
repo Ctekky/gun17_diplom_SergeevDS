@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine.Serialization;
-
 
 namespace Metroidvania.GameData
 {
@@ -20,7 +17,12 @@ namespace Metroidvania.GameData
         public SerializableDictionary<string, bool> doors;
         public SerializableDictionary<string, int> inventory;
         public SerializableDictionary<string, float> audioVolume;
-        
+        public SerializableDictionary<string, int> currentAmmo;
+        public SerializableDictionary<string, int> potion1;
+        public SerializableDictionary<string, int> potion2;
+        public SerializableDictionary<string, int> potion3;
+        public SerializableDictionary<string, int> potion4;
+
         public GameData()
         {
             playerHealth = 0;
@@ -35,6 +37,11 @@ namespace Metroidvania.GameData
             doors = new SerializableDictionary<string, bool>();
             audioVolume = new SerializableDictionary<string, float>();
             inventory = new SerializableDictionary<string, int>();
+            currentAmmo = new SerializableDictionary<string, int>();
+            potion1 = new SerializableDictionary<string, int>();
+            potion2 = new SerializableDictionary<string, int>();
+            potion3 = new SerializableDictionary<string, int>();
+            potion4 = new SerializableDictionary<string, int>();
         }
     }
 }

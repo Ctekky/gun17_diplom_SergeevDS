@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Metroidvania.Generic
@@ -14,5 +12,3 @@ namespace Metroidvania.Generic
         }
     }
 }
-
-

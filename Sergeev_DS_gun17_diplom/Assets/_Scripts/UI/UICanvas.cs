@@ -185,7 +185,7 @@ namespace  Metroidvania.UI
 
             if (menu != null)
             {
-                _audioManager.PlaySFX((int)SFXSlots.Click);
+                _audioManager.PlaySfx((int)SFXSlots.Click);
                 menu.SetActive(true);
             }
             UpdateStatsUI();
@@ -222,7 +222,7 @@ namespace  Metroidvania.UI
 
         public void SwitchToEndScreen()
         {
-            _audioManager.PlaySFX((int)SFXSlots.DeathScreen);
+            _audioManager.PlaySfx((int)SFXSlots.DeathScreen);
             FadeOut();
         }
 

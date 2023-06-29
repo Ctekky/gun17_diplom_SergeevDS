@@ -1,7 +1,4 @@
-
 using Metroidvania.Managers;
-using Metroidvania.Player;
-using Metroidvania.UI;
 using Zenject;
 using UnityEngine;
 
@@ -10,9 +7,9 @@ namespace Metroidvania.Common
 {
     public class MainMenuInstaller : MonoInstaller
     {
-        [SerializeField] private  Transform zeroPoint;
-        [SerializeField] private  Transform managersParent;
-        [SerializeField] private  SaveManager saveManagerPrefab;
+        [SerializeField] private Transform zeroPoint;
+        [SerializeField] private Transform managersParent;
+        [SerializeField] private SaveManager saveManagerPrefab;
 
         public override void InstallBindings()
         {
@@ -21,7 +18,6 @@ namespace Metroidvania.Common
                 position,
                 Quaternion.identity, managersParent);
             Container.Bind<SaveManager>().FromInstance(saveManager).AsSingle();
-
         }
     }
 }

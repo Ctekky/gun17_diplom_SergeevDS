@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Metroidvania.GameData;
 using Metroidvania.Interfaces;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Metroidvania.Managers
 {
@@ -12,7 +10,7 @@ namespace Metroidvania.Managers
     {
         private GameData.GameData _gameData;
         private FileDataHandler _dataHandler;
-        private string _fileName; 
+        private string _fileName;
         private List<ISaveAndLoad> _saveInterfacesInScripts;
         [SerializeField] private bool encryptData;
         public string sceneName;
@@ -57,6 +55,7 @@ namespace Metroidvania.Managers
                 Debug.Log("No save data found!");
                 NewGame();
             }
+
             foreach (var loadScript in _saveInterfacesInScripts)
             {
                 loadScript.LoadData(_gameData);
@@ -64,11 +63,12 @@ namespace Metroidvania.Managers
         }
 
         public void SaveGame()
-        { 
+        {
             foreach (var saveScript in _saveInterfacesInScripts)
             {
                 saveScript.SaveData(ref _gameData);
             }
+
             _dataHandler.Save(_gameData);
         }
 

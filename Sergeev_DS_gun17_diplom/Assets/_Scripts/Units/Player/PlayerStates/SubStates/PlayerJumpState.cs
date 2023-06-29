@@ -16,7 +16,7 @@ namespace Metroidvania.Player
             base.Enter();
             Player.InputHandler.UseJumpInput();
             Movement?.SetVelocityY(PlayerData.jumpVelocity);
-            Player.audioManager.PlaySFX((int)SFXSlots.WomanSigh);
+            Player.audioManager.PlaySfx((int)SFXSlots.WomanSigh);
             IsAbilityDone = true;
             _jumpsLeft--;
             Player.InAirState.SetIsJumping();

@@ -4,5 +4,4 @@ namespace Metroidvania.Interfaces
     {
         void Pickup();
     }
-    
 }

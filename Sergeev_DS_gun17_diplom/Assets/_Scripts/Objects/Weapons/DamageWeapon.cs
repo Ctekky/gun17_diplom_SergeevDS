@@ -22,7 +22,7 @@ namespace Metroidvania.Combat.Weapon
         public override void EnterWeapon()
         {
             base.EnterWeapon();
-            Player.audioManager.PlaySFX((int)SFXSlots.SwordAttackWind);
+            Player.audioManager.PlaySfx((int)SFXSlots.SwordAttackWind);
         }
 
         public override void AnimationActionTrigger()

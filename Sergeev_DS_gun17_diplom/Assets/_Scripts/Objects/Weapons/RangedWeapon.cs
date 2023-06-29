@@ -39,7 +39,7 @@ namespace Metroidvania.Combat.Weapon
 
         private Projectile.Projectile CreateProjectile()
         {
-            Player.audioManager.PlaySFX((int)SFXSlots.SwordThrow);
+            Player.audioManager.PlaySfx((int)SFXSlots.SwordThrow);
             var projectile = Instantiate(projectilePrefab,
                 player.position + new Vector3(attackPositionOffset * Movement.FacingDirection, 0f, 0f),
                 player.rotation);
